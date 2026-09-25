@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Vaibhav Raj — Product Manager</title>
-<meta name="description" content="Product Manager at Kale Logistics, Mumbai. I build AI products for global trade — compliance agents, maritime single window, document automation. IIT Bombay 2023.">
+<meta name="description" content="Product Manager at Kale Logistics, Mumbai. I build AI products for global trade — compliance agents, maritime single window, document automation.">
 <meta property="og:title" content="Vaibhav Raj — Product Manager">
 <meta property="og:description" content="Product Manager at Kale Logistics. AI products for global trade.">
 <meta property="og:type" content="website">
@@ -84,6 +84,40 @@ h4{font-size:1.06rem;letter-spacing:-.016em;font-weight:700}
 .nav-links{display:flex;align-items:center;gap:1.7rem}
 .nav-links a{font-size:.94rem;font-weight:500;color:var(--ink-2)}
 .nav-links a:hover{color:var(--accent)}
+
+/* hover menus */
+.nav-item{position:relative;display:flex;align-items:center;height:62px}
+.nav-item > a{display:inline-flex;align-items:center;gap:.32rem}
+.caret{
+  width:0;height:0;border-left:3.5px solid transparent;border-right:3.5px solid transparent;
+  border-top:4px solid currentColor;opacity:.5;flex:none;transition:transform .16s ease,opacity .16s ease;
+}
+.nav-item:hover .caret,.nav-item:focus-within .caret{transform:rotate(180deg);opacity:1}
+.menu{
+  position:absolute;top:calc(100% - 8px);left:50%;
+  transform:translateX(-50%) translateY(8px);
+  min-width:340px;background:var(--surface);border:1px solid var(--rule);
+  border-radius:var(--r-lg);box-shadow:var(--shadow-lg);padding:.45rem;
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .16s ease,transform .16s ease,visibility .16s;
+}
+.nav-item:hover .menu,.nav-item:focus-within .menu{
+  opacity:1;visibility:visible;pointer-events:auto;transform:translateX(-50%) translateY(0);
+}
+.menu-hd{
+  font-family:var(--f-mono);font-size:.64rem;font-weight:500;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--muted);padding:.5rem .7rem .45rem;
+}
+.mi{display:flex;gap:.7rem;align-items:flex-start;padding:.55rem .7rem;border-radius:var(--r)}
+.mi:hover{background:var(--accent-wash)}
+.mi-n{
+  font-family:var(--f-mono);font-size:.7rem;font-weight:600;color:var(--accent);
+  width:1.35rem;flex:none;padding-top:.16rem;
+}
+.mi > span:last-child{display:block;min-width:0}
+.mi-t{display:block;font-size:.9rem;font-weight:700;letter-spacing:-.016em;line-height:1.25;color:var(--ink)}
+.mi-s{display:block;font-size:.78rem;color:var(--muted);line-height:1.35;margin-top:.1rem;font-weight:400}
+.proj,.prin,section{scroll-margin-top:78px}
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:.45rem;
   font-family:var(--f);font-size:.95rem;font-weight:700;letter-spacing:-.01em;
@@ -383,10 +417,32 @@ footer{
   <div class="nav-in">
     <a class="logo" href="#top"><i class="logo-bar"></i>Vaibhav Raj</a>
     <div class="nav-links">
-      <a href="#about">About</a>
-      <a href="#work">Work</a>
-      <a href="#how">How I work</a>
-      <a href="#contact">Contact</a>
+      <div class="nav-item"><a href="#about">About</a></div>
+
+      <div class="nav-item">
+        <a href="#work">Work <i class="caret"></i></a>
+        <div class="menu">
+          <div class="menu-hd">Selected work</div>
+          <a class="mi" href="#p1"><span class="mi-n">01</span><span><span class="mi-t">Trade Compliance Engine</span><span class="mi-s">21 AI agents · 85+ sanctions lists</span></span></a>
+          <a class="mi" href="#p2"><span class="mi-n">02</span><span><span class="mi-t">Maritime Single Window</span><span class="mi-s">0→1 to 20 live ports</span></span></a>
+          <a class="mi" href="#p3"><span class="mi-n">03</span><span><span class="mi-t">AI Document Generation</span><span class="mi-s">30 minutes to under 2</span></span></a>
+          <a class="mi" href="#p4"><span class="mi-n">04</span><span><span class="mi-t">Also shipped at Kale</span><span class="mi-s">Support AI · forecasting · payments</span></span></a>
+          <a class="mi" href="#p5"><span class="mi-n">05</span><span><span class="mi-t">UPI payments infrastructure</span><span class="mi-s">32M transactions a day</span></span></a>
+        </div>
+      </div>
+
+      <div class="nav-item">
+        <a href="#how">How I work <i class="caret"></i></a>
+        <div class="menu">
+          <div class="menu-hd">Four things I believe</div>
+          <a class="mi" href="#w1"><span class="mi-n">01</span><span><span class="mi-t">Automate the step people skip</span><span class="mi-s">Not the step people hate</span></span></a>
+          <a class="mi" href="#w2"><span class="mi-n">02</span><span><span class="mi-t">Price the failure first</span><span class="mi-s">What “wrong” costs sets the accuracy bar</span></span></a>
+          <a class="mi" href="#w3"><span class="mi-n">03</span><span><span class="mi-t">A number needs a denominator</span><span class="mi-s">Otherwise it's just a story</span></span></a>
+          <a class="mi" href="#w4"><span class="mi-n">04</span><span><span class="mi-t">Defensibility over autonomy</span><span class="mi-s">Regulated users answer to auditors</span></span></a>
+        </div>
+      </div>
+
+      <div class="nav-item"><a href="#contact">Contact</a></div>
     </div>
     <a class="btn btn-primary" href="mailto:vaibhavraj738@gmail.com">Get in touch</a>
   </div>
@@ -432,7 +488,7 @@ footer{
           the next. Most of my job is looking at a process that runs on PDFs, email and tribal knowledge, and
           working out which part of it software can actually own.</p>
 
-          <p>I came into product sideways. I studied <strong>Biomedical Engineering at IIT Bombay</strong>, then
+          <p>I came into product sideways. I studied at <strong>Birla Institute</strong>, then
           spent a year at <strong>Mindgate Solutions</strong> on UPI payments infrastructure — the rails behind
           HDFC Bank's UPI, reconciling 32 million transactions a day across 8 NPCI settlement cycles. That year
           taught me to design for the tail rather than the average, which is most of what I now do with AI
@@ -480,8 +536,7 @@ footer{
             <div class="tl">
               <div class="tl-yr">2019 — 23</div>
               <div>
-                <div class="tl-what">B.Tech, Biomedical Engineering</div>
-                <div class="tl-who">Indian Institute of Technology, Bombay</div>
+                <div class="tl-what">Birla Institute</div>
               </div>
             </div>
           </div>
@@ -507,7 +562,7 @@ footer{
     </div>
 
     <!-- ---------- PROJECT 01 ---------- -->
-    <article class="proj">
+    <article class="proj" id="p1">
       <div class="proj-head">
         <div class="proj-tag">
           <span class="num">01</span>
@@ -661,7 +716,7 @@ footer{
     </article>
 
     <!-- ---------- PROJECT 02 ---------- -->
-    <article class="proj">
+    <article class="proj" id="p2">
       <div class="proj-head">
         <div class="proj-tag">
           <span class="num">02</span>
@@ -796,7 +851,7 @@ footer{
     </article>
 
     <!-- ---------- PROJECT 03 ---------- -->
-    <article class="proj">
+    <article class="proj" id="p3">
       <div class="proj-head">
         <div class="proj-tag">
           <span class="num">03</span>
@@ -910,7 +965,7 @@ footer{
     </article>
 
     <!-- ---------- PROJECT 04 ---------- -->
-    <article class="proj">
+    <article class="proj" id="p4">
       <div class="proj-head">
         <div class="proj-tag">
           <span class="num">04</span>
@@ -946,7 +1001,7 @@ footer{
     </article>
 
     <!-- ---------- PROJECT 05 ---------- -->
-    <article class="proj">
+    <article class="proj" id="p5">
       <div class="proj-head">
         <div class="proj-tag">
           <span class="num">05</span>
@@ -1000,7 +1055,7 @@ footer{
     </div>
 
     <div class="prin-grid">
-      <div class="prin">
+      <div class="prin" id="w1">
         <span class="prin-n">01</span>
         <h4>Automate the step people skip, not the step people hate.</h4>
         <p>The slow step is visible and everyone's already optimising it. The valuable one is quietly skipped
@@ -1008,21 +1063,21 @@ footer{
         it; everybody pays for it at the border. That gap between where pain is felt and where it was caused is
         usually where the product is.</p>
       </div>
-      <div class="prin">
+      <div class="prin" id="w2">
         <span class="prin-n">02</span>
         <h4>Decide what “wrong” costs before you decide what “good” looks like.</h4>
         <p>A model at 95% is excellent for drafting a document and unacceptable for screening a sanctioned
         party. Same accuracy, opposite verdict, because the cost of the missing 5% differs by orders of
         magnitude. I set the failure cost first and let the accuracy bar and the review design fall out of it.</p>
       </div>
-      <div class="prin">
+      <div class="prin" id="w3">
         <span class="prin-n">03</span>
         <h4>A number without a denominator is a story.</h4>
         <p>“93% faster” means nothing until you say across which document types, at what volume, against whose
         baseline, and what it excludes. I'd rather present a smaller number I can defend in a room full of
         sceptics than a bigger one that collapses on the second question.</p>
       </div>
-      <div class="prin">
+      <div class="prin" id="w4">
         <span class="prin-n">04</span>
         <h4>Regulated users don't want autonomy. They want defensibility.</h4>
         <p>A customs broker isn't asking the system to decide for them. They want something they can put in
@@ -1081,7 +1136,7 @@ footer{
 
     <footer>
       <div>Vaibhav Raj · Product Manager · Mumbai, IN</div>
-      <div>IIT Bombay, 2023</div>
+      <div>Birla Institute, 2023</div>
     </footer>
   </div>
 </section>

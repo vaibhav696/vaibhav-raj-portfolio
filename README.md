@@ -16,6 +16,7 @@ README.md             this file
 
 | Section | What it does |
 |---|---|
+| Nav | About · **Work** · **How I work** · Contact. Work and How I work open hover menus |
 | Hero | Name, role, one-line positioning, "currently" strip |
 | About | **Who I am · Where I work · Background** — bio, employer card, timeline |
 | Work | 5 entries. Three have full interface snapshots |
@@ -66,9 +67,19 @@ your confirmation — an interviewer will ask follow-ups on every one:
 Replace anything that isn't how it actually went. Your real reasoning will be more specific than
 mine, and specific is the whole point.
 
-### 4. Quick checks
+### 4. The résumé PDF still says something different
+
+The site now says **Birla Institute** (three places: the bio, the timeline, the footer). The
+`Vaibhav_Raj_PM.pdf` linked from the hero and the contact block still says *Indian Institute of
+Technology, Bombay — Biomedical Engineering*. Anyone who clicks "Download résumé" sees both.
+Update the PDF, or the site will contradict itself on its own page.
+
+### 5. Quick checks
 
 - [ ] **LinkedIn URL** — I guessed `linkedin.com/in/vaibhav-raj-iitb`. Appears twice.
+- [ ] **Hover menus** — `Work` lists all five projects, `How I work` lists the four principles.
+      Both are CSS-only (`:hover` + `:focus-within`, so they work by keyboard too) and hidden below
+      760px where the nav collapses. Edit the `<div class="menu">` blocks in the nav to change them.
 - [ ] **Photo** — the avatar is a "VR" monogram. To use a real photo, drop `me.jpg` in the folder
       and replace the monogram in the `.avatar` div with the commented-out `<img>` tag right above it.
 - [ ] **Contact details** use the résumé versions (`vaibhavraj738@gmail.com` / +91 85215 88880).
