@@ -42,7 +42,7 @@
   --r-sm:6px; --r:10px; --r-lg:16px; --r-xl:22px;
 }
 *,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+html{-webkit-text-size-adjust:100%}
 body{
   margin:0;background:var(--bg);color:var(--ink);
   font-family:var(--f);font-size:17px;line-height:1.6;
@@ -76,6 +76,7 @@ h4{font-size:1.06rem;letter-spacing:-.016em;font-weight:700}
   border-bottom:1px solid var(--rule-2);
 }
 .nav-in{
+  position:relative;
   max-width:1080px;margin-inline:auto;padding:0 20px;height:62px;
   display:flex;align-items:center;justify-content:space-between;gap:1rem;
 }
@@ -92,7 +93,7 @@ h4{font-size:1.06rem;letter-spacing:-.016em;font-weight:700}
   width:0;height:0;border-left:3.5px solid transparent;border-right:3.5px solid transparent;
   border-top:4px solid currentColor;opacity:.5;flex:none;transition:transform .16s ease,opacity .16s ease;
 }
-.nav-item:hover .caret,.nav-item:focus-within .caret{transform:rotate(180deg);opacity:1}
+.nav-item.open .caret{transform:rotate(180deg);opacity:1}
 .menu{
   position:absolute;top:calc(100% - 8px);left:50%;
   transform:translateX(-50%) translateY(8px);
@@ -101,7 +102,7 @@ h4{font-size:1.06rem;letter-spacing:-.016em;font-weight:700}
   opacity:0;visibility:hidden;pointer-events:none;
   transition:opacity .16s ease,transform .16s ease,visibility .16s;
 }
-.nav-item:hover .menu,.nav-item:focus-within .menu{
+.nav-item.open .menu{
   opacity:1;visibility:visible;pointer-events:auto;transform:translateX(-50%) translateY(0);
 }
 .menu-hd{
@@ -118,6 +119,7 @@ h4{font-size:1.06rem;letter-spacing:-.016em;font-weight:700}
 .mi-t{display:block;font-size:.9rem;font-weight:700;letter-spacing:-.016em;line-height:1.25;color:var(--ink)}
 .mi-s{display:block;font-size:.78rem;color:var(--muted);line-height:1.35;margin-top:.1rem;font-weight:400}
 .proj,.prin,section{scroll-margin-top:78px}
+.hero{scroll-margin-top:0}
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:.45rem;
   font-family:var(--f);font-size:.95rem;font-weight:700;letter-spacing:-.01em;
@@ -129,7 +131,34 @@ h4{font-size:1.06rem;letter-spacing:-.016em;font-weight:700}
 .btn-ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
 .btn-ghost:hover{background:var(--ink);color:var(--bg)}
 .btn-lg{font-size:1.02rem;padding:.82rem 1.5rem}
-@media (max-width:760px){ .nav-links{display:none} }
+.nav-toggle{
+  display:none;align-items:center;gap:.4rem;font-family:var(--f);font-size:.9rem;font-weight:600;
+  color:var(--ink);background:transparent;border:1.5px solid var(--rule);border-radius:var(--r);
+  padding:.45rem .8rem;cursor:pointer;
+}
+.nav-toggle:hover{border-color:var(--ink)}
+@media (max-width:760px){
+  .nav-toggle{display:inline-flex}
+  .nav-links{
+    display:none;position:absolute;top:calc(100% + 1px);left:0;right:0;
+    flex-direction:column;align-items:stretch;gap:0;
+    background:var(--surface);border-bottom:1px solid var(--rule);
+    box-shadow:var(--shadow-lg);padding:.5rem;max-height:72vh;overflow-y:auto;
+  }
+  .nav-links.open{display:flex}
+  .nav-links .nav-item{display:block;height:auto}
+  .nav-links .nav-item > a{
+    padding:.7rem;font-size:1rem;font-weight:700;color:var(--ink);
+    justify-content:space-between;border-radius:var(--r);
+  }
+  .caret{display:none}
+  .nav-links .nav-item .menu{
+    position:static;transform:none;opacity:1;visibility:visible;pointer-events:auto;
+    min-width:0;border:0;box-shadow:none;background:transparent;padding:0 0 .5rem .5rem;
+  }
+  .menu-hd{display:none}
+  .nav-in .btn-primary{font-size:.85rem;padding:.5rem .85rem}
+}
 
 /* ---------- hero ---------- */
 .hero{padding-block:clamp(3.4rem,8vw,6.2rem) clamp(2.6rem,5vw,4rem);text-align:center}
@@ -408,7 +437,7 @@ footer{
   .who{gap:1rem}
   .avatar{width:62px;height:62px;font-size:1.3rem}
 }
-@media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} *{transition:none!important;animation:none!important} }
+@media (prefers-reduced-motion:reduce){ *{transition:none!important;animation:none!important} }
 </style>
 </head>
 <body>
@@ -416,7 +445,8 @@ footer{
 <nav class="nav">
   <div class="nav-in">
     <a class="logo" href="#top"><i class="logo-bar"></i>Vaibhav Raj</a>
-    <div class="nav-links">
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navLinks">Menu</button>
+    <div class="nav-links" id="navLinks">
       <div class="nav-item"><a href="#about">About</a></div>
 
       <div class="nav-item">
@@ -1141,5 +1171,118 @@ footer{
   </div>
 </section>
 
+
+<script>
+(function () {
+  var nav      = document.querySelector('.nav');
+  var navLinks = document.getElementById('navLinks');
+  var toggle   = document.getElementById('navToggle');
+  var items    = Array.prototype.slice.call(document.querySelectorAll('.nav-item'));
+  var closeTimer;
+
+  function isDesktop() { return window.matchMedia('(min-width: 761px)').matches; }
+  function closeMenus() { items.forEach(function (i) { i.classList.remove('open'); }); }
+  function closePanel() {
+    if (!navLinks) return;
+    navLinks.classList.remove('open');
+    if (toggle) toggle.setAttribute('aria-expanded', 'false');
+  }
+
+  // --- dropdowns: hover on desktop, tap on touch, keyboard via focus ---
+  items.forEach(function (item) {
+    var menu = item.querySelector('.menu');
+    if (!menu) return;
+    var trigger = item.querySelector('a');
+
+    item.addEventListener('mouseenter', function () {
+      if (!isDesktop()) return;
+      clearTimeout(closeTimer);
+      closeMenus();
+      item.classList.add('open');
+    });
+
+    item.addEventListener('mouseleave', function () {
+      if (!isDesktop()) return;
+      clearTimeout(closeTimer);
+      closeTimer = setTimeout(function () { item.classList.remove('open'); }, 220);
+    });
+
+    // first tap/click opens the menu; a second follows the link
+    trigger.addEventListener('click', function (e) {
+      if (!isDesktop()) return;
+      if (!item.classList.contains('open')) {
+        e.preventDefault();
+        closeMenus();
+        item.classList.add('open');
+      }
+    });
+
+    item.addEventListener('focusin', function () {
+      if (!isDesktop()) return;
+      clearTimeout(closeTimer);
+      closeMenus();
+      item.classList.add('open');
+    });
+  });
+
+  if (toggle) {
+    toggle.addEventListener('click', function () {
+      var open = navLinks.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeMenus(); closePanel(); }
+  });
+
+  document.addEventListener('click', function (e) {
+    if (nav && !nav.contains(e.target)) { closeMenus(); closePanel(); }
+  });
+
+  // --- every in-page link lands clear of the sticky header ---
+  document.addEventListener('click', function (e) {
+    var el = e.target;
+    if (!el || !el.closest) return;
+    var link = el.closest('a[href^="#"]');
+    if (!link) return;
+
+    var id = link.getAttribute('href');
+    if (!id || id.length < 2) return;
+
+    var target;
+    try { target = document.querySelector(id); } catch (err) { return; }
+    if (!target) return;
+
+    e.preventDefault();
+    closeMenus();
+    closePanel();
+
+    if (id === '#top') {
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      if (history.replaceState) history.replaceState(null, '', ' ');
+      return;
+    }
+
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var before = window.pageYOffset;
+
+    // scroll-margin-top on the targets keeps the heading clear of the sticky nav
+    if (reduce) {
+      target.scrollIntoView({ behavior: 'auto', block: 'start' });
+    } else {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // some engines drop a smooth scroll silently — snap if nothing moved
+      setTimeout(function () {
+        if (Math.abs(window.pageYOffset - before) < 4) {
+          target.scrollIntoView({ behavior: 'auto', block: 'start' });
+        }
+      }, 300);
+    }
+
+    if (history.replaceState) history.replaceState(null, '', id);
+  });
+})();
+</script>
 </body>
 </html>

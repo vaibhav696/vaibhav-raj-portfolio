@@ -16,7 +16,7 @@ README.md             this file
 
 | Section | What it does |
 |---|---|
-| Nav | About · **Work** · **How I work** · Contact. Work and How I work open hover menus |
+| Nav | About · **Work** · **How I work** · Contact. Work and How I work open dropdown menus. Below 760px it collapses to a **Menu** button with everything nested inside |
 | Hero | Name, role, one-line positioning, "currently" strip |
 | About | **Who I am · Where I work · Background** — bio, employer card, timeline |
 | Work | 5 entries. Three have full interface snapshots |
@@ -77,9 +77,12 @@ Update the PDF, or the site will contradict itself on its own page.
 ### 5. Quick checks
 
 - [ ] **LinkedIn URL** — I guessed `linkedin.com/in/vaibhav-raj-iitb`. Appears twice.
-- [ ] **Hover menus** — `Work` lists all five projects, `How I work` lists the four principles.
-      Both are CSS-only (`:hover` + `:focus-within`, so they work by keyboard too) and hidden below
-      760px where the nav collapses. Edit the `<div class="menu">` blocks in the nav to change them.
+- [ ] **Dropdown menus** — `Work` lists all five projects, `How I work` lists the four principles.
+      Open on hover (desktop), on tap (touch) and on keyboard focus; close on Escape, on selecting an
+      item, or on clicking away. Selecting an item scrolls to that section and leaves it 15px clear of
+      the sticky header. Edit the `<div class="menu">` blocks in the nav to change the entries.
+- [ ] **Mobile nav** — below 760px the links collapse into a **Menu** button; the dropdowns render
+      inline and expanded inside that panel, so every project is reachable on a phone.
 - [ ] **Photo** — the avatar is a "VR" monogram. To use a real photo, drop `me.jpg` in the folder
       and replace the monogram in the `.avatar` div with the commented-out `<img>` tag right above it.
 - [ ] **Contact details** use the résumé versions (`vaibhavraj738@gmail.com` / +91 85215 88880).
