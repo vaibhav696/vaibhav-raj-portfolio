@@ -4,885 +4,1087 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Vaibhav Raj — Product Manager</title>
-<meta name="description" content="Product Manager working on AI in cross-border trade. Case studies on how I framed, scoped and measured what I shipped at Kale Logistics and Mindgate Solutions.">
+<meta name="description" content="Product Manager at Kale Logistics, Mumbai. I build AI products for global trade — compliance agents, maritime single window, document automation. IIT Bombay 2023.">
 <meta property="og:title" content="Vaibhav Raj — Product Manager">
-<meta property="og:description" content="How I decide what to build: case studies from AI trade-compliance and maritime single-window products.">
+<meta property="og:description" content="Product Manager at Kale Logistics. AI products for global trade.">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
 :root{
   color-scheme: light;
-  --paper:#E8EBEE;
-  --surface:#F7F8FA;
-  --surface-2:#FDFDFE;
-  --ink:#12161B;
-  --ink-2:#39424D;
-  --muted:#667281;
-  --rule:#C3CBD3;
-  --rule-soft:#D8DDE3;
-  --accent:#0E5460;
-  --accent-ink:#0E5460;
-  --accent-soft:#D6E5E7;
-  --clear:#2C6B4C;
-  --review:#8A5A0B;
-  --match:#9E3729;
-  --shadow: 0 1px 2px rgba(18,22,27,.05);
-  --f-display:"Newsreader", Georgia, "Times New Roman", serif;
-  --f-body:"IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --bg:#FFFDF9;
+  --bg-warm:#FBF3EC;
+  --bg-ink:#1C1A17;
+  --surface:#FFFFFF;
+  --ink:#1B1917;
+  --ink-2:#4B4643;
+  --muted:#7A726D;
+  --rule:#E8E2DA;
+  --rule-2:#F0EBE4;
+  --accent:#EA4E1B;
+  --accent-dark:#C43D10;
+  --accent-wash:#FFF0E9;
+  --clear:#0E7A4E;
+  --clear-bg:#E7F5EE;
+  --review:#A9670A;
+  --review-bg:#FDF2DF;
+  --match:#C0371D;
+  --match-bg:#FCEAE6;
+  --blue:#2B5CB8;
+  --blue-bg:#EAF0FB;
+  --shadow-sm:0 1px 2px rgba(28,26,23,.06),0 1px 3px rgba(28,26,23,.04);
+  --shadow-md:0 2px 4px rgba(28,26,23,.04),0 8px 24px rgba(28,26,23,.07);
+  --shadow-lg:0 4px 8px rgba(28,26,23,.04),0 24px 56px rgba(28,26,23,.11);
+  --f:"Figtree", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --f-mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    color-scheme: dark;
-    --paper:#0D1115;
-    --surface:#141A21;
-    --surface-2:#19212A;
-    --ink:#E4E9EE;
-    --ink-2:#B6C0CB;
-    --muted:#8794A3;
-    --rule:#2B343E;
-    --rule-soft:#222A33;
-    --accent:#5FC3CF;
-    --accent-ink:#8AD7E0;
-    --accent-soft:#12333A;
-    --clear:#6BBF8F;
-    --review:#D7A445;
-    --match:#E27865;
-    --shadow: 0 1px 2px rgba(0,0,0,.4);
-  }
-}
-:root[data-theme="dark"]{
-  color-scheme: dark;
-  --paper:#0D1115;
-  --surface:#141A21;
-  --surface-2:#19212A;
-  --ink:#E4E9EE;
-  --ink-2:#B6C0CB;
-  --muted:#8794A3;
-  --rule:#2B343E;
-  --rule-soft:#222A33;
-  --accent:#5FC3CF;
-  --accent-ink:#8AD7E0;
-  --accent-soft:#12333A;
-  --clear:#6BBF8F;
-  --review:#D7A445;
-  --match:#E27865;
-  --shadow: 0 1px 2px rgba(0,0,0,.4);
+  --r-sm:6px; --r:10px; --r-lg:16px; --r-xl:22px;
 }
 *,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
 body{
-  margin:0;
-  background:var(--paper);
-  color:var(--ink);
-  font-family:var(--f-body);
-  font-size:17px;
-  line-height:1.62;
-  padding-inline:20px;
-  padding-block:0 0;
-  -webkit-font-smoothing:antialiased;
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:var(--f);font-size:17px;line-height:1.6;
+  font-weight:400;-webkit-font-smoothing:antialiased;
 }
-img{max-width:100%}
-a{color:var(--accent-ink);text-decoration:none;border-bottom:1px solid var(--rule)}
-a:hover{border-bottom-color:var(--accent)}
-a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
-.wrap{max-width:53rem;margin-inline:auto}
-.col{max-width:40rem}
-p{margin:0 0 1.05em}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2.5px solid var(--accent);outline-offset:3px;border-radius:4px}
+p{margin:0 0 1em}
 p:last-child{margin-bottom:0}
-strong{font-weight:600;color:var(--ink)}
+.wrap{max-width:1080px;margin-inline:auto;padding-inline:20px}
+.narrow{max-width:760px}
 
-/* ---------- top bar ---------- */
-.topbar{
-  position:sticky;top:env(safe-area-inset-top,0px);z-index:20;
-  background:color-mix(in srgb, var(--paper) 97%, transparent);
-  backdrop-filter:saturate(1.4) blur(10px);
-  border-bottom:1px solid var(--rule-soft);
-  margin-inline:-20px;padding-inline:20px;
+h1,h2,h3,h4{margin:0;font-weight:800;letter-spacing:-.028em;line-height:1.08;text-wrap:balance}
+h1{font-size:clamp(2.5rem,6.4vw,4.3rem)}
+h2{font-size:clamp(1.9rem,4.2vw,2.85rem);letter-spacing:-.03em}
+h3{font-size:clamp(1.3rem,2.6vw,1.72rem);letter-spacing:-.024em;line-height:1.14}
+h4{font-size:1.06rem;letter-spacing:-.016em;font-weight:700}
+
+.eyebrow{
+  font-family:var(--f-mono);font-size:.71rem;font-weight:500;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin:0 0 1.1rem;
 }
-.topbar-in{
-  max-width:53rem;margin-inline:auto;
+.eyebrow.acc{color:var(--accent)}
+.lede{font-size:clamp(1.08rem,1.9vw,1.24rem);color:var(--ink-2);line-height:1.58}
+
+/* ---------- nav ---------- */
+.nav{
+  position:sticky;top:env(safe-area-inset-top,0px);z-index:60;
+  background:rgba(255,253,249,.975);backdrop-filter:blur(12px) saturate(1.5);
+  border-bottom:1px solid var(--rule-2);
+}
+.nav-in{
+  max-width:1080px;margin-inline:auto;padding:0 20px;height:62px;
   display:flex;align-items:center;justify-content:space-between;gap:1rem;
-  height:52px;
 }
-.mark{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);font-weight:600}
-.mark span{color:var(--muted);font-weight:400}
-.tgl{
-  font-family:var(--f-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;
-  background:none;border:1px solid var(--rule);color:var(--muted);
-  padding:.34rem .6rem;border-radius:2px;cursor:pointer;
+.logo{display:flex;align-items:center;gap:.6rem;font-weight:800;letter-spacing:-.02em;font-size:1.03rem}
+.logo-bar{width:22px;height:4px;border-radius:2px;background:var(--accent);display:block}
+.nav-links{display:flex;align-items:center;gap:1.7rem}
+.nav-links a{font-size:.94rem;font-weight:500;color:var(--ink-2)}
+.nav-links a:hover{color:var(--accent)}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.45rem;
+  font-family:var(--f);font-size:.95rem;font-weight:700;letter-spacing:-.01em;
+  padding:.62rem 1.15rem;border-radius:var(--r);border:2px solid transparent;
+  cursor:pointer;transition:background .15s,border-color .15s,color .15s;white-space:nowrap;
 }
-.tgl:hover{color:var(--ink);border-color:var(--ink-2)}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-dark)}
+.btn-ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
+.btn-ghost:hover{background:var(--ink);color:var(--bg)}
+.btn-lg{font-size:1.02rem;padding:.82rem 1.5rem}
+@media (max-width:760px){ .nav-links{display:none} }
 
 /* ---------- hero ---------- */
-.hero{padding-block:clamp(3.2rem,9vw,6rem) clamp(2.6rem,6vw,4rem)}
-.eyebrow{
-  font-family:var(--f-mono);font-size:.7rem;font-weight:500;
-  letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
-  margin:0 0 1.4rem;
+.hero{padding-block:clamp(3.4rem,8vw,6.2rem) clamp(2.6rem,5vw,4rem);text-align:center}
+.hero h1{max-width:15ch;margin-inline:auto}
+.hero .lede{max-width:44ch;margin:1.5rem auto 0}
+.hero-cta{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap;margin-top:2.1rem}
+.now-strip{
+  display:inline-flex;align-items:center;gap:.6rem;flex-wrap:wrap;justify-content:center;
+  margin-top:2.4rem;padding:.6rem 1.1rem;border:1px solid var(--rule);border-radius:100px;
+  background:var(--surface);font-size:.9rem;color:var(--ink-2);box-shadow:var(--shadow-sm);
 }
-h1{
-  font-family:var(--f-display);font-weight:500;
-  font-size:clamp(2.35rem,6.2vw,4.05rem);
-  line-height:1.03;letter-spacing:-.022em;
-  margin:0 0 1.5rem;text-wrap:balance;max-width:18ch;
-}
-.lede{font-size:clamp(1.05rem,1.9vw,1.2rem);color:var(--ink-2);max-width:38rem}
-.note-rule{
-  margin-top:2rem;padding-top:1.3rem;border-top:1px solid var(--rule);
-  max-width:38rem;color:var(--ink-2);font-size:1rem;
-}
-.note-rule em{font-style:normal;color:var(--ink);font-weight:500}
-
-.anchors{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-  gap:0;margin-top:2.6rem;border-top:1px solid var(--rule);
-}
-.anchor{padding:1.1rem 1.2rem 1.1rem 0;border-bottom:1px solid var(--rule-soft)}
-.anchor .n{font-family:var(--f-display);font-size:1.9rem;line-height:1;font-weight:500;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
-.anchor .l{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:.5rem}
-
-.links{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:2rem}
-.links a{
-  font-family:var(--f-mono);font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;
-  border:1px solid var(--rule);border-radius:2px;padding:.5rem .85rem;color:var(--ink-2);
-  background:var(--surface);
-}
-.links a:hover{border-color:var(--accent);color:var(--accent-ink)}
+.pulse{width:8px;height:8px;border-radius:50%;background:var(--clear);flex:none;position:relative}
+.pulse::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:1px solid var(--clear);opacity:.4}
+.now-strip b{font-weight:700;color:var(--ink)}
 
 /* ---------- sections ---------- */
-section{padding-block:clamp(2.8rem,6vw,4.4rem);border-top:1px solid var(--rule)}
-.sec-head{display:flex;align-items:baseline;gap:1rem;margin-bottom:2rem;flex-wrap:wrap}
-.sec-num{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.16em;color:var(--muted);font-weight:500;padding-top:.5rem}
-h2{
-  font-family:var(--f-display);font-weight:500;
-  font-size:clamp(1.65rem,3.5vw,2.3rem);line-height:1.12;letter-spacing:-.018em;
-  margin:0;text-wrap:balance;
-}
-.sec-sub{color:var(--muted);max-width:38rem;margin-top:-1.1rem;margin-bottom:2rem;font-size:1rem}
+section{padding-block:clamp(3.2rem,7vw,5.6rem)}
+.sec-warm{background:var(--bg-warm);border-block:1px solid var(--rule)}
+.sec-head{max-width:680px;margin-bottom:2.6rem}
+.sec-head p{color:var(--ink-2);margin-top:.9rem;font-size:1.06rem}
 
-/* principles */
-.principles{display:grid;gap:0;border-top:1px solid var(--rule-soft)}
-.principle{padding-block:1.5rem;border-bottom:1px solid var(--rule-soft);max-width:40rem}
-.principle h3{
-  font-family:var(--f-body);font-size:1.1rem;font-weight:600;line-height:1.4;
-  margin:0 0 .6rem;letter-spacing:-.005em;
+/* ---------- about ---------- */
+.about-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:3rem}
+@media (max-width:860px){ .about-grid{grid-template-columns:1fr;gap:2.4rem} }
+.who{display:flex;gap:1.3rem;align-items:flex-start;margin-bottom:1.6rem}
+.avatar{
+  width:76px;height:76px;flex:none;border-radius:var(--r-lg);
+  background:var(--accent);color:#fff;display:grid;place-items:center;
+  font-weight:800;font-size:1.6rem;letter-spacing:-.03em;box-shadow:var(--shadow-md);overflow:hidden;
 }
-.principle p{color:var(--ink-2);font-size:1rem;margin:0}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.who-name{font-size:1.32rem;font-weight:800;letter-spacing:-.024em;line-height:1.2}
+.who-role{color:var(--accent);font-weight:600;font-size:.99rem;margin-top:.2rem}
+.who-loc{color:var(--muted);font-size:.93rem;margin-top:.15rem}
+.about-body p{color:var(--ink-2);font-size:1.04rem}
+.about-body strong{color:var(--ink);font-weight:700}
 
-/* case study */
-.case{max-width:40rem}
-.case-meta{
-  display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-bottom:1.4rem;
+.card{background:var(--surface);border:1px solid var(--rule);border-radius:var(--r-lg);box-shadow:var(--shadow-sm)}
+.employer{padding:1.5rem}
+.employer-top{display:flex;align-items:center;gap:.8rem;margin-bottom:1rem}
+.emp-logo{
+  width:38px;height:38px;border-radius:9px;flex:none;display:grid;place-items:center;
+  font-weight:800;font-size:.86rem;color:#fff;letter-spacing:-.02em;
+}
+.emp-k{background:#16265C}
+.emp-m{background:#0E6E63}
+.emp-i{background:#3B2F8F}
+.employer h4{margin:0}
+.employer .sub{color:var(--muted);font-size:.85rem;font-family:var(--f-mono);letter-spacing:.02em;margin-top:.12rem}
+.employer p{font-size:.95rem;color:var(--ink-2);margin:0}
+.timeline{margin-top:1.1rem;display:grid;gap:0}
+.tl{display:grid;grid-template-columns:auto 1fr;gap:.9rem;padding:.85rem 0;border-top:1px solid var(--rule-2)}
+.tl:first-child{border-top:0}
+.tl-yr{font-family:var(--f-mono);font-size:.79rem;color:var(--muted);white-space:nowrap;padding-top:.15rem}
+.tl-what{font-size:.95rem;font-weight:600;line-height:1.35}
+.tl-who{font-size:.87rem;color:var(--muted);margin-top:.1rem;font-weight:400}
+
+/* ---------- project ---------- */
+.proj{padding-block:clamp(3rem,6vw,5rem);border-top:1px solid var(--rule)}
+.proj:first-of-type{border-top:0;padding-top:0}
+.proj-head{max-width:720px;margin-bottom:2.2rem}
+.proj-tag{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:1rem}
+.num{
+  font-family:var(--f-mono);font-size:.78rem;font-weight:600;color:var(--accent);
+  background:var(--accent-wash);padding:.25rem .55rem;border-radius:var(--r-sm);letter-spacing:.04em;
 }
 .chip{
-  font-family:var(--f-mono);font-size:.66rem;letter-spacing:.11em;text-transform:uppercase;
-  padding:.3rem .6rem;border-radius:2px;border:1px solid var(--rule);color:var(--muted);
+  font-size:.77rem;font-weight:600;padding:.26rem .62rem;border-radius:100px;
+  border:1px solid var(--rule);color:var(--muted);background:var(--surface);
 }
-.chip-live{color:var(--clear);border-color:color-mix(in srgb,var(--clear) 45%,transparent)}
-.chip-build{color:var(--review);border-color:color-mix(in srgb,var(--review) 45%,transparent)}
-.block{margin-top:2.4rem}
-.case-meta + .block{margin-top:0}
-.block-label{
-  font-family:var(--f-mono);font-size:.68rem;font-weight:500;letter-spacing:.15em;
-  text-transform:uppercase;color:var(--accent-ink);margin:0 0 .7rem;
+.chip-live{color:var(--clear);background:var(--clear-bg);border-color:transparent}
+.chip-build{color:var(--review);background:var(--review-bg);border-color:transparent}
+.proj-head h3{margin-bottom:.7rem}
+.proj-head .lede{font-size:1.09rem}
+
+.proj-cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:2.4rem;margin-bottom:2.4rem}
+@media (max-width:820px){ .proj-cols{grid-template-columns:1fr;gap:1.8rem} }
+.blk-label{
+  font-family:var(--f-mono);font-size:.71rem;font-weight:600;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent);margin:0 0 .85rem;
 }
-.block h3{
-  font-family:var(--f-body);font-size:1.08rem;font-weight:600;margin:0 0 .6rem;letter-spacing:-.005em;
+ul.did{list-style:none;margin:0;padding:0;display:grid;gap:.75rem}
+ul.did li{position:relative;padding-left:1.4rem;font-size:1rem;color:var(--ink-2);line-height:1.52}
+ul.did li::before{
+  content:"";position:absolute;left:0;top:.56em;width:7px;height:7px;border-radius:2px;
+  background:var(--accent);opacity:.85;
 }
-ul.reasons{list-style:none;padding:0;margin:.9rem 0 0;display:grid;gap:.85rem}
-ul.reasons li{
-  padding-left:1.15rem;position:relative;color:var(--ink-2);font-size:1rem;line-height:1.55;
+ul.did li b{color:var(--ink);font-weight:700}
+
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.7rem}
+.tile{background:var(--surface);border:1px solid var(--rule);border-radius:var(--r);padding:1rem 1.05rem}
+.tile-n{font-size:1.72rem;font-weight:800;letter-spacing:-.035em;line-height:1;font-variant-numeric:tabular-nums}
+.tile-n small{font-size:.92rem;font-weight:700;letter-spacing:-.01em}
+.tile-l{font-size:.83rem;color:var(--muted);margin-top:.42rem;line-height:1.35}
+.tile-acc .tile-n{color:var(--accent)}
+
+.callout{
+  background:var(--bg-warm);border:1px solid var(--rule);border-radius:var(--r-lg);
+  padding:1.5rem 1.6rem;margin-top:2.2rem;max-width:760px;
 }
-ul.reasons li::before{
-  content:"";position:absolute;left:0;top:.62em;width:5px;height:5px;
-  background:var(--accent);border-radius:1px;
+.sec-warm .callout{background:var(--surface)}
+.callout h4{margin-bottom:.55rem}
+.callout p{color:var(--ink-2);font-size:1rem;margin-bottom:.8rem}
+.callout p:last-child{margin-bottom:0}
+
+/* ================= PRODUCT SNAPSHOT (interface recreation) ================= */
+.shot-wrap{margin-top:2.4rem}
+.shot{
+  border-radius:var(--r-lg);border:1px solid var(--rule);background:#fff;
+  box-shadow:var(--shadow-lg);overflow:hidden;
 }
-ul.reasons li b{color:var(--ink);font-weight:600}
-.pull{
-  border-left:2px solid var(--accent);padding:.15rem 0 .15rem 1.15rem;margin:1.5rem 0;
-  font-family:var(--f-display);font-size:1.22rem;line-height:1.42;color:var(--ink);max-width:34rem;
+.shot-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.shot-bar{
+  display:flex;align-items:center;gap:.5rem;padding:.6rem .85rem;
+  background:#F4F1EC;border-bottom:1px solid var(--rule);
+}
+.dot{width:10px;height:10px;border-radius:50%;flex:none;background:#DCD5CC}
+.dot:nth-child(1){background:#F0A8A0} .dot:nth-child(2){background:#F2D08A} .dot:nth-child(3){background:#A9D8B6}
+.shot-url{
+  flex:1;margin-left:.5rem;background:#fff;border:1px solid var(--rule);border-radius:100px;
+  padding:.22rem .8rem;font-family:var(--f-mono);font-size:.71rem;color:var(--muted);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:420px;
+}
+.app{display:grid;grid-template-columns:186px minmax(0,1fr);min-width:880px;background:#fff}
+.app-side{background:#FAF8F5;border-right:1px solid var(--rule);padding:1rem .75rem;display:flex;flex-direction:column}
+.side-brand{
+  display:flex;align-items:center;gap:.5rem;font-weight:800;font-size:.85rem;
+  letter-spacing:-.02em;padding:.2rem .5rem .9rem;color:var(--ink);
+}
+.side-brand i{width:16px;height:16px;border-radius:4px;background:var(--accent);flex:none;display:block}
+.side-nav{display:grid;gap:.1rem}
+.side-nav span{
+  font-size:.79rem;padding:.44rem .55rem;border-radius:var(--r-sm);color:#6E655F;font-weight:500;
+}
+.side-nav span.on{background:var(--accent-wash);color:var(--accent);font-weight:700}
+.side-foot{
+  margin-top:auto;padding:.7rem .55rem 0;border-top:1px solid var(--rule-2);
+  font-family:var(--f-mono);font-size:.66rem;color:#9A928C;line-height:1.5;
+}
+.app-main{padding:1.05rem 1.25rem 1.25rem;min-width:0;background:#fff}
+.app-head{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;padding-bottom:.9rem;border-bottom:1px solid var(--rule-2)}
+.app-kick{font-family:var(--f-mono);font-size:.67rem;letter-spacing:.09em;color:#9A928C;text-transform:uppercase}
+.app-title{font-size:1.02rem;font-weight:800;letter-spacing:-.022em;margin-top:.25rem;color:var(--ink)}
+.app-sub{font-size:.76rem;color:var(--muted);margin-top:.2rem}
+.app-meta{font-family:var(--f-mono);font-size:.69rem;color:var(--muted);text-align:right;white-space:nowrap;padding-top:.3rem}
+.app-meta b{color:var(--ink);font-weight:600}
+
+.banner{
+  display:flex;align-items:center;gap:.8rem;margin-top:.9rem;padding:.7rem .9rem;
+  border-radius:var(--r);background:var(--review-bg);border:1px solid #F0DCB4;
+}
+.banner-ico{
+  width:22px;height:22px;border-radius:50%;background:var(--review);color:#fff;flex:none;
+  display:grid;place-items:center;font-size:.76rem;font-weight:800;
+}
+.banner-txt{font-size:.82rem;font-weight:600;color:#7A4B05}
+.banner-txt span{font-weight:400;color:#96693A}
+.segbar{display:flex;gap:2px;margin-left:auto;flex:none}
+.segbar i{width:7px;height:16px;border-radius:2px;background:var(--clear);display:block;opacity:.85}
+.segbar i.r{background:var(--review)}
+
+.tbl{width:100%;border-collapse:collapse;margin-top:1rem;font-size:.79rem}
+.tbl th{
+  text-align:left;font-family:var(--f-mono);font-size:.64rem;font-weight:500;letter-spacing:.1em;
+  text-transform:uppercase;color:#9A928C;padding:0 .7rem .5rem 0;border-bottom:1px solid var(--rule);font-weight:500;
+}
+.tbl td{padding:.52rem .7rem .52rem 0;border-bottom:1px solid var(--rule-2);vertical-align:middle;color:var(--ink-2)}
+.tbl td.ag{font-weight:700;color:var(--ink);white-space:nowrap}
+.tbl td.dis{color:#9A928C;font-size:.74rem;white-space:nowrap}
+.tbl td.mono{font-family:var(--f-mono);font-size:.74rem}
+.tbl tr:last-child td{border-bottom:0}
+.tbl .more td{color:#9A928C;font-size:.74rem;padding-top:.7rem}
+.v{
+  display:inline-flex;align-items:center;gap:.32rem;font-size:.66rem;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;padding:.2rem .5rem;border-radius:100px;white-space:nowrap;
+}
+.v i{width:5px;height:5px;border-radius:50%;background:currentColor;flex:none}
+.v-clear{color:var(--clear);background:var(--clear-bg)}
+.v-review{color:var(--review);background:var(--review-bg)}
+.v-match{color:var(--match);background:var(--match-bg)}
+.v-pend{color:#6E655F;background:#F2EFEA}
+
+/* agency grid (MSW) */
+.derive{
+  display:flex;align-items:center;gap:.7rem;margin-top:1rem;padding:.6rem .85rem;
+  background:var(--blue-bg);border-radius:var(--r);font-size:.78rem;color:#254E9B;font-weight:600;
+}
+.derive span{font-weight:400;color:#4B6FAF}
+.ag-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.6rem;margin-top:.9rem}
+.ag-card{border:1px solid var(--rule);border-radius:var(--r);padding:.7rem .8rem;background:#fff}
+.ag-name{font-size:.78rem;font-weight:700;color:var(--ink);line-height:1.25}
+.ag-form{font-family:var(--f-mono);font-size:.66rem;color:#9A928C;margin-top:.22rem}
+.ag-foot{display:flex;align-items:center;justify-content:space-between;gap:.4rem;margin-top:.6rem}
+.ag-time{font-family:var(--f-mono);font-size:.64rem;color:#9A928C}
+
+/* doc gen split */
+.split{display:grid;grid-template-columns:168px minmax(0,1fr);gap:0;margin-top:.9rem;border:1px solid var(--rule);border-radius:var(--r);overflow:hidden}
+.split-l{background:#FAF8F5;border-right:1px solid var(--rule);padding:.6rem}
+.split-l b{
+  display:block;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;
+  color:#9A928C;padding:.2rem .45rem .5rem;font-weight:500;
+}
+.split-l span{display:block;font-size:.76rem;padding:.36rem .45rem;border-radius:var(--r-sm);color:#6E655F}
+.split-l span.on{background:#fff;color:var(--ink);font-weight:700;box-shadow:var(--shadow-sm)}
+.split-r{padding:.8rem .9rem;min-width:0}
+.fld{display:grid;grid-template-columns:minmax(0,118px) minmax(0,1fr) auto;gap:.7rem;align-items:center;padding:.36rem 0;border-bottom:1px solid var(--rule-2)}
+.fld:last-child{border-bottom:0}
+.fld-k{font-family:var(--f-mono);font-size:.67rem;color:#9A928C;text-transform:uppercase;letter-spacing:.05em}
+.fld-v{font-size:.78rem;font-weight:600;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.conf{font-family:var(--f-mono);font-size:.66rem;color:var(--clear);font-weight:600;white-space:nowrap}
+.conf.low{color:var(--review)}
+.src{
+  margin-top:.75rem;padding-top:.65rem;border-top:1px solid var(--rule);
+  display:flex;gap:.4rem;flex-wrap:wrap;align-items:center;
+}
+.src b{font-family:var(--f-mono);font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;color:#9A928C;font-weight:500}
+.src span{font-size:.7rem;background:#F4F1EC;border-radius:var(--r-sm);padding:.16rem .45rem;color:#6E655F;font-family:var(--f-mono)}
+
+.shot-cap{
+  display:flex;gap:.6rem;align-items:flex-start;margin-top:.9rem;
+  font-size:.86rem;color:var(--muted);line-height:1.5;max-width:720px;
+}
+.shot-cap i{
+  width:15px;height:15px;border-radius:50%;border:1.5px solid var(--muted);flex:none;margin-top:.24rem;
+  display:grid;place-items:center;font-size:.62rem;font-style:normal;font-weight:700;
 }
 
-/* wide elements */
-.wide{max-width:53rem}
-.scroller{overflow-x:auto;-webkit-overflow-scrolling:touch}
-table{border-collapse:collapse;width:100%;min-width:34rem;font-size:.95rem}
-caption{
-  caption-side:bottom;text-align:left;color:var(--muted);font-size:.85rem;
-  padding-top:.8rem;font-family:var(--f-body);
+/* ---------- also shipped ---------- */
+.mini-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1rem}
+.mini{padding:1.4rem 1.5rem;display:flex;flex-direction:column}
+.mini h4{margin-bottom:.5rem}
+.mini .stat{
+  font-family:var(--f-mono);font-size:.76rem;color:var(--accent);font-weight:600;margin-bottom:.7rem;
 }
-th,td{text-align:left;padding:.68rem .9rem .68rem 0;border-bottom:1px solid var(--rule-soft);vertical-align:top}
-th{
-  font-family:var(--f-mono);font-size:.67rem;font-weight:500;letter-spacing:.12em;
-  text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--rule);
+.mini p{font-size:.96rem;color:var(--ink-2);margin:0}
+
+/* ---------- principles ---------- */
+.prin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.6rem 2.4rem}
+.prin h4{margin-bottom:.5rem;line-height:1.3}
+.prin p{font-size:.98rem;color:var(--ink-2);margin:0}
+.prin-n{
+  font-family:var(--f-mono);font-size:.72rem;color:var(--accent);font-weight:600;
+  display:block;margin-bottom:.5rem;letter-spacing:.06em;
 }
-td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--ink)}
-td.disc{font-weight:600}
 
-/* verdict ladder */
-.ladder{display:grid;gap:0;margin-top:1.2rem;border-top:1px solid var(--rule)}
-.rung{display:grid;grid-template-columns:auto 6.5rem 1fr;gap:.9rem;align-items:start;
-  padding-block:.95rem;border-bottom:1px solid var(--rule-soft)}
-.swatch{width:10px;height:10px;border-radius:1px;margin-top:.48rem}
-.rung-name{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;padding-top:.15rem}
-.rung-desc{color:var(--ink-2);font-size:.97rem;line-height:1.5}
-.s-clear{background:var(--clear)} .n-clear{color:var(--clear)}
-.s-review{background:var(--review)} .n-review{color:var(--review)}
-.s-match{background:var(--match)} .n-match{color:var(--match)}
+/* ---------- contact ---------- */
+.contact{background:var(--bg-ink);color:#F5F1EC;border-radius:var(--r-xl);padding:clamp(2rem,5vw,3.4rem);text-align:center}
+.contact h2{color:#fff}
+.contact p{color:#BDB4AC;max-width:46ch;margin:1.1rem auto 0;font-size:1.05rem}
+.contact-rows{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;margin-top:2rem}
+.crow{
+  display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.13);border-radius:100px;padding:.55rem 1.05rem;
+  font-family:var(--f-mono);font-size:.84rem;color:#EDE7E1;
+}
+.crow b{color:#8E857E;font-weight:500}
+.crow a{color:#fff}
+.crow a:hover{color:var(--accent)}
+.contact .btn-primary{margin-top:1.8rem}
 
-/* diagram */
-figure{margin:1.8rem 0 0}
-figcaption{color:var(--muted);font-size:.88rem;margin-top:.85rem;max-width:38rem}
-.diagram{display:block;width:100%;min-width:600px;height:auto}
-
-/* small cases */
-.mini{display:grid;gap:0;border-top:1px solid var(--rule-soft)}
-.mini-item{padding-block:1.6rem;border-bottom:1px solid var(--rule-soft);max-width:40rem}
-.mini-head{display:flex;flex-wrap:wrap;gap:.7rem;align-items:baseline;margin-bottom:.5rem}
-.mini-head h3{font-family:var(--f-body);font-size:1.08rem;font-weight:600;margin:0;letter-spacing:-.005em}
-.mini-stat{font-family:var(--f-mono);font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums}
-.mini-item p{font-size:1rem;color:var(--ink-2);margin:0 0 .75rem}
-.mini-item p:last-child{margin-bottom:0}
-.inline-label{font-family:var(--f-mono);font-size:.67rem;letter-spacing:.13em;text-transform:uppercase;color:var(--accent-ink)}
-
-/* open questions */
-.open{display:grid;gap:0;border-top:1px solid var(--rule-soft)}
-.open-item{padding-block:1.4rem;border-bottom:1px solid var(--rule-soft);max-width:40rem}
-.open-item h3{font-family:var(--f-body);font-size:1.05rem;font-weight:600;margin:0 0 .5rem}
-.open-item p{margin:0;color:var(--ink-2);font-size:1rem}
-
-/* skills / footer */
-.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:1.6rem 2.4rem;max-width:44rem}
-.skillset h3{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:500;margin:0 0 .6rem}
-.skillset p{font-size:.98rem;color:var(--ink-2);margin:0;line-height:1.6}
-.contact-lines{display:grid;gap:.35rem;margin-top:1.4rem;font-family:var(--f-mono);font-size:.92rem}
-.contact-lines span{color:var(--muted);display:inline-block;min-width:5.2rem}
 footer{
-  border-top:1px solid var(--rule);padding-block:2rem 3rem;
-  font-family:var(--f-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
-  display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;
+  border-top:1px solid var(--rule);margin-top:clamp(3rem,6vw,5rem);
+  padding-block:1.8rem 2.6rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;
+  font-size:.83rem;color:var(--muted);
 }
 .disclaimer{
-  max-width:40rem;font-size:.9rem;color:var(--muted);
-  border-top:1px solid var(--rule-soft);padding-top:1.2rem;margin-top:2.4rem;line-height:1.55;
+  max-width:760px;margin-top:2.2rem;padding-top:1.3rem;border-top:1px solid var(--rule);
+  font-size:.88rem;color:var(--muted);line-height:1.55;
 }
+
 @media (max-width:560px){
-  body{font-size:16px;padding-inline:16px}
-  .topbar{margin-inline:-16px;padding-inline:16px}
-  .rung{grid-template-columns:auto 1fr;gap:.6rem .8rem}
-  .rung .rung-desc{grid-column:2}
-  .anchor{padding-right:.8rem}
+  body{font-size:16px}
+  .wrap{padding-inline:16px}
+  .nav-in{padding-inline:16px}
+  .tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .who{gap:1rem}
+  .avatar{width:62px;height:62px;font-size:1.3rem}
 }
-@media (prefers-reduced-motion:reduce){
-  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
-}
+@media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} *{transition:none!important;animation:none!important} }
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="topbar-in">
-    <div class="mark">Vaibhav Raj <span>· Product</span></div>
-    <button class="tgl" id="themeBtn" type="button" aria-label="Switch colour theme">Theme</button>
+<nav class="nav">
+  <div class="nav-in">
+    <a class="logo" href="#top"><i class="logo-bar"></i>Vaibhav Raj</a>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#work">Work</a>
+      <a href="#how">How I work</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a class="btn btn-primary" href="mailto:vaibhavraj738@gmail.com">Get in touch</a>
   </div>
-</div>
+</nav>
 
-<div class="wrap">
+<header class="hero wrap" id="top">
+  <p class="eyebrow">Product Manager · Kale Logistics · Mumbai</p>
+  <h1>I build AI products for global trade.</h1>
+  <p class="lede">Three years turning the paperwork behind cross-border shipping into software —
+    20 live ports, a 21-agent compliance engine, and five AI features running in production.</p>
+  <div class="hero-cta">
+    <a class="btn btn-primary btn-lg" href="#work">See the work</a>
+    <a class="btn btn-ghost btn-lg" href="Vaibhav_Raj_PM.pdf" target="_blank" rel="noopener">Download résumé</a>
+  </div>
+  <div class="now-strip">
+    <span class="pulse"></span>
+    <span>Currently: <b>Platform team at Kale Logistics</b>, building an AI trade-compliance engine</span>
+  </div>
+</header>
 
-  <header class="hero">
-    <p class="eyebrow">Product Manager · Mumbai · AI × Cross-border trade</p>
-    <h1>I build AI products for industries where the ground truth is a PDF.</h1>
-    <p class="lede">
-      Cross-border trade runs on paper — bills of lading, manifests, certificates of origin — read by people,
-      under deadline, against rules that change weekly. At Kale Logistics I took a Maritime Single Window from a
-      problem statement to twenty live ports, and a trade-compliance engine from a hypothesis to twenty-one agents
-      screening against eighty-five-plus sanctions and regulator lists.
-    </p>
+<!-- ================= ABOUT ================= -->
+<section id="about" class="sec-warm">
+  <div class="wrap">
+    <div class="about-grid">
 
-    <div class="note-rule">
-      <p><em>This page isn't a list of what I shipped.</em> It's how I framed each problem, what I deliberately
-      chose not to build, the trade-offs I actually argued about, and how I'd know whether any of it worked.</p>
+      <div>
+        <p class="eyebrow acc">Who I am</p>
+        <div class="who">
+          <div class="avatar">
+            <!-- Swap in a photo: <img src="me.jpg" alt="Vaibhav Raj"> -->
+            VR
+          </div>
+          <div>
+            <div class="who-name">Vaibhav Raj</div>
+            <div class="who-role">Product Manager — Platform Team</div>
+            <div class="who-loc">Kale Logistics Solutions · Mumbai, India</div>
+          </div>
+        </div>
+
+        <div class="about-body">
+          <p>I work on the AI layer of a logistics platform used by <strong>ports, airports, customs brokers
+          and freight forwarders</strong> — the systems that carry a shipment's paperwork from one authority to
+          the next. Most of my job is looking at a process that runs on PDFs, email and tribal knowledge, and
+          working out which part of it software can actually own.</p>
+
+          <p>I came into product sideways. I studied <strong>Biomedical Engineering at IIT Bombay</strong>, then
+          spent a year at <strong>Mindgate Solutions</strong> on UPI payments infrastructure — the rails behind
+          HDFC Bank's UPI, reconciling 32 million transactions a day across 8 NPCI settlement cycles. That year
+          taught me to design for the tail rather than the average, which is most of what I now do with AI
+          outputs.</p>
+
+          <p>Since November 2024 I've been at <strong>Kale Logistics</strong>, where I took a Maritime Single
+          Window from a blank page to twenty live ports, and shipped five AI features to production — document
+          generation, a support assistant, cargo forecasting, payments, and the trade-compliance engine I spend
+          most of my time on now.</p>
+        </div>
+      </div>
+
+      <div>
+        <p class="eyebrow acc">Where I work</p>
+        <div class="card employer">
+          <div class="employer-top">
+            <div class="emp-logo emp-k">KL</div>
+            <div>
+              <h4>Kale Logistics Solutions</h4>
+              <div class="sub">NOV 2024 — PRESENT · MUMBAI</div>
+            </div>
+          </div>
+          <p>Logistics technology company behind Port and Cargo Community Systems used by ports, airports and
+          trade communities worldwide. I'm a Product Manager on the <strong>Platform team</strong>, which owns
+          the shared AI and data services the rest of the products build on.</p>
+        </div>
+
+        <p class="eyebrow acc" style="margin-top:2rem">Background</p>
+        <div class="card" style="padding:1.3rem 1.5rem">
+          <div class="timeline">
+            <div class="tl">
+              <div class="tl-yr">2024 — now</div>
+              <div>
+                <div class="tl-what">Product Manager, Platform Team</div>
+                <div class="tl-who">Kale Logistics Solutions · Mumbai</div>
+              </div>
+            </div>
+            <div class="tl">
+              <div class="tl-yr">2023 — 24</div>
+              <div>
+                <div class="tl-what">Product Analyst, UPI Product Team</div>
+                <div class="tl-who">Mindgate Solutions · Mumbai</div>
+              </div>
+            </div>
+            <div class="tl">
+              <div class="tl-yr">2019 — 23</div>
+              <div>
+                <div class="tl-what">B.Tech, Biomedical Engineering</div>
+                <div class="tl-who">Indian Institute of Technology, Bombay</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tiles" style="margin-top:1rem">
+          <div class="tile tile-acc"><div class="tile-n">3<small>+ yrs</small></div><div class="tile-l">In product</div></div>
+          <div class="tile tile-acc"><div class="tile-n">5</div><div class="tile-l">AI features in production</div></div>
+        </div>
+      </div>
+
     </div>
+  </div>
+</section>
 
-    <div class="anchors">
-      <div class="anchor"><div class="n">20</div><div class="l">Ports live · MSW</div></div>
-      <div class="anchor"><div class="n">21</div><div class="l">Agents · compliance engine</div></div>
-      <div class="anchor"><div class="n">32M</div><div class="l">Txns/day · UPI infra</div></div>
-      <div class="anchor"><div class="n">3+</div><div class="l">Years in product</div></div>
-    </div>
-
-    <div class="links">
-      <a href="mailto:vaibhavraj738@gmail.com">Email</a>
-      <a href="https://www.linkedin.com/in/vaibhav-raj-iitb/" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="Vaibhav_Raj_PM.pdf" target="_blank" rel="noopener">Résumé — PDF</a>
-    </div>
-  </header>
-
-  <!-- ===================== HOW I THINK ===================== -->
-  <section id="thinking">
+<!-- ================= WORK ================= -->
+<section id="work">
+  <div class="wrap">
     <div class="sec-head">
-      <div class="sec-num">01</div>
-      <h2>How I decide what to build</h2>
+      <p class="eyebrow acc">Selected work</p>
+      <h2>What I've built, and what I actually did on each</h2>
+      <p>Each one below has what I did, what it achieved so far, and a look at the interface.</p>
     </div>
-    <p class="sec-sub" style="margin-left:0">Five things I've come to believe, each one paid for by a decision that
-      went well or badly.</p>
 
-    <div class="principles">
-      <article class="principle">
-        <h3>Automate the step people skip, not the step people hate.</h3>
-        <p>The slow step is visible and everyone is already optimising it. The valuable step is the one quietly
-        skipped because doing it properly is too painful — in trade, that's the pre-filing compliance check. Nobody
-        runs it, everybody pays for it at the border, and the cost surfaces somewhere else entirely: demurrage,
-        amendment fees, late-filing penalties. That gap between where the pain is felt and where it was caused is
+    <!-- ---------- PROJECT 01 ---------- -->
+    <article class="proj">
+      <div class="proj-head">
+        <div class="proj-tag">
+          <span class="num">01</span>
+          <span class="chip chip-build">In build · MVP demo-ready</span>
+          <span class="chip">Kale Logistics · 2025–26</span>
+        </div>
+        <h3>Trade Compliance Engine</h3>
+        <p class="lede">A shipment has to satisfy about a dozen regulatory bodies before it crosses a border.
+        Today that check is done by hand or skipped — so problems surface once the cargo is already stopped.
+        This runs the whole check before anything reaches an authority.</p>
+      </div>
+
+      <div class="proj-cols">
+        <div>
+          <p class="blk-label">What I did</p>
+          <ul class="did">
+            <li><b>Defined the product from the problem up</b> — scoped which compliance checks exist, who owns
+            each failure, and which ones an authority will actually reject a filing over.</li>
+            <li><b>Designed the 21-agent architecture</b> across 5 disciplines: party screening, cargo &amp;
+            controls, classification, filing/cost/duty, and sustainability.</li>
+            <li><b>Specified the verdict model</b> — clear / review / match — and the evidence each verdict has
+            to carry so a broker can defend it to an auditor later.</li>
+            <li><b>Ran the market and competitive study</b>, sized the opportunity bottom-up from declaration
+            volume, and drove the requirement sessions with customs brokers and forwarders.</li>
+            <li><b>Drove delivery with engineering</b> — OCR + LLM extraction, parallel orchestration, run
+            history and audit, and the consolidated compliance report.</li>
+          </ul>
+        </div>
+        <div>
+          <p class="blk-label">What it's achieved so far</p>
+          <div class="tiles">
+            <div class="tile tile-acc"><div class="tile-n">21</div><div class="tile-l">AI agents across 5 compliance disciplines</div></div>
+            <div class="tile tile-acc"><div class="tile-n">85<small>+</small></div><div class="tile-l">Sanctions &amp; regulator lists screened</div></div>
+            <div class="tile"><div class="tile-n">~20<small>s</small></div><div class="tile-l">To a full verdict, agents run in parallel</div></div>
+            <div class="tile"><div class="tile-n">1–2<small> days → mins</small></div><div class="tile-l">Filing prep time, in internal testing</div></div>
+          </div>
+          <p style="font-size:.88rem;color:var(--muted);margin-top:.9rem;line-height:1.5">
+            Engine and agent architecture are built and demo-ready; pilot scoping with early prospects is in
+            progress. Accuracy figures are targets, not measured production results — it has not yet run at
+            volume with paying customers.</p>
+        </div>
+      </div>
+
+      <div class="shot-wrap">
+        <div class="shot">
+          <div class="shot-bar">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <div class="shot-url">compliance.kale.io / runs / CR-4821</div>
+          </div>
+          <div class="shot-scroll">
+            <div class="app">
+              <aside class="app-side">
+                <div class="side-brand"><i></i>Compliance</div>
+                <div class="side-nav">
+                  <span>Dashboard</span>
+                  <span class="on">Document Compliance</span>
+                  <span>Agent Catalog</span>
+                  <span>Custom Agents</span>
+                  <span>Recent Runs</span>
+                </div>
+                <div class="side-foot">21 agents<br>5 disciplines<br>85+ lists</div>
+              </aside>
+              <div class="app-main">
+                <div class="app-head">
+                  <div>
+                    <div class="app-kick">Run CR-4821 · MAWB 176-44820915</div>
+                    <div class="app-title">Shanghai PVG → Rotterdam RTM</div>
+                    <div class="app-sub">6 source documents · Invoice, Packing List, AWB, COO, Insurance Cert, Shipper Declaration</div>
+                  </div>
+                  <div class="app-meta"><b>18.4s</b><br>21 agents in parallel</div>
+                </div>
+
+                <div class="banner">
+                  <div class="banner-ico">!</div>
+                  <div class="banner-txt">2 of 21 checks need review
+                    <span>— resolve before filing</span></div>
+                  <div class="segbar">
+                    <i></i><i class="r"></i><i></i><i></i><i class="r"></i><i></i><i></i><i></i><i></i><i></i>
+                    <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                  </div>
+                </div>
+
+                <table class="tbl">
+                  <thead>
+                    <tr><th>Agent</th><th>Discipline</th><th>Result</th><th>Verdict</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="ag">SDN List Screening</td><td class="dis">Party screening</td>
+                      <td>4 parties checked · no match</td>
+                      <td><span class="v v-clear"><i></i>Clear</span></td>
+                    </tr>
+                    <tr>
+                      <td class="ag">Consolidated Sanctions</td><td class="dis">Party screening</td>
+                      <td>“Pacific Rim Trading Co.” · <span class="mono">87%</span> to EU Financial Sanctions File</td>
+                      <td><span class="v v-review"><i></i>Review</span></td>
+                    </tr>
+                    <tr>
+                      <td class="ag">High-Risk Ownership</td><td class="dis">Party screening</td>
+                      <td>UBO chain clean · OFAC 50% rule applied</td>
+                      <td><span class="v v-clear"><i></i>Clear</span></td>
+                    </tr>
+                    <tr>
+                      <td class="ag">WCO HS Code</td><td class="dis">Classification</td>
+                      <td class="mono">8471.30.01 · GRI 1</td>
+                      <td><span class="v v-clear"><i></i>Clear</span></td>
+                    </tr>
+                    <tr>
+                      <td class="ag">Dual-Use Item</td><td class="dis">Cargo &amp; controls</td>
+                      <td>Possible <span class="mono">ECCN 5A992.c</span> — encryption threshold unclear</td>
+                      <td><span class="v v-review"><i></i>Review</span></td>
+                    </tr>
+                    <tr>
+                      <td class="ag">IATA Restricted Goods</td><td class="dis">Cargo &amp; controls</td>
+                      <td>No DGR items declared</td>
+                      <td><span class="v v-clear"><i></i>Clear</span></td>
+                    </tr>
+                    <tr>
+                      <td class="ag">Landed Cost</td><td class="dis">Filing, cost &amp; duty</td>
+                      <td class="mono">USD 4,212.80 · BCD + IGST + SWS</td>
+                      <td><span class="v v-clear"><i></i>Clear</span></td>
+                    </tr>
+                    <tr>
+                      <td class="ag">Carbon Emissions</td><td class="dis">Sustainability</td>
+                      <td class="mono">1.84 t CO₂e · GLEC Scope 3</td>
+                      <td><span class="v v-clear"><i></i>Clear</span></td>
+                    </tr>
+                    <tr class="more"><td colspan="4">+ 13 further checks — all clear · full evidence retained per check</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="shot-cap"><i>i</i><span>Interface recreation. The production system sits behind customer
+        login, so this is rebuilt from the real agent set, verdict model and report structure.</span></p>
+      </div>
+
+      <div class="callout">
+        <h4>The call I'd defend hardest: 21 agents, not one model</h4>
+        <p>The instinct is one large prompt over the whole document set. I argued for decomposition on product
+        grounds — a wrong HS code and a missed sanctions match are different incidents with different owners, so
+        collapsing them into one output makes neither fixable. Sanctions lists change daily and tariff schedules
+        annually, so a monolith forces the slowest component to set everyone's refresh cadence. And you can only
+        set an accuracy target for a check you can isolate.</p>
+        <p>The same logic produced the three-state verdict. In screening, a false negative is a regulatory
+        incident with unbounded cost; a false positive costs an analyst two minutes. So tune hard toward recall
+        and spend the budget making <em>review</em> cheap — which needs a “review” state that a pass/fail system
+        doesn't have.</p>
+      </div>
+    </article>
+
+    <!-- ---------- PROJECT 02 ---------- -->
+    <article class="proj">
+      <div class="proj-head">
+        <div class="proj-tag">
+          <span class="num">02</span>
+          <span class="chip chip-live">Live · 20 ports</span>
+          <span class="chip">Kale Logistics · 2024–26</span>
+        </div>
+        <h3>Maritime Single Window</h3>
+        <p class="lede">A vessel call touches about a dozen agencies — customs, port authority, immigration,
+        health, marine, the terminal — each with its own form and deadline. Agents used to re-key the same
+        facts into every one. Now they enter the call once and every agency format is derived from it.</p>
+      </div>
+
+      <div class="proj-cols">
+        <div>
+          <p class="blk-label">What I did</p>
+          <ul class="did">
+            <li><b>Owned the 0→1 build</b> — defined the problem space, scoped the roadmap, and drove
+            engineering delivery from first principles to a live product.</li>
+            <li><b>Designed the canonical vessel-call model</b> that every agency's format is derived from,
+            instead of building a separate integration per agency.</li>
+            <li><b>Ran requirement sessions</b> with agencies and shipping agents to establish each authority's
+            mandatory field set and where the same real-world fact was named three different ways.</li>
+            <li><b>Anchored the rollout on Port Klang</b> — deliberately the hardest corridor — so the model was
+            proven against the most complex agency mix before scaling across Southeast Asia.</li>
+            <li><b>Built the rollout motion</b> so onboarding a new port is a configuration exercise rather than
+            a rebuild.</li>
+          </ul>
+        </div>
+        <div>
+          <p class="blk-label">What it's achieved so far</p>
+          <div class="tiles">
+            <div class="tile tile-acc"><div class="tile-n">20</div><div class="tile-l">Ports live across Southeast Asia</div></div>
+            <div class="tile tile-acc"><div class="tile-n">1<small> → 6</small></div><div class="tile-l">One submission, six agency formats derived</div></div>
+            <div class="tile"><div class="tile-n">12<small>+</small></div><div class="tile-l">Agencies touched per vessel call</div></div>
+            <div class="tile"><div class="tile-n">0<small> → 1</small></div><div class="tile-l">Blank page to live product</div></div>
+          </div>
+          <p style="font-size:.88rem;color:var(--muted);margin-top:.9rem;line-height:1.5">
+            The metric I actually ran the roadmap on wasn't “ports live” — that's a sales number. It was
+            <strong style="color:var(--ink-2)">derivation coverage</strong>: what share of a new port's
+            mandatory fields the canonical model can produce without a schema change. That's the only figure
+            that makes port 21 cheaper than port 1.</p>
+        </div>
+      </div>
+
+      <div class="shot-wrap">
+        <div class="shot">
+          <div class="shot-bar">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <div class="shot-url">msw.mypkg.gov.my / vessel-calls / VC-2291</div>
+          </div>
+          <div class="shot-scroll">
+            <div class="app">
+              <aside class="app-side">
+                <div class="side-brand"><i></i>Single Window</div>
+                <div class="side-nav">
+                  <span class="on">Vessel Calls</span>
+                  <span>Declarations</span>
+                  <span>Agencies</span>
+                  <span>Berth Planning</span>
+                  <span>Reports</span>
+                </div>
+                <div class="side-foot">Port Klang<br>MYPKG · Westport</div>
+              </aside>
+              <div class="app-main">
+                <div class="app-head">
+                  <div>
+                    <div class="app-kick">Vessel call VC-2291 · Voyage 042W</div>
+                    <div class="app-title">MV KOTA SEGAR</div>
+                    <div class="app-sub">Port Klang (MYPKG) · Westport Terminal · 8,540 TEU · Agent: Pacific Shipping Agencies Sdn Bhd</div>
+                  </div>
+                  <div class="app-meta">ETA <b>14 Mar 06:00</b><br>ATB <b>14 Mar 07:20</b></div>
+                </div>
+
+                <div class="derive">
+                  <span style="font-weight:700;color:#254E9B">One submission → 6 agency formats derived</span>
+                  <span>· 47 fields captured once · 94% derivation coverage · 0 schema changes</span>
+                </div>
+
+                <div class="ag-grid">
+                  <div class="ag-card">
+                    <div class="ag-name">Royal Malaysian Customs</div>
+                    <div class="ag-form">K1 / K2 declaration</div>
+                    <div class="ag-foot"><span class="v v-clear"><i></i>Accepted</span><span class="ag-time">05:12</span></div>
+                  </div>
+                  <div class="ag-card">
+                    <div class="ag-name">Port Authority (LPK)</div>
+                    <div class="ag-form">PA-VC1 vessel call</div>
+                    <div class="ag-foot"><span class="v v-clear"><i></i>Accepted</span><span class="ag-time">05:12</span></div>
+                  </div>
+                  <div class="ag-card">
+                    <div class="ag-name">Immigration Department</div>
+                    <div class="ag-form">IMM-38 crew list</div>
+                    <div class="ag-foot"><span class="v v-pend"><i></i>Pending</span><span class="ag-time">crew list v2</span></div>
+                  </div>
+                  <div class="ag-card">
+                    <div class="ag-name">Port Health / Quarantine</div>
+                    <div class="ag-form">Maritime Declaration of Health</div>
+                    <div class="ag-foot"><span class="v v-clear"><i></i>Accepted</span><span class="ag-time">05:13</span></div>
+                  </div>
+                  <div class="ag-card">
+                    <div class="ag-name">Marine Department</div>
+                    <div class="ag-form">MD-VS4 arrival report</div>
+                    <div class="ag-foot"><span class="v v-clear"><i></i>Accepted</span><span class="ag-time">05:12</span></div>
+                  </div>
+                  <div class="ag-card">
+                    <div class="ag-name">Terminal Operator</div>
+                    <div class="ag-form">EDI BAPLIE / COPRAR</div>
+                    <div class="ag-foot"><span class="v v-clear"><i></i>Accepted</span><span class="ag-time">05:14</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="shot-cap"><i>i</i><span>Interface recreation, rebuilt from the real agency set and form types
+        for a Port Klang vessel call. Live instances sit behind port authority login.</span></p>
+      </div>
+
+      <div class="callout">
+        <h4>The call I'd defend: build the model before the integrations</h4>
+        <p>The tempting path is agency-by-agency integrations — each one demos beautifully. But it produces N
+        bespoke pipelines and no reusable asset, and every new port becomes a rebuild wearing a different name.
+        I built the canonical model against one agency first, proved derivation worked, and only then let
+        integrations become a repeatable motion.</p>
+        <p><strong>What I got wrong:</strong> I underweighted change management. The system was correct well
+        before the agents trusted it — and a correct output a user won't sign is worth nothing. The fix was
+        mundane: a side-by-side view of the hand-filled form against the generated one, so an agent could verify
+        at a glance instead of redoing the work to check our answer. It should have shipped in the first
+        release. I now treat “how does this user verify the output without redoing it?” as part of the
+        definition of done.</p>
+      </div>
+    </article>
+
+    <!-- ---------- PROJECT 03 ---------- -->
+    <article class="proj">
+      <div class="proj-head">
+        <div class="proj-tag">
+          <span class="num">03</span>
+          <span class="chip chip-live">Live in production</span>
+          <span class="chip">Kale Logistics · 2025</span>
+        </div>
+        <h3>AI Document Generation</h3>
+        <p class="lede">Port operations teams were hand-drafting the same twenty document types from the same
+        scattered source files, thirty minutes at a time. This reads the sources and drafts the document —
+        with every field traceable back to where it came from.</p>
+      </div>
+
+      <div class="proj-cols">
+        <div>
+          <p class="blk-label">What I did</p>
+          <ul class="did">
+            <li><b>Scoped and launched the feature</b> end to end — RAG pipeline over source documents plus LLM
+            generation against each authority's mandated format.</li>
+            <li><b>Chose the document types by volume × manual effort</b>, not by what was easiest to build, so
+            the first release removed the largest real block of work.</li>
+            <li><b>Designed the extraction → generation → review flow</b>, including per-field confidence and
+            source attribution, so an operator can verify a draft without re-reading six PDFs.</li>
+            <li><b>Set the measurement approach</b> — baseline timed per document type, weighted by the actual
+            daily mix rather than the slowest type.</li>
+          </ul>
+        </div>
+        <div>
+          <p class="blk-label">What it's achieved so far</p>
+          <div class="tiles">
+            <div class="tile tile-acc"><div class="tile-n">93<small>%</small></div><div class="tile-l">Faster — 30 min to under 2 min</div></div>
+            <div class="tile tile-acc"><div class="tile-n">~200</div><div class="tile-l">Documents generated per day</div></div>
+            <div class="tile"><div class="tile-n">20<small>+</small></div><div class="tile-l">Logistics document types supported</div></div>
+            <div class="tile"><div class="tile-n">#1</div><div class="tile-l">Largest source of manual effort, removed</div></div>
+          </div>
+          <p style="font-size:.88rem;color:var(--muted);margin-top:.9rem;line-height:1.5">
+            The 93% is off <strong style="color:var(--ink-2)">drafting</strong> time, not the whole process —
+            a human still reviews the draft. I quote it that way on purpose, because the first thing a sceptical
+            reader should be able to do is check the number.</p>
+        </div>
+      </div>
+
+      <div class="shot-wrap">
+        <div class="shot">
+          <div class="shot-bar">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <div class="shot-url">platform.kale.io / edocs / generate / BL-88213</div>
+          </div>
+          <div class="shot-scroll">
+            <div class="app">
+              <aside class="app-side">
+                <div class="side-brand"><i></i>eDocs</div>
+                <div class="side-nav">
+                  <span>Dashboard</span>
+                  <span class="on">Generate</span>
+                  <span>Templates</span>
+                  <span>Document Library</span>
+                  <span>Runs</span>
+                </div>
+                <div class="side-foot">20+ document<br>types supported</div>
+              </aside>
+              <div class="app-main">
+                <div class="app-head">
+                  <div>
+                    <div class="app-kick">BL-88213 · Generated in 1m 48s</div>
+                    <div class="app-title">Bill of Lading</div>
+                    <div class="app-sub">6 source documents · 42 fields extracted · 3 flagged for review</div>
+                  </div>
+                  <div class="app-meta"><b>Draft ready</b><br>awaiting operator sign-off</div>
+                </div>
+
+                <div class="split">
+                  <div class="split-l">
+                    <b>Document type</b>
+                    <span class="on">Bill of Lading</span>
+                    <span>Air Waybill</span>
+                    <span>Commercial Invoice</span>
+                    <span>Packing List</span>
+                    <span>Certificate of Origin</span>
+                    <span>Delivery Order</span>
+                    <span>Cargo Manifest</span>
+                    <span>Shipping Bill</span>
+                  </div>
+                  <div class="split-r">
+                    <div class="fld"><div class="fld-k">Shipper</div><div class="fld-v">Lianyungang Textiles Export Co.</div><div class="conf">99%</div></div>
+                    <div class="fld"><div class="fld-k">Consignee</div><div class="fld-v">Nordwest Handels GmbH, Hamburg</div><div class="conf">98%</div></div>
+                    <div class="fld"><div class="fld-k">Notify party</div><div class="fld-v">Same as consignee</div><div class="conf">94%</div></div>
+                    <div class="fld"><div class="fld-k">Port of loading</div><div class="fld-v">CNLYG — Lianyungang</div><div class="conf">99%</div></div>
+                    <div class="fld"><div class="fld-k">Port of discharge</div><div class="fld-v">DEHAM — Hamburg</div><div class="conf">99%</div></div>
+                    <div class="fld"><div class="fld-k">Container nos.</div><div class="fld-v">MSKU4471208 · MSKU4471193</div><div class="conf">97%</div></div>
+                    <div class="fld"><div class="fld-k">Gross weight</div><div class="fld-v">18,420.50 KGS</div><div class="conf">99%</div></div>
+                    <div class="fld"><div class="fld-k">Marks &amp; numbers</div><div class="fld-v">As per attached packing list</div><div class="conf low">88% — review</div></div>
+                    <div class="fld"><div class="fld-k">Freight terms</div><div class="fld-v">Freight prepaid</div><div class="conf low">91% — review</div></div>
+                    <div class="src">
+                      <b>Sources</b>
+                      <span>Commercial_Invoice.pdf</span>
+                      <span>Packing_List.xlsx</span>
+                      <span>Booking_Confirmation.pdf</span>
+                      <span>Shipper_Letter.pdf</span>
+                      <span>+2</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="shot-cap"><i>i</i><span>Interface recreation using representative shipment data. Per-field
+        confidence and source attribution are the parts that mattered most — they're what make a draft
+        reviewable instead of a black box.</span></p>
+      </div>
+    </article>
+
+    <!-- ---------- PROJECT 04 ---------- -->
+    <article class="proj">
+      <div class="proj-head">
+        <div class="proj-tag">
+          <span class="num">04</span>
+          <span class="chip chip-live">Live in production</span>
+          <span class="chip">Kale Logistics · 2025–26</span>
+        </div>
+        <h3>Also shipped at Kale</h3>
+        <p class="lede">Three more products I defined and delivered on the Platform team.</p>
+      </div>
+
+      <div class="mini-grid">
+        <div class="card mini">
+          <h4>NLP support assistant</h4>
+          <div class="stat">250 tickets/mo → under 20 · 92% cut</div>
+          <p>Tier-1 volume wasn't a support problem — it was a product-clarity problem wearing a support
+          costume. Deflection was the headline; the useful output was the ranked list of what the interface had
+          failed to make obvious, which went into the roadmap.</p>
+        </div>
+        <div class="card mini">
+          <h4>Cargo forecasting &amp; resource planning</h4>
+          <div class="stat">Advance demand visibility for warehouse ops</div>
+          <p>Warehouses don't fail for lack of capacity — they fail because they learn about a spike the morning
+          it arrives. So the product isn't a better forecast, it's a longer lead time on a good-enough one.
+          Horizon beats precision, and that reordering changed what we built.</p>
+        </div>
+        <div class="card mini">
+          <h4>Payments &amp; invoicing</h4>
+          <div class="stat">+70% transaction transparency</div>
+          <p>End-to-end automation of multi-party settlement workflows. The hard part is never the payment
+          rail — it's agreeing who owes what, to whom, on whose version of the truth.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- ---------- PROJECT 05 ---------- -->
+    <article class="proj">
+      <div class="proj-head">
+        <div class="proj-tag">
+          <span class="num">05</span>
+          <span class="chip">Mindgate Solutions · 2023–24</span>
+        </div>
+        <h3>UPI payments infrastructure</h3>
+        <p class="lede">Before logistics, a year on the rails behind HDFC Bank's UPI — India's real-time
+        payments network, at national scale.</p>
+      </div>
+
+      <div class="proj-cols">
+        <div>
+          <p class="blk-label">What I did</p>
+          <ul class="did">
+            <li><b>Drove requirements and stakeholder alignment for the UPI 6.0 rollout at HDFC Bank</b>,
+            coordinating product, engineering and client teams against NPCI guidelines, on schedule.</li>
+            <li><b>Built a competitive transaction-analytics framework</b> comparing HDFC's UPI performance
+            against peer banks, surfacing the drivers behind the gaps for executive decisions.</li>
+            <li><b>Owned high-volume reconciliation</b> across 8 NPCI settlement cycles — accuracy, auditability
+            and regulatory compliance at production scale.</li>
+            <li><b>Found and cleared pipeline bottlenecks</b> in SQL and Kafka, making near-real-time
+            reconciliation possible.</li>
+          </ul>
+        </div>
+        <div>
+          <p class="blk-label">What it achieved</p>
+          <div class="tiles">
+            <div class="tile tile-acc"><div class="tile-n">32M<small>+</small></div><div class="tile-l">Transactions reconciled per day</div></div>
+            <div class="tile tile-acc"><div class="tile-n">81<small>%</small></div><div class="tile-l">Faster pipeline — 4+ hrs to under 45 min</div></div>
+            <div class="tile"><div class="tile-n">8</div><div class="tile-l">NPCI settlement cycles owned</div></div>
+            <div class="tile"><div class="tile-n">6.0</div><div class="tile-l">UPI release shipped, on schedule</div></div>
+          </div>
+          <p style="font-size:.88rem;color:var(--muted);margin-top:.9rem;line-height:1.5">
+            At 32 million transactions a day you don't manage the average, you manage the tail. Reconciliation
+            never fails on the typical transaction — it fails on the fraction of a percent that arrive late,
+            twice, or against a cycle that has already closed. It's the same instinct I now apply to AI outputs.</p>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ================= HOW I WORK ================= -->
+<section id="how" class="sec-warm">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow acc">How I work</p>
+      <h2>Four things I've come to believe</h2>
+      <p>Each one paid for by a decision that went well, or badly.</p>
+    </div>
+
+    <div class="prin-grid">
+      <div class="prin">
+        <span class="prin-n">01</span>
+        <h4>Automate the step people skip, not the step people hate.</h4>
+        <p>The slow step is visible and everyone's already optimising it. The valuable one is quietly skipped
+        because doing it properly is too painful — in trade, that's the pre-filing compliance check. Nobody runs
+        it; everybody pays for it at the border. That gap between where pain is felt and where it was caused is
         usually where the product is.</p>
-      </article>
-
-      <article class="principle">
-        <h3>Decide what "wrong" costs before you decide what "good" looks like.</h3>
-        <p>A model at 95% is excellent for drafting a document and unacceptable for screening a sanctioned party.
-        Same accuracy, opposite verdict, because the cost of the missing 5% is different by orders of magnitude.
-        I set the failure cost first and let the accuracy bar, the review design and the human-in-the-loop fall out
-        of it — not the other way round.</p>
-      </article>
-
-      <article class="principle">
-        <h3>Ship the boring half first.</h3>
-        <p>Document <em>generation</em> before document <em>intelligence</em>. Generation is unglamorous, trivially
-        measurable, and removes the single largest block of manual work on day one. That's what buys the
-        organisational credit to attempt the hard, uncertain thing next. Teams that lead with the ambitious half
-        tend to spend their credibility before they've earned any.</p>
-      </article>
-
-      <article class="principle">
-        <h3>A number without a denominator is a story.</h3>
-        <p>"93% faster" means nothing until you say: across which document types, at what daily volume, measured
-        against whose baseline, over what window, and what the figure excludes. I'd rather present a smaller number
-        I can defend in a room full of sceptics than a larger one that falls apart on the second question.</p>
-      </article>
-
-      <article class="principle">
-        <h3>Regulated users don't want autonomy. They want defensibility.</h3>
-        <p>A customs broker is not asking the system to decide for them. They're asking for something they can put
-        in front of an auditor eighteen months later and explain — which list, which version, which match, which
-        person signed. In this domain the audit trail isn't a compliance checkbox bolted on at the end; it's the
-        product. Design it before the interface.</p>
-      </article>
-    </div>
-  </section>
-
-  <!-- ===================== CASE 1 ===================== -->
-  <section id="compliance">
-    <div class="sec-head">
-      <div class="sec-num">02</div>
-      <h2>Trade Compliance Engine</h2>
-    </div>
-
-    <div class="case">
-      <div class="case-meta">
-        <span class="chip chip-build">In build · MVP demo-ready</span>
-        <span class="chip">Kale Logistics</span>
-        <span class="chip">AI agents · 2025–26</span>
       </div>
-
-      <div class="block">
-        <p class="block-label">The situation</p>
-        <p>A single international shipment has to satisfy roughly a dozen regulatory bodies — customs, foreign
-        trade, port and airport authorities, sector agencies, sanctions regimes, tax — each with its own filings,
-        formats and timelines. Today that check is done by hand or skipped entirely. So problems surface only once
-        the shipment is already stopped at the border, which is the most expensive possible moment to find them.</p>
+      <div class="prin">
+        <span class="prin-n">02</span>
+        <h4>Decide what “wrong” costs before you decide what “good” looks like.</h4>
+        <p>A model at 95% is excellent for drafting a document and unacceptable for screening a sanctioned
+        party. Same accuracy, opposite verdict, because the cost of the missing 5% differs by orders of
+        magnitude. I set the failure cost first and let the accuracy bar and the review design fall out of it.</p>
       </div>
-
-      <div class="block">
-        <p class="block-label">How I framed it</p>
-        <p>The obvious framing is <em>"automate customs filing."</em> I think that's wrong. Filing isn't where the
-        loss is — filing is fast. The loss is that compliance gets <em>verified at the authority</em>: the cargo is
-        already at the border, demurrage is accruing, and the fix needs a person who happens to know that one
-        specific rule.</p>
-        <p class="pull">So the product isn't a filing tool. It's a verdict that arrives <em>before</em> the
-        authority does.</p>
-        <p>Every architectural decision after that follows from that single sentence — which checks exist, how fast
-        they must return, and who is accountable for the answer.</p>
+      <div class="prin">
+        <span class="prin-n">03</span>
+        <h4>A number without a denominator is a story.</h4>
+        <p>“93% faster” means nothing until you say across which document types, at what volume, against whose
+        baseline, and what it excludes. I'd rather present a smaller number I can defend in a room full of
+        sceptics than a bigger one that collapses on the second question.</p>
+      </div>
+      <div class="prin">
+        <span class="prin-n">04</span>
+        <h4>Regulated users don't want autonomy. They want defensibility.</h4>
+        <p>A customs broker isn't asking the system to decide for them. They want something they can put in
+        front of an auditor eighteen months later and explain — which list, which version, which match, who
+        signed. Here the audit trail isn't bolted on at the end; it's the product.</p>
       </div>
     </div>
 
-    <figure class="wide">
-      <div class="scroller">
-        <svg class="diagram" viewBox="0 0 760 262" role="img"
-             aria-label="Two lanes. Today: shipment documents move to the regulatory authority with no check in between, are held, and rework follows. With a pre-authority verdict: documents pass through a compliance verdict first, then reach the authority and clear.">
-          <g font-family="IBM Plex Mono, monospace">
-            <!-- lane 1 -->
-            <text x="6" y="24" font-size="11" letter-spacing="1.6" fill="var(--muted)">TODAY</text>
-            <rect x="6" y="38" width="138" height="52" rx="2" fill="var(--surface)" stroke="var(--rule)"/>
-            <text x="20" y="62" font-size="11.5" fill="var(--ink)">Shipment</text>
-            <text x="20" y="77" font-size="11.5" fill="var(--ink)">documents</text>
-
-            <line x1="144" y1="64" x2="392" y2="64" stroke="var(--rule)" stroke-width="1" stroke-dasharray="4 4"/>
-            <text x="186" y="54" font-size="10.5" fill="var(--match)">check skipped or done by hand</text>
-            <path d="M392 64 L384 60 L384 68 Z" fill="var(--rule)"/>
-
-            <rect x="400" y="30" width="152" height="68" rx="2" fill="var(--ink)" stroke="var(--ink)"/>
-            <text x="416" y="56" font-size="11.5" fill="var(--paper)">Regulatory</text>
-            <text x="416" y="71" font-size="11.5" fill="var(--paper)">authority</text>
-            <text x="416" y="87" font-size="10" fill="var(--muted)">12+ bodies</text>
-
-            <line x1="552" y1="64" x2="604" y2="64" stroke="var(--match)" stroke-width="1"/>
-            <path d="M604 64 L596 60 L596 68 Z" fill="var(--match)"/>
-            <rect x="610" y="38" width="144" height="52" rx="2" fill="none" stroke="var(--match)"/>
-            <text x="624" y="62" font-size="11.5" fill="var(--match)">Held · reworked</text>
-            <text x="624" y="77" font-size="10" fill="var(--muted)">demurrage · penalties</text>
-
-            <!-- lane 2 -->
-            <text x="6" y="152" font-size="11" letter-spacing="1.6" fill="var(--muted)">WITH A PRE-AUTHORITY VERDICT</text>
-            <rect x="6" y="166" width="138" height="52" rx="2" fill="var(--surface)" stroke="var(--rule)"/>
-            <text x="20" y="190" font-size="11.5" fill="var(--ink)">Shipment</text>
-            <text x="20" y="205" font-size="11.5" fill="var(--ink)">documents</text>
-
-            <line x1="144" y1="192" x2="190" y2="192" stroke="var(--rule)" stroke-width="1"/>
-            <path d="M190 192 L182 188 L182 196 Z" fill="var(--rule)"/>
-
-            <rect x="196" y="160" width="196" height="64" rx="2" fill="var(--accent-soft)" stroke="var(--accent)"/>
-            <text x="210" y="184" font-size="11.5" fill="var(--ink)">Compliance verdict</text>
-            <text x="210" y="200" font-size="10" fill="var(--ink-2)">21 agents · 85+ lists</text>
-            <text x="210" y="214" font-size="10" fill="var(--ink-2)">clear · review · match</text>
-
-            <line x1="392" y1="192" x2="398" y2="192" stroke="var(--accent)" stroke-width="1"/>
-            <path d="M400 192 L392 188 L392 196 Z" fill="var(--accent)"/>
-
-            <rect x="400" y="158" width="152" height="68" rx="2" fill="var(--ink)" stroke="var(--ink)"/>
-            <text x="416" y="184" font-size="11.5" fill="var(--paper)">Regulatory</text>
-            <text x="416" y="199" font-size="11.5" fill="var(--paper)">authority</text>
-            <text x="416" y="215" font-size="10" fill="var(--muted)">12+ bodies</text>
-
-            <line x1="552" y1="192" x2="604" y2="192" stroke="var(--clear)" stroke-width="1"/>
-            <path d="M604 192 L596 188 L596 196 Z" fill="var(--clear)"/>
-            <rect x="610" y="166" width="144" height="52" rx="2" fill="none" stroke="var(--clear)"/>
-            <text x="624" y="190" font-size="11.5" fill="var(--clear)">Cleared</text>
-            <text x="624" y="205" font-size="10" fill="var(--muted)">fixed before filing</text>
-          </g>
-        </svg>
-      </div>
-      <figcaption>The reframe in one picture. Nothing about the authority changes — the only move is where the
-      check happens relative to it.</figcaption>
-    </figure>
-
-    <div class="case">
-      <div class="block">
-        <p class="block-label">The decision I'd defend hardest</p>
-        <h3>Twenty-one agents, not one model.</h3>
-        <p>The instinct is a single large prompt over the whole document set. I argued for decomposition instead,
-        on product grounds rather than engineering ones:</p>
-        <ul class="reasons">
-          <li><b>Independent failure domains.</b> A wrong HS classification and a missed sanctions match are
-          different incidents, with different owners and different remediation. Collapse them into one output and
-          neither is attributable — so neither gets fixed.</li>
-          <li><b>Different data half-lives.</b> Sanctions and watchlists move daily; HS tariff schedules annually;
-          FTA rules of origin by treaty. A monolith forces the slowest-moving component to set the refresh cadence
-          for everything.</li>
-          <li><b>Evaluation only works on isolated checks.</b> Twenty-one agents means twenty-one eval sets and
-          twenty-one accuracy targets you can actually argue about. One prompt means one unmeasurable blob, and
-          "it feels better" as your only quality signal.</li>
-          <li><b>Latency.</b> Independent checks run in parallel, so a full verdict returns in seconds. A
-          sequential chain over the same checks does not, and a check that's slower than a phone call to a broker
-          doesn't get used.</li>
-        </ul>
-      </div>
-
-      <div class="block">
-        <p class="block-label">What the engine is made of</p>
-      </div>
-    </div>
-
-    <div class="wide scroller">
-      <table>
-        <caption>Five disciplines. The grouping is by who owns the failure, not by what's technically similar.</caption>
-        <thead>
-          <tr><th scope="col">Discipline</th><th scope="col">Agents</th><th scope="col">The question it answers</th></tr>
-        </thead>
-        <tbody>
-          <tr><td class="disc">Party screening</td><td class="num">8</td><td>Is anyone on this shipment someone we're not allowed to trade with?</td></tr>
-          <tr><td class="disc">Cargo &amp; controls</td><td class="num">5</td><td>Can this cargo move this way, on this route, under these controls?</td></tr>
-          <tr><td class="disc">Classification</td><td class="num">2</td><td>What is this, expressed in the language the authority uses?</td></tr>
-          <tr><td class="disc">Filing, cost &amp; duty</td><td class="num">3</td><td>What will clearance cost, and does it qualify for relief?</td></tr>
-          <tr><td class="disc">Sustainability</td><td class="num">1</td><td>What is the carbon cost of this leg?</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="case">
-      <div class="block">
-        <p class="block-label">The trade-off I spent the most time on</p>
-        <h3>Precision versus recall in party screening — and why it isn't symmetric.</h3>
-        <p>Fuzzy-matching a party name against eighty-five-plus lists forces a choice, and the two errors are not
-        remotely equal:</p>
-        <ul class="reasons">
-          <li><b>A false negative</b> — a sanctioned party clears — is a regulatory incident with legal exposure.
-          Effectively unbounded cost.</li>
-          <li><b>A false positive</b> — a clean party gets flagged — costs an analyst a couple of minutes.
-          Bounded, and it gets cheaper every time you improve the review screen.</li>
-        </ul>
-        <p style="margin-top:1.1rem">So: tune hard toward recall, and spend the engineering budget on making
-        <em>review</em> cheap rather than on making the flag rare. That's what produced the verdict ladder — three
-        states instead of two.</p>
-
-        <div class="ladder">
-          <div class="rung">
-            <div class="swatch s-clear"></div>
-            <div class="rung-name n-clear">Clear</div>
-            <div class="rung-desc">No action needed. Evidence and list versions retained anyway, because the
-            auditor's question comes later.</div>
-          </div>
-          <div class="rung">
-            <div class="swatch s-review"></div>
-            <div class="rung-name n-review">Review</div>
-            <div class="rung-desc">A person decides. The system shows the candidate match, which list it came from,
-            and exactly what differs — so the decision takes seconds, not a research session.</div>
-          </div>
-          <div class="rung">
-            <div class="swatch s-match"></div>
-            <div class="rung-name n-match">Match</div>
-            <div class="rung-desc">Blocked, with an escalation path. The system never resolves this one silently.</div>
-          </div>
+    <div class="callout" style="max-width:none;margin-top:2.6rem">
+      <h4>Toolkit</h4>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem 2rem;margin-top:1rem">
+        <div>
+          <p class="blk-label" style="margin-bottom:.4rem">AI &amp; technical</p>
+          <p style="font-size:.93rem;color:var(--ink-2);margin:0">RAG pipelines · LLMs (GPT-4, Claude) · Prompt
+          engineering · NLP product design · SQL · Python</p>
         </div>
-
-        <p style="margin-top:1.4rem">Two states — pass or fail — would have forced the model to make a judgement it
-        isn't entitled to make. Three states let it do the thing it's genuinely good at, which is narrowing the
-        field, and leave the accountable call with the person who has to sign their name to it.</p>
-      </div>
-
-      <div class="block">
-        <p class="block-label">How I'd know it's working</p>
-        <p>Not "accuracy." A single accuracy figure on a dashboard hides the failure mode that actually matters
-        here. The pair I'd hold it to:</p>
-        <ul class="reasons">
-          <li><b>Review load per hundred shipments</b> — should fall over time as matching improves.</li>
-          <li><b>Escaped-miss rate</b> — should stay at zero, full stop.</li>
-        </ul>
-        <p style="margin-top:1.1rem">You need both, because a system can drive review load down simply by getting
-        bolder, and that looks like progress right up until it isn't. Watching the two together is the only way
-        to tell improvement from erosion.</p>
-      </div>
-
-      <div class="block">
-        <p class="block-label">How I sized the opportunity</p>
-        <p>Bottom-up from declaration volume rather than top-down from an analyst's market figure, because the unit
-        that actually bills here is a document, not a seat:</p>
-        <ul class="reasons">
-          <li><b>United States</b> — roughly 96M import and export declarations a year, handled by about 11,000
-          customs brokers and freight forwarders. <span class="mini-stat">(CBP trade statistics; trade.gov)</span></li>
-          <li><b>European Union</b> — roughly 311M declarations, about 19,000 brokers.
-          <span class="mini-stat">(Verified Market Research; CLECAT)</span></li>
-          <li><b>Trade-management software globally</b> — around $2.7B, with North America at roughly 36–38%.
-          <span class="mini-stat">(Coherent Market Insights)</span></li>
-        </ul>
-        <p style="margin-top:1.1rem">Two figures shaped the framing more than the market size did: roughly
-        <strong>2,000+ additions to sanctions designations every year</strong>, and <strong>$4.6B+ in AML, KYC and
-        sanctions fines issued in 2024</strong>. The first says any static rules engine decays from the day it
-        ships. The second says the buyer already has a budget line for this failure — which is a much easier sale
-        than creating one.</p>
-      </div>
-
-      <div class="block">
-        <p class="block-label">Where it honestly stands</p>
-        <p>The engine and agent architecture are built and demo-ready. Pricing and pilot scoping with early
-        prospects are in progress. It has <em>not</em> yet run at production volume with paying customers, and the
-        accuracy targets are targets rather than measured production results. I'd rather say that plainly than let
-        a portfolio imply otherwise.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================== CASE 2 ===================== -->
-  <section id="msw">
-    <div class="sec-head">
-      <div class="sec-num">03</div>
-      <h2>Maritime Single Window</h2>
-    </div>
-
-    <div class="case">
-      <div class="case-meta">
-        <span class="chip chip-live">Live · 20 ports</span>
-        <span class="chip">Kale Logistics</span>
-        <span class="chip">0 → 1 · 2024–26</span>
-      </div>
-
-      <div class="block">
-        <p class="block-label">The situation</p>
-        <p>A single vessel call touches about a dozen agencies — customs, port authority, immigration, health,
-        terminal operators — each with its own form, format and deadline. Shipping agents re-key the same twenty
-        facts into every one of them, under time pressure, with a berth waiting.</p>
-      </div>
-
-      <div class="block">
-        <p class="block-label">How I framed it</p>
-        <p>The obvious product is a portal that submits to every agency. But submission is the easy half. The hard
-        half is that no two agencies agree on what a <em>vessel call</em> even is — different field names, different
-        granularity, different mandatory sets for the same real-world fact.</p>
-        <p class="pull">So the asset isn't the portal. It's a canonical model every agency's format can be
-        <em>derived</em> from.</p>
-        <p>Get that right and each new integration is a configuration exercise. Get it wrong and every new port is
-        a rebuild wearing a different name.</p>
-      </div>
-
-      <div class="block">
-        <p class="block-label">What I chose not to build</p>
-        <ul class="reasons">
-          <li><b>Not agency-by-agency integrations first.</b> Tempting, because each one demos beautifully. But it
-          produces N bespoke pipelines and no reusable asset. I built the canonical model against one agency,
-          proved derivation actually worked, and only then let integrations become a repeatable motion.</li>
-          <li><b>Not a mobile app.</b> Requested repeatedly. Shipping agents work at a desk, in a browser, with a
-          dozen tabs open, moving data between systems. A phone makes that job measurably worse, and building one
-          would have been responsiveness to volume rather than to need.</li>
-          <li><b>Not analytics dashboards, for a long time.</b> Every stakeholder asked. Nobody would have used
-          them before there was enough clean data to be worth looking at — and building them early would have
-          frozen the data model at exactly the moment it still needed to move.</li>
-        </ul>
-      </div>
-
-      <div class="block">
-        <p class="block-label">Why Port Klang first</p>
-        <p>Deliberately the hardest corridor rather than the easiest one. Highest volume, most complex agency mix.
-        A canonical model validated on a simple port would have needed rebuilding at the first complicated one; a
-        model that survives Klang generalises across the region. The price is a slower first launch — which is the
-        right trade when the thing you're building is a model rather than a feature.</p>
-      </div>
-
-      <div class="block">
-        <p class="block-label">The metric that actually mattered</p>
-        <p>"Ports live" is a sales number. It tells you nothing about whether the product is getting better. The
-        product number was <strong>derivation coverage</strong>: what share of a new port's mandatory fields can be
-        produced from the canonical model without a schema change.</p>
-        <p>That's the only figure that makes port twenty-one cheaper than port one. It's the number I'd take into a
-        roadmap review, and the one I'd use to argue against a feature that quietly forces a schema fork.</p>
-      </div>
-
-      <div class="block">
-        <p class="block-label">What I got wrong</p>
-        <p>I underweighted change management. The system was <em>correct</em> well before the agents
-        <em>trusted</em> it — and a correct output that a user won't sign is worth precisely nothing. The fix was
-        mundane: a side-by-side view of the hand-filled form against the generated one, so an agent could verify at
-        a glance instead of re-doing the work to check our answer. It should have been in the first release.</p>
-        <p>I now treat <em>"how does this user verify the output without redoing the work?"</em> as part of the
-        definition of done rather than a follow-up ticket. It's the single most useful habit I picked up from this
-        project.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================== SHORTER ===================== -->
-  <section id="more">
-    <div class="sec-head">
-      <div class="sec-num">04</div>
-      <h2>Three more, briefly</h2>
-    </div>
-    <p class="sec-sub">Shipped at Kale. Each one here for the framing rather than the headline number.</p>
-
-    <div class="mini">
-      <article class="mini-item">
-        <div class="mini-head">
-          <h3>AI document generation</h3>
-          <span class="mini-stat">RAG + LLM · ~200 docs/day · 20+ types</span>
+        <div>
+          <p class="blk-label" style="margin-bottom:.4rem">Product</p>
+          <p style="font-size:.93rem;color:var(--ink-2);margin:0">0→1 development · Roadmapping · PRDs · User
+          research · A/B testing · GTM · Metrics &amp; OKRs · Agile</p>
         </div>
-        <p>Turnaround went from about 30 minutes to under 2 — a 93% cut, and the largest single block of manual
-        effort for port operations teams.</p>
-        <p><span class="inline-label">How that was measured</span> &nbsp;Baseline timed against the manual drafting
-        path per document type, then weighted by the actual daily mix rather than cherry-picking the slowest type.
-        What the figure excludes: the review time a human still spends afterwards. So the honest claim is 93% off
-        <em>drafting</em>, not 93% off the process — and I say it that way in rooms where someone will check.</p>
-      </article>
-
-      <article class="mini-item">
-        <div class="mini-head">
-          <h3>NLP support assistant</h3>
-          <span class="mini-stat">Tickets 250/mo → under 20 · 92% cut</span>
+        <div>
+          <p class="blk-label" style="margin-bottom:.4rem">Analytics</p>
+          <p style="font-size:.93rem;color:var(--ink-2);margin:0">Mixpanel · Power BI · Qlik Sense · Google
+          Analytics · Market &amp; competitive research</p>
         </div>
-        <p><span class="inline-label">The framing</span> &nbsp;Tier-1 volume wasn't a support problem. It was a
-        product-clarity problem wearing a support costume — roughly the same handful of questions, asked over and
-        over, because the product never made those answers obvious.</p>
-        <p>Deflection was the headline. The genuinely useful output was the ranked list of what the interface had
-        failed to communicate, which went straight into the roadmap. A chatbot that permanently absorbs the same
-        question is a product debt you've agreed to service forever.</p>
-      </article>
-
-      <article class="mini-item">
-        <div class="mini-head">
-          <h3>Cargo forecasting &amp; resource planning</h3>
-          <span class="mini-stat">Demand visibility for warehouse ops</span>
+        <div>
+          <p class="blk-label" style="margin-bottom:.4rem">Tools</p>
+          <p style="font-size:.93rem;color:var(--ink-2);margin:0">Jira · Azure DevOps · Figma · Notion · Excel</p>
         </div>
-        <p><span class="inline-label">The framing</span> &nbsp;Warehouses don't fail because they lack capacity.
-        They fail because they find out about a demand spike the morning it arrives, when every lever worth pulling
-        needs more notice than that.</p>
-        <p>So the product isn't a better forecast — it's a longer lead time on a good-enough one. Horizon beats
-        precision here, and that reordering changed what we built and what we stopped tuning.</p>
-      </article>
-
-      <article class="mini-item">
-        <div class="mini-head">
-          <h3>Payments &amp; invoicing</h3>
-          <span class="mini-stat">Multi-party settlement · +70% transaction transparency</span>
-        </div>
-        <p>End-to-end automation of settlement workflows across multiple parties, where the hard part is never the
-        payment rail — it's agreeing who owes what, to whom, on whose version of the truth.</p>
-      </article>
-    </div>
-  </section>
-
-  <!-- ===================== MINDGATE ===================== -->
-  <section id="scale">
-    <div class="sec-head">
-      <div class="sec-num">05</div>
-      <h2>Before this: what 32M a day teaches you</h2>
-    </div>
-
-    <div class="case">
-      <div class="case-meta">
-        <span class="chip">Mindgate Solutions</span>
-        <span class="chip">UPI · NPCI · HDFC Bank</span>
-        <span class="chip">2023–24</span>
-      </div>
-
-      <div class="block">
-        <p class="block-label">What I did</p>
-        <ul class="reasons">
-          <li>Drove requirements and stakeholder alignment for the <b>UPI 6.0 rollout at HDFC Bank</b>, coordinating
-          product, engineering and client teams against NPCI guidelines, on schedule.</li>
-          <li>Built a <b>competitive transaction-analytics framework</b> comparing HDFC's UPI performance against
-          peer banks, surfacing the business and technical drivers behind the gaps for executive decisions.</li>
-          <li>Owned reconciliation across <b>32M+ data points per day</b> spanning 8 NPCI settlement cycles —
-          accuracy, auditability and regulatory compliance at production scale.</li>
-          <li>Found and cleared pipeline bottlenecks in SQL and Kafka, taking end-to-end processing from
-          <b>4+ hours to under 45 minutes</b> (81%) and making near-real-time reconciliation possible.</li>
-        </ul>
-      </div>
-
-      <div class="block">
-        <p class="block-label">What it actually taught me</p>
-        <p>At 32 million transactions a day you don't manage the average, you manage the tail. Reconciliation never
-        fails on the typical transaction — it fails on the fraction of a percent that arrive late, arrive twice, or
-        arrive against a settlement cycle that has already closed. Every hour of real work was spent there.</p>
-        <p class="pull">Spec the failure modes before the happy path. The happy path will get built regardless.</p>
-        <p>It's the same instinct I now apply to AI outputs. The interesting question was never what the system
-        does when it's right.</p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ===================== OPEN QUESTIONS ===================== -->
-  <section id="open">
-    <div class="sec-head">
-      <div class="sec-num">06</div>
-      <h2>What I'm still working out</h2>
-    </div>
-    <p class="sec-sub">Three things I don't have a settled answer to. I'd rather show the edge of what I know than
-      pretend it isn't there.</p>
-
-    <div class="open">
-      <article class="open-item">
-        <h3>Keeping an eval honest once users adapt to it.</h3>
-        <p>I can build an offline eval set and defend an accuracy target. What I'm less sure about is what happens
-        six months in, when users have quietly learned the system's blind spots and started routing around them —
-        at which point the eval set stops resembling live traffic and the metric keeps looking fine. I don't have a
-        clean method for this yet.</p>
-      </article>
-      <article class="open-item">
-        <h3>Pricing AI that's priced per document.</h3>
-        <p>Per-seat pricing fits a product whose cost scales with users. It fits badly when cost scales with
-        documents and value scales with penalties avoided — a customer with fewer, riskier shipments gets far more
-        value from fewer units. I've argued both sides of per-document versus outcome-linked pricing and I'm not
-        convinced the industry has converged either.</p>
-      </article>
-      <article class="open-item">
-        <h3>Telling a domain expert's judgement from their workaround.</h3>
-        <p>In trade compliance the SME is usually right, and occasionally defending a workaround they invented
-        years ago to survive a system that no longer exists. Both sound identical in a requirements session. I've
-        got heuristics — ask for the last three times it mattered, ask who else does it this way — but it's still
-        mostly judgement rather than method, and I get it wrong sometimes.</p>
-      </article>
-    </div>
-  </section>
-
-  <!-- ===================== BACKGROUND ===================== -->
-  <section id="about">
-    <div class="sec-head">
-      <div class="sec-num">07</div>
-      <h2>Background</h2>
-    </div>
-
-    <div class="case">
-      <p>Product Manager with 3+ years building AI-native and B2B SaaS products across logistics and fintech.
-      B.Tech in Biomedical Engineering from <strong>IIT Bombay</strong> (2023) — which is a roundabout way into
-      product, and the reason I'm comfortable with messy real-world signal and unglamorous domain detail.</p>
-    </div>
-
-    <div class="grid2" style="margin-top:2rem">
-      <div class="skillset">
-        <h3>AI &amp; technical</h3>
-        <p>RAG pipelines · LLMs (GPT-4, Claude) · Prompt engineering · NLP-based product design · SQL · Python</p>
+<!-- ================= CONTACT ================= -->
+<section id="contact">
+  <div class="wrap">
+    <div class="contact">
+      <p class="eyebrow" style="color:#8E857E">Get in touch</p>
+      <h2>Let's talk about what you're building.</h2>
+      <p>Open to product roles at AI-native startups, large tech, fintech and logistics companies.
+      Based in Mumbai. Happy to talk through anything on this page — particularly the parts I got wrong.</p>
+      <div class="contact-rows">
+        <span class="crow"><b>Email</b> <a href="mailto:vaibhavraj738@gmail.com">vaibhavraj738@gmail.com</a></span>
+        <span class="crow"><b>Phone</b> +91 85215 88880</span>
+        <span class="crow"><b>LinkedIn</b> <a href="https://www.linkedin.com/in/vaibhav-raj-iitb/" target="_blank" rel="noopener">/in/vaibhav-raj-iitb</a></span>
       </div>
-      <div class="skillset">
-        <h3>Product</h3>
-        <p>0→1 development · Roadmapping · PRD writing · User research · A/B testing · GTM strategy · Metrics &amp; OKRs · Agile</p>
-      </div>
-      <div class="skillset">
-        <h3>Analytics</h3>
-        <p>Mixpanel · Power BI · Qlik Sense · Google Analytics · Market research · Competitive analysis · Business cases</p>
-      </div>
-      <div class="skillset">
-        <h3>Tools</h3>
-        <p>Jira · Azure DevOps · Figma · Notion · Excel</p>
-      </div>
+      <a class="btn btn-primary btn-lg" href="Vaibhav_Raj_PM.pdf" target="_blank" rel="noopener">Download résumé</a>
     </div>
 
-    <div class="case" style="margin-top:2.6rem">
-      <p class="block-label">Get in touch</p>
-      <p>Open to product roles at AI-native startups, large tech, fintech and logistics companies. Based in Mumbai.
-      Happy to talk about anything on this page — particularly the parts I got wrong.</p>
-      <div class="contact-lines">
-        <div><span>Email</span> <a href="mailto:vaibhavraj738@gmail.com">vaibhavraj738@gmail.com</a></div>
-        <div><span>Phone</span> +91 85215 88880</div>
-        <div><span>LinkedIn</span> <a href="https://www.linkedin.com/in/vaibhav-raj-iitb/" target="_blank" rel="noopener">/in/vaibhav-raj-iitb</a></div>
-        <div><span>Résumé</span> <a href="Vaibhav_Raj_PM.pdf" target="_blank" rel="noopener">PDF</a></div>
-      </div>
-    </div>
+    <p class="disclaimer">A note on what's here: product metrics are from my own work. The interface images are
+    recreations — the production systems sit behind customer and port-authority logins — rebuilt from the real
+    agent sets, form types and report structures. Nothing on this page is confidential to a current or former
+    employer; internal revenue models, pricing and competitive assessments are deliberately left out.</p>
 
-    <p class="disclaimer">A note on what's here: market figures are from public sources, cited inline. Product
-    metrics are from my own work. Nothing on this page is confidential to a current or former employer — internal
-    revenue models, pricing and competitive assessments are deliberately left out, and I'm happy to talk through
-    my reasoning on those in person rather than in writing.</p>
-  </section>
-
-  <footer>
-    <div>Vaibhav Raj · Product Manager</div>
-    <div>Mumbai, IN</div>
-  </footer>
-
-</div>
-
-<script>
-(function(){
-  var root = document.documentElement;
-  var btn = document.getElementById('themeBtn');
-  var KEY = 'vr-theme';
-  function stored(){ try { return localStorage.getItem(KEY); } catch(e){ return null; } }
-  function save(v){ try { localStorage.setItem(KEY, v); } catch(e){} }
-  var s = stored();
-  if (s === 'dark' || s === 'light') root.setAttribute('data-theme', s);
-  function current(){
-    var a = root.getAttribute('data-theme');
-    if (a) return a;
-    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  }
-  btn.addEventListener('click', function(){
-    var next = current() === 'dark' ? 'light' : 'dark';
-    root.setAttribute('data-theme', next);
-    save(next);
-    btn.textContent = next === 'dark' ? 'Light' : 'Dark';
-  });
-  btn.textContent = current() === 'dark' ? 'Light' : 'Dark';
-})();
-</script>
+    <footer>
+      <div>Vaibhav Raj · Product Manager · Mumbai, IN</div>
+      <div>IIT Bombay, 2023</div>
+    </footer>
+  </div>
+</section>
 
 </body>
 </html>
