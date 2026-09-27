@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+<script>document.documentElement.className+=" js";</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Vaibhav Raj — Portfolio</title>
@@ -40,6 +41,7 @@
   --f:"Figtree", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --f-mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
   --r-sm:6px; --r:10px; --r-lg:16px; --r-xl:22px;
+  --ease:cubic-bezier(.32,.72,0,1);  /* strong ease-out — the settle-into-place curve */
 }
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -499,6 +501,79 @@ footer{
   .ux-st{font-size:.84rem}
   .ux-h{font-size:1.24rem}
 }
+
+/* ---------- scroll choreography ---------- */
+/* gated on .js, set by the inline script at the top of the document, so the page
+   renders fully visible if that script never runs — and on prefers-reduced-motion */
+@media (prefers-reduced-motion: no-preference){
+  .js .reveal{
+    opacity:0;transform:translateY(24px);
+    transition:opacity .75s var(--ease) var(--d,0s), transform .75s var(--ease) var(--d,0s);
+  }
+  .js .reveal.is-in{opacity:1;transform:none}
+
+  /* product shots settle in with a little scale — reads heavier, like a panel landing */
+  .js .reveal-shot{
+    opacity:0;transform:translateY(34px) scale(.975);
+    transition:opacity .95s var(--ease), transform .95s var(--ease);
+  }
+  .js .reveal-shot.is-in{opacity:1;transform:none}
+
+  /* nav gains depth once you leave the hero */
+  .nav{transition:box-shadow .3s var(--ease),border-color .3s var(--ease)}
+  .nav.scrolled{box-shadow:0 1px 0 rgba(28,26,23,.04),0 8px 24px rgba(28,26,23,.06);border-bottom-color:var(--rule)}
+}
+
+/* once revealed, stay put — even if motion preference flips mid-session */
+.reveal.is-in,.reveal-shot.is-in{opacity:1;transform:none}
+
+/* ---------- forecast plot (project 04 snapshot) ---------- */
+.fc{margin-top:1rem}
+.fc-plot{display:flex;align-items:flex-end;gap:5px;height:118px;position:relative;border-bottom:1px solid var(--rule)}
+.fc-bar{flex:1;border-radius:3px 3px 0 0;background:var(--blue-bg);border:1px solid #C9D8F2;border-bottom:0;min-width:0}
+.fc-bar.hot{background:var(--review-bg);border-color:#F0DCB4}
+.fc-bar.over{background:var(--match-bg);border-color:#F3C9BF}
+.fc-cap{position:absolute;left:0;right:0;border-top:2px dashed #B6ADA6;pointer-events:none}
+.fc-cap span{
+  position:absolute;right:0;top:-.95rem;font-family:var(--f-mono);font-size:.6rem;
+  color:var(--muted);background:#fff;padding:0 .3rem;letter-spacing:.04em;
+}
+.fc-x{display:flex;gap:5px;margin-top:.45rem}
+.fc-x span{flex:1;text-align:center;font-family:var(--f-mono);font-size:.59rem;color:#9A928C;min-width:0}
+.fc-x span.mark{color:var(--review);font-weight:600}
+
+/* ---------- cycle strip + tail histogram (project 05 snapshot) ---------- */
+.cyc{display:flex;gap:4px;margin-top:1rem}
+.cyc div{
+  flex:1;border-radius:var(--r-sm);border:1px solid var(--rule);background:#FAF8F5;
+  padding:.45rem .5rem;min-width:0;
+}
+.cyc div.done{background:var(--clear-bg);border-color:#CDE6D9}
+.cyc div.now{background:var(--accent-wash);border-color:#F6CDB9}
+.cyc b{display:block;font-family:var(--f-mono);font-size:.62rem;color:#7A726D;letter-spacing:.06em}
+.cyc span{display:block;font-size:.7rem;font-weight:700;color:var(--ink);margin-top:.12rem;white-space:nowrap}
+.cyc div.done span{color:var(--clear)}
+.cyc div.now span{color:var(--accent)}
+
+.kpi{display:flex;gap:2rem;flex-wrap:wrap;margin-top:1.1rem;padding-top:.9rem;border-top:1px solid var(--rule-2)}
+.kpi div{min-width:0}
+.kpi b{display:block;font-size:1.12rem;font-weight:800;letter-spacing:-.02em;color:var(--ink)}
+.kpi span{font-family:var(--f-mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:#9A928C}
+
+.tail{display:flex;align-items:flex-end;gap:2px;height:66px;margin-top:.5rem}
+.tail i{flex:1;display:block;border-radius:2px 2px 0 0;background:#DCE6F7;min-width:0}
+.tail i.warn{background:#F4DFB4}
+.tail i.bad{background:#EFC3B7}
+.tail-note{display:flex;justify-content:space-between;margin-top:.35rem;font-family:var(--f-mono);font-size:.59rem;color:#9A928C}
+
+/* ---------- hero entrance ---------- */
+@media (prefers-reduced-motion: no-preference){
+  .js .hero-in{
+    opacity:0;transform:translateY(16px);
+    animation:heroRise .9s var(--ease) forwards;animation-delay:var(--d,0s);
+  }
+}
+@keyframes heroRise{to{opacity:1;transform:none}}
 </style>
 </head>
 <body>
@@ -542,15 +617,15 @@ footer{
 </nav>
 
 <header class="hero wrap" id="top">
-  <p class="eyebrow">Product Manager · Kale Logistics · Mumbai</p>
-  <h1>I build AI products for global trade.</h1>
-  <p class="lede">Three years turning the paperwork behind cross-border shipping into software —
+  <p class="eyebrow hero-in" style="--d:.05s">Product Manager · Kale Logistics · Mumbai</p>
+  <h1 class="hero-in" style="--d:.13s">I build AI products for global trade.</h1>
+  <p class="lede hero-in" style="--d:.21s">Three years turning the paperwork behind cross-border shipping into software —
     20 live ports, a 21-agent compliance engine, and five AI features running in production.</p>
-  <div class="hero-cta">
+  <div class="hero-cta hero-in" style="--d:.29s">
     <a class="btn btn-primary btn-lg" href="#work">See the work</a>
     <a class="btn btn-ghost btn-lg" href="Vaibhav_Raj_PM.pdf" target="_blank" rel="noopener">Download résumé</a>
   </div>
-  <div class="now-strip">
+  <div class="now-strip hero-in" style="--d:.37s">
     <span class="pulse"></span>
     <span>Currently: <b>Platform team at Kale Logistics</b>, building an AI trade-compliance engine</span>
   </div>
@@ -648,7 +723,7 @@ footer{
 <!-- ================= WORK ================= -->
 <section id="work">
   <div class="wrap">
-    <div class="sec-head">
+    <div class="sec-head reveal">
       <p class="eyebrow acc">Selected work</p>
       <h2>What I've built, and what I actually did on each</h2>
       <p>Each one below has what I did, what it achieved so far, and a look at the interface.</p>
@@ -656,7 +731,7 @@ footer{
 
     <!-- ---------- PROJECT 01 ---------- -->
     <article class="proj" id="p1">
-      <div class="proj-head">
+      <div class="proj-head reveal" style="--d:0s">
         <div class="proj-tag">
           <span class="num">01</span>
           <span class="chip chip-build">In build · MVP demo-ready</span>
@@ -668,7 +743,7 @@ footer{
         This runs the whole check before anything reaches an authority.</p>
       </div>
 
-      <div class="proj-cols">
+      <div class="proj-cols reveal" style="--d:.08s">
         <div>
           <p class="blk-label">What I did</p>
           <ul class="did">
@@ -699,7 +774,7 @@ footer{
         </div>
       </div>
 
-      <div class="shot-wrap">
+      <div class="shot-wrap reveal-shot">
         <div class="shot">
           <div class="shot-bar">
             <span class="dot"></span><span class="dot"></span><span class="dot"></span>
@@ -794,7 +869,7 @@ footer{
         login, so this is rebuilt from the real agent set, verdict model and report structure.</span></p>
       </div>
 
-      <div class="callout">
+      <div class="callout reveal">
         <h4>The call I'd defend hardest: 21 agents, not one model</h4>
         <p>The instinct is one large prompt over the whole document set. I argued for decomposition on product
         grounds — a wrong HS code and a missed sanctions match are different incidents with different owners, so
@@ -810,7 +885,7 @@ footer{
 
     <!-- ---------- PROJECT 02 ---------- -->
     <article class="proj" id="p2">
-      <div class="proj-head">
+      <div class="proj-head reveal" style="--d:0s">
         <div class="proj-tag">
           <span class="num">02</span>
           <span class="chip chip-live">Live · 20 ports</span>
@@ -822,7 +897,7 @@ footer{
         facts into every one. Now they enter the call once and every agency format is derived from it.</p>
       </div>
 
-      <div class="proj-cols">
+      <div class="proj-cols reveal" style="--d:.08s">
         <div>
           <p class="blk-label">What I did</p>
           <ul class="did">
@@ -854,7 +929,7 @@ footer{
         </div>
       </div>
 
-      <div class="shot-wrap">
+      <div class="shot-wrap reveal-shot">
         <div class="shot">
           <div class="shot-bar">
             <span class="dot"></span><span class="dot"></span><span class="dot"></span>
@@ -928,7 +1003,7 @@ footer{
         for a Port Klang vessel call. Live instances sit behind port authority login.</span></p>
       </div>
 
-      <div class="callout">
+      <div class="callout reveal">
         <h4>The call I'd defend: build the model before the integrations</h4>
         <p>The tempting path is agency-by-agency integrations — each one demos beautifully. But it produces N
         bespoke pipelines and no reusable asset, and every new port becomes a rebuild wearing a different name.
@@ -945,7 +1020,7 @@ footer{
 
     <!-- ---------- PROJECT 03 ---------- -->
     <article class="proj" id="p3">
-      <div class="proj-head">
+      <div class="proj-head reveal" style="--d:0s">
         <div class="proj-tag">
           <span class="num">03</span>
           <span class="chip chip-live">Live in production</span>
@@ -957,7 +1032,7 @@ footer{
         with every field traceable back to where it came from.</p>
       </div>
 
-      <div class="proj-cols">
+      <div class="proj-cols reveal" style="--d:.08s">
         <div>
           <p class="blk-label">What I did</p>
           <ul class="did">
@@ -986,7 +1061,7 @@ footer{
         </div>
       </div>
 
-      <div class="shot-wrap">
+      <div class="shot-wrap reveal-shot">
         <div class="shot">
           <div class="shot-bar">
             <span class="dot"></span><span class="dot"></span><span class="dot"></span>
@@ -1059,7 +1134,7 @@ footer{
 
     <!-- ---------- PROJECT 04 ---------- -->
     <article class="proj" id="p4">
-      <div class="proj-head">
+      <div class="proj-head reveal" style="--d:0s">
         <div class="proj-tag">
           <span class="num">04</span>
           <span class="chip chip-live">Live in production</span>
@@ -1091,11 +1166,84 @@ footer{
           rail — it's agreeing who owes what, to whom, on whose version of the truth.</p>
         </div>
       </div>
+
+      <div class="shot-wrap reveal-shot">
+        <div class="shot">
+          <div class="shot-bar">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <div class="shot-url">ops.kale.io / forecast / BOM-3 / week-42</div>
+          </div>
+          <div class="shot-scroll">
+            <div class="app">
+              <aside class="app-side">
+                <div class="side-brand"><i></i>Warehouse Ops</div>
+                <div class="side-nav">
+                  <span>Overview</span>
+                  <span class="on">Demand Forecast</span>
+                  <span>Resource Plan</span>
+                  <span>Alerts</span>
+                  <span>Historicals</span>
+                </div>
+                <div class="side-foot">14-day horizon<br>6 warehouses<br>refreshed hourly</div>
+              </aside>
+              <div class="app-main">
+                <div class="app-head">
+                  <div>
+                    <div class="app-kick">Warehouse BOM-3 · Week 42</div>
+                    <div class="app-title">Inbound volume against handling capacity</div>
+                    <div class="app-sub">Forecast horizon 14 days · confidence band ±12% · rebuilt hourly</div>
+                  </div>
+                  <div class="app-meta"><b>9 days</b><br>notice on the breach</div>
+                </div>
+
+                <div class="banner">
+                  <div class="banner-ico">!</div>
+                  <div class="banner-txt">Capacity breach forecast for Thu 23 Oct
+                  <span>— nine days out. Enough time to add a shift and pull in agency staff. Finding out on
+                  the Tuesday is a different product.</span></div>
+                </div>
+
+                <div class="fc">
+                  <div class="fc-plot">
+                    <div class="fc-cap" style="bottom:73.7%"><span>handling capacity</span></div>
+              <div class="fc-bar" style="height:40.0%"></div>
+              <div class="fc-bar" style="height:44.2%"></div>
+              <div class="fc-bar" style="height:42.1%"></div>
+              <div class="fc-bar" style="height:47.4%"></div>
+              <div class="fc-bar" style="height:54.7%"></div>
+              <div class="fc-bar" style="height:50.5%"></div>
+              <div class="fc-bar" style="height:46.3%"></div>
+              <div class="fc-bar hot" style="height:61.1%"></div>
+              <div class="fc-bar hot" style="height:65.3%"></div>
+              <div class="fc-bar over" style="height:92.6%"></div>
+              <div class="fc-bar over" style="height:77.9%"></div>
+              <div class="fc-bar" style="height:57.9%"></div>
+              <div class="fc-bar" style="height:52.6%"></div>
+              <div class="fc-bar" style="height:48.4%"></div>
+                  </div>
+                  <div class="fc-x"><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span><span>22</span><span class="mark">23</span><span class="mark">24</span><span>25</span><span>26</span><span>27</span></div>
+                </div>
+
+                <div class="kpi">
+                  <div><b>±12%</b><span>Band at 14 days</span></div>
+                  <div><b>9 days</b><span>Median lead time on alerts</span></div>
+                  <div><b>6</b><span>Warehouses live</span></div>
+                  <div><b>Hourly</b><span>Rebuild cadence</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="shot-cap"><i>i</i><span>Interface recreation with representative volumes. The point it
+        illustrates is the product decision, not the forecast: a wider horizon on a rougher number beats a
+        tight number that lands too late to act on.</span></p>
+      </div>
+
     </article>
 
     <!-- ---------- PROJECT 05 ---------- -->
     <article class="proj" id="p5">
-      <div class="proj-head">
+      <div class="proj-head reveal" style="--d:0s">
         <div class="proj-tag">
           <span class="num">05</span>
           <span class="chip">Mindgate Solutions · 2023–24</span>
@@ -1105,7 +1253,7 @@ footer{
         payments network, at national scale.</p>
       </div>
 
-      <div class="proj-cols">
+      <div class="proj-cols reveal" style="--d:.08s">
         <div>
           <p class="blk-label">What I did</p>
           <ul class="did">
@@ -1133,6 +1281,99 @@ footer{
             twice, or against a cycle that has already closed. It's the same instinct I now apply to AI outputs.</p>
         </div>
       </div>
+
+      <div class="shot-wrap reveal-shot">
+        <div class="shot">
+          <div class="shot-bar">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <div class="shot-url">settlement.internal / recon / upi / cycle-05</div>
+          </div>
+          <div class="shot-scroll">
+            <div class="app">
+              <aside class="app-side">
+                <div class="side-brand"><i></i>Settlement</div>
+                <div class="side-nav">
+                  <span>Overview</span>
+                  <span class="on">Reconciliation</span>
+                  <span>Cycles</span>
+                  <span>Exceptions</span>
+                  <span>Reports</span>
+                </div>
+                <div class="side-foot">8 NPCI cycles<br>32M txns / day<br>T+0 settlement</div>
+              </aside>
+              <div class="app-main">
+                <div class="app-head">
+                  <div>
+                    <div class="app-kick">Cycle 05 · 14:00–17:00 IST</div>
+                    <div class="app-title">UPI reconciliation — switch against NPCI file</div>
+                    <div class="app-sub">4.1M transactions in cycle · three-way match: switch ledger, NPCI
+                    settlement file, core banking</div>
+                  </div>
+                  <div class="app-meta"><b>41m 18s</b><br>was 4h 12m</div>
+                </div>
+
+                <div class="cyc">
+                  <div class="done"><b>C1</b><span>08:00</span></div>
+                  <div class="done"><b>C2</b><span>10:00</span></div>
+                  <div class="done"><b>C3</b><span>11:30</span></div>
+                  <div class="done"><b>C4</b><span>13:00</span></div>
+                  <div class="now"><b>C5</b><span>14:00</span></div>
+                  <div><b>C6</b><span>17:00</span></div>
+                  <div><b>C7</b><span>19:30</span></div>
+                  <div><b>C8</b><span>22:00</span></div>
+                </div>
+
+                <div class="kpi">
+                  <div><b>4,108,442</b><span>In cycle</span></div>
+                  <div><b>99.987%</b><span>Matched first pass</span></div>
+                  <div><b>534</b><span>Exceptions to work</span></div>
+                  <div><b>41m 18s</b><span>Cycle close</span></div>
+                </div>
+
+                <div style="margin-top:1.1rem">
+                  <p class="blk-label" style="margin:0 0 .1rem">Match latency — the tail is the product</p>
+                  <div class="tail">
+                  <i class="" style="height:8%"></i>
+                  <i class="" style="height:26%"></i>
+                  <i class="" style="height:58%"></i>
+                  <i class="" style="height:92%"></i>
+                  <i class="" style="height:100%"></i>
+                  <i class="" style="height:86%"></i>
+                  <i class="" style="height:61%"></i>
+                  <i class="" style="height:42%"></i>
+                  <i class="" style="height:29%"></i>
+                  <i class="" style="height:20%"></i>
+                  <i class="" style="height:14%"></i>
+                  <i class="" style="height:10%"></i>
+                  <i class="" style="height:7%"></i>
+                  <i class="warn" style="height:5%"></i>
+                  <i class="warn" style="height:4%"></i>
+                  <i class="warn" style="height:3%"></i>
+                  <i class="warn" style="height:3%"></i>
+                  <i class="bad" style="height:2%"></i>
+                  <i class="bad" style="height:2%"></i>
+                  <i class="bad" style="height:4%"></i>
+                  </div>
+                  <div class="tail-note"><span>&lt; 1s</span><span>the 0.013% that decides the cycle →</span></div>
+                </div>
+
+                <table class="tbl">
+                  <tr><th>Exception</th><th>Count</th><th>Cause</th><th>Disposition</th></tr>
+                  <tr><td class="ag">Late arrival</td><td class="mono">311</td><td class="dis">Arrived after cycle close</td><td><span class="v v-clear"><i></i>Auto-rolled</span></td></tr>
+                  <tr><td class="ag">Duplicate RRN</td><td class="mono">148</td><td class="dis">Retry on timeout</td><td><span class="v v-clear"><i></i>Deduped</span></td></tr>
+                  <tr><td class="ag">Amount mismatch</td><td class="mono">61</td><td class="dis">Partial reversal</td><td><span class="v v-review"><i></i>Manual</span></td></tr>
+                  <tr><td class="ag">Missing at NPCI</td><td class="mono">14</td><td class="dis">Not in settlement file</td><td><span class="v v-match"><i></i>Escalated</span></td></tr>
+                  <tr class="more"><td colspan="4">534 exceptions from 4.1M — worked before the next cycle opens</td></tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="shot-cap"><i>i</i><span>Interface recreation with representative figures — production
+        settlement systems sit behind bank infrastructure. The distribution is the argument: reconciliation
+        never fails on the typical transaction.</span></p>
+      </div>
+
     </article>
 
   </div>
@@ -1141,7 +1382,7 @@ footer{
 <!-- ================= HOW I WORK ================= -->
 <section id="how" class="sec-warm">
   <div class="wrap">
-    <div class="sec-head">
+    <div class="sec-head reveal">
       <p class="eyebrow acc">How I work</p>
       <h2>What I believe, how I think, what I use</h2>
       <p>Four convictions, one worked example of the reasoning behind them, and the tools underneath.</p>
@@ -1156,7 +1397,7 @@ footer{
 
       <div class="tabpanel" role="tabpanel" id="panel-prin" aria-labelledby="tab-prin" tabindex="0">
         <div class="prin-grid">
-      <div class="prin" id="w1">
+      <div class="prin reveal" style="--d:0.00s" id="w1">
         <span class="prin-n">01</span>
         <h4>Automate the step people skip, not the step people hate.</h4>
         <p>The slow step is visible and everyone's already optimising it. The valuable one is quietly skipped
@@ -1164,21 +1405,21 @@ footer{
         it; everybody pays for it at the border. That gap between where pain is felt and where it was caused is
         usually where the product is.</p>
       </div>
-      <div class="prin" id="w2">
+      <div class="prin reveal" style="--d:0.09s" id="w2">
         <span class="prin-n">02</span>
         <h4>Decide what “wrong” costs before you decide what “good” looks like.</h4>
         <p>A model at 95% is excellent for drafting a document and unacceptable for screening a sanctioned
         party. Same accuracy, opposite verdict, because the cost of the missing 5% differs by orders of
         magnitude. I set the failure cost first and let the accuracy bar and the review design fall out of it.</p>
       </div>
-      <div class="prin" id="w3">
+      <div class="prin reveal" style="--d:0.18s" id="w3">
         <span class="prin-n">03</span>
         <h4>A number without a denominator is a story.</h4>
         <p>“93% faster” means nothing until you say across which document types, at what volume, against whose
         baseline, and what it excludes. I'd rather present a smaller number I can defend in a room full of
         sceptics than a bigger one that collapses on the second question.</p>
       </div>
-      <div class="prin" id="w4">
+      <div class="prin reveal" style="--d:0.27s" id="w4">
         <span class="prin-n">04</span>
         <h4>Regulated users don't want autonomy. They want defensibility.</h4>
         <p>A customs broker isn't asking the system to decide for them. They want something they can put in
@@ -1385,7 +1626,7 @@ footer{
       </div>
 
       <div class="tabpanel" role="tabpanel" id="panel-tool" aria-labelledby="tab-tool" tabindex="0" hidden>
-        <div class="callout" style="max-width:none;margin-top:0">
+        <div class="callout reveal" style="max-width:none;margin-top:0">
       <h4>Toolkit</h4>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem 2rem;margin-top:1rem">
         <div>
@@ -1512,6 +1753,35 @@ footer{
   });
 
 
+
+  // --- scroll choreography ---
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var revealables  = Array.prototype.slice.call(document.querySelectorAll('.reveal, .reveal-shot'));
+  var revealObs    = null;
+
+  function revealNow(el) { el.classList.add('is-in'); if (revealObs) revealObs.unobserve(el); }
+
+  // anything inside a panel that was collapsed when it scrolled past still has to appear
+  function revealWithin(root) {
+    if (!root) return;
+    Array.prototype.forEach.call(root.querySelectorAll('.reveal, .reveal-shot'), revealNow);
+  }
+
+  if (reduceMotion.matches || !('IntersectionObserver' in window)) {
+    revealables.forEach(function (el) { el.classList.add('is-in'); });
+  } else {
+    revealObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) revealNow(e.target); });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.08 });
+    revealables.forEach(function (el) { revealObs.observe(el); });
+  }
+
+  // --- nav picks up depth once you leave the hero ---
+  var navEl = document.querySelector('.nav');
+  function onScrollNav() { if (navEl) navEl.classList.toggle('scrolled', window.pageYOffset > 12); }
+  window.addEventListener('scroll', onScrollNav, { passive: true });
+  onScrollNav();
+
   // --- How I work: tabs ---
   var tabs   = Array.prototype.slice.call(document.querySelectorAll('.tablist .tab'));
   var panels = tabs.map(function (t) { return document.getElementById(t.getAttribute('aria-controls')); });
@@ -1521,7 +1791,10 @@ footer{
       var on = (t === tab);
       t.setAttribute('aria-selected', on ? 'true' : 'false');
       t.tabIndex = on ? 0 : -1;
-      if (panels[k]) panels[k].hidden = !on;
+      if (panels[k]) {
+        panels[k].hidden = !on;
+        if (on) revealWithin(panels[k]);
+      }
     });
     if (focus) tab.focus();
   }
