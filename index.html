@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
 <script>document.documentElement.className+=" js";</script>
+<!-- Umami: cookieless analytics, so no consent banner is required.
+     REPLACE the id below with the Website ID from cloud.umami.is -->
+<script defer src="https://cloud.umami.is/script.js" data-website-id="PASTE-UMAMI-WEBSITE-ID-HERE"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Vaibhav Raj — Portfolio</title>
@@ -1782,6 +1785,71 @@ footer{
   window.addEventListener('scroll', onScrollNav, { passive: true });
   onScrollNav();
 
+
+  // --- analytics ---------------------------------------------------------
+  // everything goes through one wrapper: if the provider is missing, blocked
+  // by an ad blocker, or swapped out later, the page carries on regardless
+  function track(name, data) {
+    try {
+      if (window.umami && typeof window.umami.track === 'function') {
+        window.umami.track(name, data || {});
+      }
+    } catch (e) { /* analytics must never break the page */ }
+  }
+
+  // résumé download — the strongest intent signal here
+  Array.prototype.forEach.call(document.querySelectorAll('a[href$=".pdf"]'), function (a) {
+    a.addEventListener('click', function () {
+      track('resume-download', { from: a.closest('.hero') ? 'hero' : 'contact' });
+    });
+  });
+
+  // intent to make contact
+  Array.prototype.forEach.call(document.querySelectorAll('a[href^="mailto:"]'), function (a) {
+    a.addEventListener('click', function () { track('contact-click', { method: 'email' }); });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('a[href*="linkedin.com"]'), function (a) {
+    a.addEventListener('click', function () { track('contact-click', { method: 'linkedin' }); });
+  });
+
+  // which projects actually get read — fires once per project.
+  // observes the HEADING, not the article: a .proj is 2000-3600px tall, so its
+  // intersection ratio can never reach a meaningful threshold and the observer
+  // would never fire at all. the heading entering view is the signal we want.
+  if ('IntersectionObserver' in window) {
+    var projObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var art = e.target.closest('.proj');
+        var h = e.target.querySelector('h3') || (art && art.querySelector('h3'));
+        track('project-view', {
+          project: h ? h.textContent.replace(/\s+/g, ' ').trim().slice(0, 60)
+                     : (art ? art.id : 'unknown')
+        });
+        projObs.unobserve(e.target);
+      });
+    }, { threshold: 0.6 });
+    Array.prototype.forEach.call(document.querySelectorAll('.proj .proj-head'), function (el) {
+      projObs.observe(el);
+    });
+  }
+
+  // scroll depth — each milestone reported once
+  var depthHit = {};
+  function onScrollDepth() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - window.innerHeight;
+    if (max <= 0) return;
+    var pct = Math.round((window.pageYOffset / max) * 100);
+    [25, 50, 75, 100].forEach(function (mark) {
+      if (pct >= mark && !depthHit[mark]) {
+        depthHit[mark] = true;
+        track('scroll-depth', { percent: mark });
+      }
+    });
+  }
+  window.addEventListener('scroll', onScrollDepth, { passive: true });
+
   // --- How I work: tabs ---
   var tabs   = Array.prototype.slice.call(document.querySelectorAll('.tablist .tab'));
   var panels = tabs.map(function (t) { return document.getElementById(t.getAttribute('aria-controls')); });
@@ -1800,7 +1868,10 @@ footer{
   }
 
   tabs.forEach(function (tab) {
-    tab.addEventListener('click', function () { selectTab(tab); });
+    tab.addEventListener('click', function () {
+      selectTab(tab);
+      track('tab-open', { tab: tab.textContent.trim() });
+    });
     tab.addEventListener('keydown', function (e) {
       var n = tabs.indexOf(tab), to = null;
       if (e.key === 'ArrowRight') to = tabs[(n + 1) % tabs.length];
@@ -1861,7 +1932,13 @@ footer{
     }
 
     if (focus) steps[n].focus();
+
+    if (n > deepestStep) {
+      deepestStep = n;
+      track('walkthrough-step', { step: n + 1 });
+    }
   }
+  var deepestStep = 0;
 
   steps.forEach(function (b, k) {
     b.addEventListener('click', function () { goStep(k); });
