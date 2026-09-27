@@ -20,7 +20,7 @@ README.md             this file
 | Hero | Name, role, one-line positioning, "currently" strip |
 | About | **Who I am · Where I work · Background** — bio, employer card, timeline |
 | Work | 5 entries. Three have full interface snapshots |
-| How I work | Four operating principles + toolkit |
+| How I work | Three tabs — **Principles** (four operating beliefs), **UX thinking** (a six-step walkthrough of one decision), **Toolkit** |
 | Contact | Dark block with email, phone, LinkedIn, résumé |
 
 Each project follows the same shape: **What I did** → **What it's achieved so far** → **product
@@ -137,5 +137,11 @@ Sections are marked with HTML comments (`<!-- ===== PROJECT 02 ===== -->`).
   (sidebar + main). Inside, `.tbl` gives you the agent-results table, `.ag-grid` the agency cards,
   `.split` the document-generation two-pane, and `.v v-clear|v-review|v-match|v-pend` the
   status pills.
+- **The UX thinking tab** — `<div class="ux">` is a rail of `.ux-step` buttons driving one `.ux-stage`
+  panel each. To add a step, add a button to `.ux-rail` and a matching `.ux-stage` with the same
+  `aria-controls`/`id` pair; the script picks up the count on its own. `.ux-blk.is-reject` is the
+  dashed "what I rejected" block, `.ux-art` the dark code-style artefact.
+- **Deep links open the right tab** — a link to `#ux-4` or `#w3` switches tab and step before
+  scrolling, so every nav entry works from a cold page load.
 - **Mockups scroll horizontally on phones** — they have a `min-width: 880px` inside
   `.shot-scroll`. That's deliberate; a squashed product shot reads worse than a scrollable one.

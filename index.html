@@ -118,7 +118,7 @@ h4{font-size:1.06rem;letter-spacing:-.016em;font-weight:700}
 .mi > span:last-child{display:block;min-width:0}
 .mi-t{display:block;font-size:.9rem;font-weight:700;letter-spacing:-.016em;line-height:1.25;color:var(--ink)}
 .mi-s{display:block;font-size:.78rem;color:var(--muted);line-height:1.35;margin-top:.1rem;font-weight:400}
-.proj,.prin,section{scroll-margin-top:78px}
+.proj,.prin,.ux-stage,section{scroll-margin-top:78px}
 .hero{scroll-margin-top:0}
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:.45rem;
@@ -438,6 +438,67 @@ footer{
   .avatar{width:62px;height:62px;font-size:1.3rem}
 }
 @media (prefers-reduced-motion:reduce){ *{transition:none!important;animation:none!important} }
+
+/* ---------- tabs (How I work) ---------- */
+.tabs{margin-top:2.4rem}
+.tablist{display:flex;gap:.25rem;border-bottom:1px solid var(--rule);margin-bottom:2.6rem;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tablist::-webkit-scrollbar{display:none}
+.tab{appearance:none;background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;padding:.72rem 1.05rem;font-family:var(--f);font-size:.95rem;font-weight:600;color:var(--muted);cursor:pointer;white-space:nowrap;transition:color .15s ease,border-color .15s ease}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent)}
+.tab:focus-visible{outline:2px solid var(--accent);outline-offset:-4px;border-radius:var(--r-sm)}
+.tabpanel[hidden]{display:none}
+
+/* ---------- UX thinking simulator ---------- */
+.ux-intro{max-width:64ch;margin:0 0 2rem}
+.ux-intro p{margin:0;color:var(--ink-2)}
+.ux-case{display:flex;gap:.8rem;align-items:flex-start;background:var(--surface);border:1px solid var(--rule);border-left:3px solid var(--accent);border-radius:var(--r);padding:1rem 1.2rem;margin-bottom:2.2rem}
+.ux-case .blk-label{margin:0 0 .3rem}
+.ux-case p{margin:0;font-size:.95rem;color:var(--ink-2)}
+.ux{display:grid;grid-template-columns:238px 1fr;gap:2.6rem;align-items:start}
+.ux-rail{display:flex;flex-direction:column;gap:.1rem;position:sticky;top:96px}
+.ux-step{display:flex;gap:.75rem;align-items:flex-start;text-align:left;width:100%;appearance:none;background:none;border:0;padding:.62rem .7rem;border-radius:var(--r);cursor:pointer;font-family:var(--f);transition:background .15s ease}
+.ux-step:hover{background:var(--bg)}
+.ux-step[aria-current="true"]{background:var(--accent-wash)}
+.ux-step:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.ux-sn{font-family:var(--f-mono);font-size:.7rem;color:var(--muted);padding-top:.2rem;letter-spacing:.04em;flex:none}
+.ux-step[aria-current="true"] .ux-sn{color:var(--accent)}
+.ux-st{font-size:.92rem;font-weight:600;color:var(--ink-2);line-height:1.35}
+.ux-step[aria-current="true"] .ux-st{color:var(--accent-dark)}
+.ux-panel{min-width:0}
+.ux-stage[hidden]{display:none}
+.ux-q{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin:0 0 .55rem}
+.ux-h{font-size:1.42rem;line-height:1.28;letter-spacing:-.015em;margin:0 0 1rem;color:var(--ink)}
+.ux-lead{font-size:1rem;color:var(--ink-2);margin:0 0 1.6rem;max-width:62ch}
+.ux-blocks{display:grid;gap:1rem;margin-bottom:1.6rem}
+.ux-blk{background:var(--surface);border:1px solid var(--rule);border-radius:var(--r);padding:1.05rem 1.2rem}
+.ux-blk p{margin:.35rem 0 0;font-size:.94rem;color:var(--ink-2);line-height:1.62}
+.ux-blk.is-reject{background:var(--bg-warm);border-style:dashed}
+.ux-blk.is-reject .blk-label{color:var(--match)}
+.ux-note{display:flex;gap:.7rem;align-items:flex-start;font-size:.88rem;color:var(--muted);font-style:italic;margin:0 0 1.6rem;line-height:1.6}
+.ux-note::before{content:"";flex:none;width:2px;align-self:stretch;background:var(--rule);border-radius:2px}
+.ux-nav{display:flex;gap:.6rem;align-items:center;border-top:1px solid var(--rule-2);padding-top:1.3rem}
+.ux-btn{appearance:none;font-family:var(--f);font-size:.9rem;font-weight:600;padding:.52rem 1rem;border-radius:var(--r-sm);border:1px solid var(--rule);background:var(--surface);color:var(--ink-2);cursor:pointer;transition:border-color .15s ease,color .15s ease}
+.ux-btn:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.ux-btn:disabled{opacity:.42;cursor:default}
+.ux-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ux-prog{margin-left:auto;font-family:var(--f-mono);font-size:.76rem;color:var(--muted);letter-spacing:.04em}
+
+/* artefact strip inside a stage */
+.ux-art{background:var(--bg-ink);border-radius:var(--r);padding:1.05rem 1.2rem;margin-bottom:1.6rem;overflow-x:auto}
+.ux-art .blk-label{color:#8E857E;margin:0 0 .6rem}
+.ux-art pre{margin:0;font-family:var(--f-mono);font-size:.78rem;line-height:1.75;color:#E6DFD8;white-space:pre}
+.ux-art .hl{color:var(--accent)}
+.ux-art .dim{color:#6F6862}
+
+@media (max-width:860px){
+  .ux{grid-template-columns:1fr;gap:1.6rem}
+  .ux-rail{position:static;flex-direction:row;overflow-x:auto;gap:.3rem;padding-bottom:.5rem;scrollbar-width:none;border-bottom:1px solid var(--rule)}
+  .ux-rail::-webkit-scrollbar{display:none}
+  .ux-step{flex:none;width:auto;flex-direction:column;gap:.2rem;min-width:112px;max-width:150px;padding:.55rem .6rem}
+  .ux-st{font-size:.84rem}
+  .ux-h{font-size:1.24rem}
+}
 </style>
 </head>
 <body>
@@ -464,7 +525,9 @@ footer{
       <div class="nav-item">
         <a href="#how">How I work <i class="caret"></i></a>
         <div class="menu">
-          <div class="menu-hd">Four things I believe</div>
+          <div class="menu-hd">Worked example</div>
+          <a class="mi" href="#ux-1"><span class="mi-n">UX</span><span><span class="mi-t">UX thinking</span><span class="mi-s">One decision, reasoned end to end</span></span></a>
+          <div class="menu-hd" style="margin-top:.5rem">Four things I believe</div>
           <a class="mi" href="#w1"><span class="mi-n">01</span><span><span class="mi-t">Automate the step people skip</span><span class="mi-s">Not the step people hate</span></span></a>
           <a class="mi" href="#w2"><span class="mi-n">02</span><span><span class="mi-t">Price the failure first</span><span class="mi-s">What “wrong” costs sets the accuracy bar</span></span></a>
           <a class="mi" href="#w3"><span class="mi-n">03</span><span><span class="mi-t">A number needs a denominator</span><span class="mi-s">Otherwise it's just a story</span></span></a>
@@ -1080,11 +1143,19 @@ footer{
   <div class="wrap">
     <div class="sec-head">
       <p class="eyebrow acc">How I work</p>
-      <h2>Four things I've come to believe</h2>
-      <p>Each one paid for by a decision that went well, or badly.</p>
+      <h2>What I believe, how I think, what I use</h2>
+      <p>Four convictions, one worked example of the reasoning behind them, and the tools underneath.</p>
     </div>
 
-    <div class="prin-grid">
+    <div class="tabs">
+      <div class="tablist" role="tablist" aria-label="How I work">
+        <button class="tab" role="tab" id="tab-prin" aria-controls="panel-prin" aria-selected="true" type="button">Principles</button>
+        <button class="tab" role="tab" id="tab-ux"   aria-controls="panel-ux"   aria-selected="false" tabindex="-1" type="button">UX thinking</button>
+        <button class="tab" role="tab" id="tab-tool" aria-controls="panel-tool" aria-selected="false" tabindex="-1" type="button">Toolkit</button>
+      </div>
+
+      <div class="tabpanel" role="tabpanel" id="panel-prin" aria-labelledby="tab-prin" tabindex="0">
+        <div class="prin-grid">
       <div class="prin" id="w1">
         <span class="prin-n">01</span>
         <h4>Automate the step people skip, not the step people hate.</h4>
@@ -1115,8 +1186,206 @@ footer{
         signed. Here the audit trail isn't bolted on at the end; it's the product.</p>
       </div>
     </div>
+      </div>
 
-    <div class="callout" style="max-width:none;margin-top:2.6rem">
+      <div class="tabpanel" role="tabpanel" id="panel-ux" aria-labelledby="tab-ux" tabindex="0" hidden>
+        <div class="ux-intro">
+          <p>Principles are easy to claim and hard to evidence. So here is one decision worked
+          end to end — the reasoning, the constraints, and the options I threw away. Step through it.</p>
+        </div>
+
+        <div class="ux-case">
+          <div>
+            <p class="blk-label">The problem on the table</p>
+            <p>A customs broker has 200 shipments to clear before the filing window closes. Twenty-one
+            agents have just returned a verdict on every one of them. What does she see first?</p>
+          </div>
+        </div>
+
+        <div class="ux" id="uxSim">
+          <div class="ux-rail" role="tablist" aria-label="Thinking process" aria-orientation="vertical">
+            <button class="ux-step" role="tab" type="button" aria-current="true"  aria-selected="true"  aria-controls="ux-1" id="uxt-1"><span class="ux-sn">01</span><span class="ux-st">Observe</span></button>
+            <button class="ux-step" role="tab" type="button" aria-current="false" aria-selected="false" aria-controls="ux-2" id="uxt-2" tabindex="-1"><span class="ux-sn">02</span><span class="ux-st">Frame</span></button>
+            <button class="ux-step" role="tab" type="button" aria-current="false" aria-selected="false" aria-controls="ux-3" id="uxt-3" tabindex="-1"><span class="ux-sn">03</span><span class="ux-st">Constrain</span></button>
+            <button class="ux-step" role="tab" type="button" aria-current="false" aria-selected="false" aria-controls="ux-4" id="uxt-4" tabindex="-1"><span class="ux-sn">04</span><span class="ux-st">Trade off</span></button>
+            <button class="ux-step" role="tab" type="button" aria-current="false" aria-selected="false" aria-controls="ux-5" id="uxt-5" tabindex="-1"><span class="ux-sn">05</span><span class="ux-st">Design</span></button>
+            <button class="ux-step" role="tab" type="button" aria-current="false" aria-selected="false" aria-controls="ux-6" id="uxt-6" tabindex="-1"><span class="ux-sn">06</span><span class="ux-st">Measure</span></button>
+          </div>
+
+          <div class="ux-panel">
+
+            <div class="ux-stage" role="tabpanel" id="ux-1" aria-labelledby="uxt-1" tabindex="0">
+              <p class="ux-q">Step 01 · Observe</p>
+              <h3 class="ux-h">Watch the job. Don't ask about the screen.</h3>
+              <p class="ux-lead">I sat through a filing window and asked nothing for the first hour. The
+              question I wanted answered wasn't "what do you want" — it was "what do you already do when
+              the tool isn't helping".</p>
+              <div class="ux-blocks">
+                <div class="ux-blk">
+                  <p class="blk-label">What I saw</p>
+                  <p>Nobody read the results top to bottom. Each broker scanned for the two or three
+                  shipments they already suspected — a new consignee, an unfamiliar port pair — cleared
+                  them, and moved on. The system's ordering was decoration. They had their own, carried
+                  in their head, and it was better than ours.</p>
+                </div>
+                <div class="ux-blk is-reject">
+                  <p class="blk-label">What I rejected</p>
+                  <p>Running a survey first. Ask a broker what they need and you get "a dashboard" —
+                  everyone says a dashboard. The useful signal was the workaround, not the wish list.</p>
+                </div>
+              </div>
+              <p class="ux-note">If users have built a private ranking to survive your product, that ranking
+              is your spec. Go and find it before you design anything.</p>
+            </div>
+
+            <div class="ux-stage" role="tabpanel" id="ux-2" aria-labelledby="uxt-2" tabindex="0" hidden>
+              <p class="ux-q">Step 02 · Frame</p>
+              <h3 class="ux-h">This was never an accuracy problem.</h3>
+              <p class="ux-lead">The agents were right. That was the uncomfortable part — the screen was
+              full of correct information that nobody had the minutes to read.</p>
+              <div class="ux-blocks">
+                <div class="ux-blk">
+                  <p class="blk-label">The question I'd been asked</p>
+                  <p>"How do we display twenty-one agent verdicts per shipment without overwhelming
+                  the user?" A layout question. It has layout answers, and all of them are wrong.</p>
+                </div>
+                <div class="ux-blk">
+                  <p class="blk-label">The question I reframed it to</p>
+                  <p>"Which of today's 200 shipments deserves a human minute, and which minute gets
+                  spent where?" Attention is the scarce resource being allocated. Everything downstream
+                  follows from saying that out loud.</p>
+                </div>
+                <div class="ux-blk is-reject">
+                  <p class="blk-label">What I rejected</p>
+                  <p>Tuning the model further. Another two points of precision would not have bought a
+                  single extra minute of attention. Right answer, wrong bottleneck.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="ux-stage" role="tabpanel" id="ux-3" aria-labelledby="uxt-3" tabindex="0" hidden>
+              <p class="ux-q">Step 03 · Constrain</p>
+              <h3 class="ux-h">Write down what can't move, before you get attached to an idea.</h3>
+              <p class="ux-lead">In a regulated product the constraints aren't obstacles to the design.
+              They're most of it. I list them before sketching, because otherwise I fall in love with
+              something illegal.</p>
+              <div class="ux-blocks">
+                <div class="ux-blk">
+                  <p class="blk-label">Regulatory — fixed</p>
+                  <p>Every verdict stays retrievable with the list it hit, that list's version, and the
+                  timestamp — whether or not a human ever looked at it. I can defer a result. I can never
+                  drop one.</p>
+                </div>
+                <div class="ux-blk">
+                  <p class="blk-label">Organisational — fixed for now</p>
+                  <p>Brokers are measured on shipments cleared, not checks read. Any design asking them
+                  to read more, for its own sake, loses to the incentive and should.</p>
+                </div>
+                <div class="ux-blk is-reject">
+                  <p class="blk-label">What I rejected</p>
+                  <p>An auto-clear that quietly discards low-risk results to shorten the queue. It tests
+                  beautifully and it is indefensible eighteen months later in front of an auditor asking
+                  what the system decided not to show.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="ux-stage" role="tabpanel" id="ux-4" aria-labelledby="uxt-4" tabindex="0" hidden>
+              <p class="ux-q">Step 04 · Trade off</p>
+              <h3 class="ux-h">The call I'd defend: sort by consequence, not confidence.</h3>
+              <p class="ux-lead">Confidence is what the model knows about itself. Consequence is what it
+              costs us to be wrong. Those rank the queue very differently, and only one of them is about
+              the user's actual risk.</p>
+              <div class="ux-blocks">
+                <div class="ux-blk">
+                  <p class="blk-label">The decision</p>
+                  <p>A 72%-confidence near-match on a sanctions list outranks a 61%-confidence flag on a
+                  routine HS code — because one is a licence-losing event and the other is a correction.
+                  Same shaped uncertainty, incomparable stakes.</p>
+                </div>
+                <div class="ux-blk">
+                  <p class="blk-label">What it costs me</p>
+                  <p>The queue sometimes leads with something the broker finds obvious, and that's mildly
+                  irritating. I took that trade knowingly: an unnecessary summons is cheap and a missed
+                  match is not.</p>
+                </div>
+                <div class="ux-blk is-reject">
+                  <p class="blk-label">What I rejected</p>
+                  <p>Blending everything into one 0–100 risk score. It ranks well and it cannot be
+                  explained to an auditor — which fails the only test that matters here.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="ux-stage" role="tabpanel" id="ux-5" aria-labelledby="uxt-5" tabindex="0" hidden>
+              <p class="ux-q">Step 05 · Design</p>
+              <h3 class="ux-h">Only now does it become a screen.</h3>
+              <p class="ux-lead">Five steps in. By this point the interface is close to a formality — the
+              hard decisions are already made, and the layout is just where they become visible.</p>
+              <div class="ux-art">
+                <p class="blk-label">Queue ordering, in plain terms</p>
+<pre><span class="dim">for each shipment:</span>
+  rank = <span class="hl">consequence_if_missed</span>  <span class="dim">// licence &gt; penalty &gt; correction</span>
+       × <span class="hl">verdict_state</span>          <span class="dim">// match &gt; review &gt; clear</span>
+       × recency_of_list_change
+
+<span class="dim">never:</span> hide a clear   <span class="dim">→ collapse it, keep it retrievable</span>
+<span class="dim">always:</span> carry list + version + matched field + signer</pre>
+              </div>
+              <div class="ux-blocks">
+                <div class="ux-blk">
+                  <p class="blk-label">Three states, not a percentage</p>
+                  <p>Clear · Review · Match. A broker can act on a state. Nobody has ever made a
+                  different decision at 84% than at 86%, and the number invites an argument that the
+                  ladder settles.</p>
+                </div>
+                <div class="ux-blk">
+                  <p class="blk-label">Every row opens into its evidence</p>
+                  <p>Which list, which version, which field matched, who signed it off. The audit trail
+                  isn't a report generated later — it's the same object the broker is already reading.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="ux-stage" role="tabpanel" id="ux-6" aria-labelledby="uxt-6" tabindex="0" hidden>
+              <p class="ux-q">Step 06 · Measure</p>
+              <h3 class="ux-h">Name the number that would prove me wrong.</h3>
+              <p class="ux-lead">I try to pick the disconfirming metric at design time, while I still
+              have nothing invested in the answer. After launch I'll be motivated to choose kindly.</p>
+              <div class="ux-blocks">
+                <div class="ux-blk">
+                  <p class="blk-label">The number I actually watch</p>
+                  <p>How often a broker moves a <em>Review</em> straight to <em>Clear</em> without opening
+                  the detail. That's the tell that my ranking is crying wolf — they've learned the top of
+                  the queue isn't worth reading, and I've rebuilt the problem I set out to fix.</p>
+                </div>
+                <div class="ux-blk">
+                  <p class="blk-label">The number that decides whether it worked</p>
+                  <p>Matches caught before filing versus matches surfaced downstream by a customs query.
+                  Time saved is a nice headline; escaped matches are the thing the product exists to stop.</p>
+                </div>
+                <div class="ux-blk is-reject">
+                  <p class="blk-label">What I rejected</p>
+                  <p>Satisfaction scores. A queue that never interrupts anyone scores wonderfully right
+                  up to the audit.</p>
+                </div>
+              </div>
+              <p class="ux-note">Pair this with principle 03 — a number without a denominator is a story.
+              Both of these have one: per broker, per filing day, against the pre-launch baseline.</p>
+            </div>
+
+            <div class="ux-nav">
+              <button class="ux-btn" id="uxPrev" type="button" disabled>&larr; Back</button>
+              <button class="ux-btn" id="uxNext" type="button">Next step &rarr;</button>
+              <span class="ux-prog" id="uxProg">01 / 06</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="tabpanel" role="tabpanel" id="panel-tool" aria-labelledby="tab-tool" tabindex="0" hidden>
+        <div class="callout" style="max-width:none;margin-top:0">
       <h4>Toolkit</h4>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem 2rem;margin-top:1rem">
         <div>
@@ -1138,6 +1407,8 @@ footer{
           <p class="blk-label" style="margin-bottom:.4rem">Tools</p>
           <p style="font-size:.93rem;color:var(--ink-2);margin:0">Jira · Azure DevOps · Figma · Notion · Excel</p>
         </div>
+      </div>
+    </div>
       </div>
     </div>
   </div>
@@ -1240,6 +1511,118 @@ footer{
     if (nav && !nav.contains(e.target)) { closeMenus(); closePanel(); }
   });
 
+
+  // --- How I work: tabs ---
+  var tabs   = Array.prototype.slice.call(document.querySelectorAll('.tablist .tab'));
+  var panels = tabs.map(function (t) { return document.getElementById(t.getAttribute('aria-controls')); });
+
+  function selectTab(tab, focus) {
+    tabs.forEach(function (t, k) {
+      var on = (t === tab);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+      if (panels[k]) panels[k].hidden = !on;
+    });
+    if (focus) tab.focus();
+  }
+
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () { selectTab(tab); });
+    tab.addEventListener('keydown', function (e) {
+      var n = tabs.indexOf(tab), to = null;
+      if (e.key === 'ArrowRight') to = tabs[(n + 1) % tabs.length];
+      else if (e.key === 'ArrowLeft') to = tabs[(n - 1 + tabs.length) % tabs.length];
+      else if (e.key === 'Home') to = tabs[0];
+      else if (e.key === 'End') to = tabs[tabs.length - 1];
+      if (to) { e.preventDefault(); selectTab(to, true); }
+    });
+  });
+
+  // --- UX thinking: step-through simulator ---
+  var steps  = Array.prototype.slice.call(document.querySelectorAll('.ux-rail .ux-step'));
+  var stages = steps.map(function (b) { return document.getElementById(b.getAttribute('aria-controls')); });
+  var prevBtn = document.getElementById('uxPrev');
+  var nextBtn = document.getElementById('uxNext');
+  var prog    = document.getElementById('uxProg');
+  var at = 0;
+
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+
+  function goStep(n, focus) {
+    if (n < 0 || n >= steps.length) return;
+    at = n;
+    steps.forEach(function (b, k) {
+      var on = (k === n);
+      b.setAttribute('aria-current', on ? 'true' : 'false');
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+      b.tabIndex = on ? 0 : -1;
+      if (stages[k]) stages[k].hidden = !on;
+    });
+    if (prevBtn) prevBtn.disabled = (n === 0);
+    if (nextBtn) {
+      nextBtn.disabled = (n === steps.length - 1);
+      nextBtn.innerHTML = (n === steps.length - 1) ? 'End of walkthrough' : 'Next step &rarr;';
+    }
+    if (prog) prog.textContent = pad(n + 1) + ' / ' + pad(steps.length);
+
+    // on small screens the rail scrolls sideways — keep the active step in view.
+    // only the rail's own scrollLeft moves, never the page.
+    var rail = document.querySelector('.ux-rail');
+    if (rail && rail.scrollWidth > rail.clientWidth + 4) {
+      // measured off rects, not offsetLeft — the rail is position:static here,
+      // so offsetLeft would resolve against a far-off ancestor
+      var rb = rail.getBoundingClientRect();
+      var bb = steps[n].getBoundingClientRect();
+      var to = Math.max(0, rail.scrollLeft + (bb.left + bb.width / 2) - (rb.left + rb.width / 2));
+      var from = rail.scrollLeft;
+
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        rail.scrollLeft = to;
+      } else {
+        rail.scrollTo({ left: to, behavior: 'smooth' });
+        // same guard as the in-page links: some engines drop a smooth scroll silently
+        setTimeout(function () {
+          if (Math.abs(rail.scrollLeft - from) < 4) rail.scrollLeft = to;
+        }, 300);
+      }
+    }
+
+    if (focus) steps[n].focus();
+  }
+
+  steps.forEach(function (b, k) {
+    b.addEventListener('click', function () { goStep(k); });
+    b.addEventListener('keydown', function (e) {
+      var vertical = window.matchMedia('(min-width: 861px)').matches;
+      var fwd = vertical ? 'ArrowDown' : 'ArrowRight';
+      var back = vertical ? 'ArrowUp' : 'ArrowLeft';
+      var to = null;
+      if (e.key === fwd) to = (k + 1) % steps.length;
+      else if (e.key === back) to = (k - 1 + steps.length) % steps.length;
+      else if (e.key === 'Home') to = 0;
+      else if (e.key === 'End') to = steps.length - 1;
+      if (to !== null) { e.preventDefault(); goStep(to, true); }
+    });
+  });
+
+  if (prevBtn) prevBtn.addEventListener('click', function () { goStep(at - 1); });
+  if (nextBtn) nextBtn.addEventListener('click', function () { goStep(at + 1); });
+  if (steps.length) goStep(0);
+
+  // --- open whatever collapsed thing a deep link points into ---
+  function reveal(target) {
+    var stage = target.closest ? target.closest('.ux-stage') : null;
+    if (stage) {
+      var si = stages.indexOf(stage);
+      if (si > -1) goStep(si);
+    }
+    var panel = target.closest ? target.closest('.tabpanel') : null;
+    if (panel) {
+      var pi = panels.indexOf(panel);
+      if (pi > -1) selectTab(tabs[pi]);
+    }
+  }
+
   // --- every in-page link lands clear of the sticky header ---
   document.addEventListener('click', function (e) {
     var el = e.target;
@@ -1253,6 +1636,8 @@ footer{
     var target;
     try { target = document.querySelector(id); } catch (err) { return; }
     if (!target) return;
+
+    reveal(target);
 
     e.preventDefault();
     closeMenus();
