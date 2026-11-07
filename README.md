@@ -5,8 +5,9 @@ no dependencies. Fonts load from Google Fonts. Drop it on GitHub Pages and it wo
 
 The product snapshots are not pictures. Each one runs: you can replay the compliance engine,
 open the evidence behind any single check, drag a confidence threshold, shorten a forecast
-horizon until the warning disappears. The interaction is the argument — see
-[the interactive layer](#the-interactive-layer).
+horizon until the warning disappears. There is also an **Ask about my work** panel that
+answers questions from a written answer bank — no model, no server. The interaction is the
+argument — see [the interactive layer](#the-interactive-layer).
 
 Design takes its cues from zapier.com: warm off-white ground, orange accent, geometric sans,
 large rounded product shots, generous spacing. Light theme only, by choice.
@@ -27,7 +28,7 @@ README.md             this file
 | Work | 5 entries. Three have full interface snapshots |
 | How I work | Three tabs — **Principles** (four operating beliefs), **UX thinking** (a six-step walkthrough of one decision), **Toolkit** |
 | Contact | Dark block with email, phone, LinkedIn, résumé. Email and phone have copy-to-clipboard buttons |
-| Everywhere | Scroll progress bar and scroll-spy in the nav, a ⌘K / Ctrl-K quick-jump palette, count-up stats, back-to-top |
+| Everywhere | Scroll progress bar and scroll-spy in the nav, a ⌘K / Ctrl-K quick-jump palette, count-up stats, back-to-top, and an **Ask about my work** panel |
 
 Each project follows the same shape: **What I did** → **What it's achieved so far** → **product
 snapshot** → (for the two big ones) **the call I'd defend**.
@@ -51,6 +52,56 @@ Five product snapshots, each one playable. Every control is built from the token
 than they are. Each caption now says "interactive recreation" and says what is simulated — the 18.4s
 compliance clock is explicitly played back faster than real time. The data is still invented. Keep
 that labelling.
+
+### The ask panel
+
+A launcher in the bottom-right corner opens a question panel. Someone types a question, it is
+matched against answers written in advance, and the matching answer comes back with a link into
+the relevant part of the page and two related follow-ups.
+
+**It is not a chatbot, and it says so.** There is no model, no API key, no server and no network
+call — the whole thing is in this file. That is a deliberate choice rather than a shortcut, and
+the panel has an answer explaining it:
+
+> A plausible-sounding wrong answer about my own work, given to someone deciding whether to hire
+> me, is an expensive failure — so I didn't build the thing that can produce one.
+
+Which is principle 02 applied to the portfolio itself. **Keep that framing.** A portfolio that
+claims AI product experience and ships a fake "AI chatbot" fails badly the moment an interviewer
+opens the source; one that ships a deterministic answer bank and explains why reads as judgement.
+
+What it costs to run: nothing. What can be abused: nothing. What it can invent: nothing.
+
+#### Editing the answers
+
+Everything lives in the `A` array in the **ASK PANEL** `<script>` at the end of `<body>`. One
+object per answer:
+
+```js
+{ id: 'coverage',                       // referenced by other answers' rel
+  t: 'Derivation coverage',             // shown on the follow-up chip
+  k: ['derivation coverage', ...],      // what a reader might type
+  go: ['#p2', 'See coverage per agency'],   // optional link into the page
+  rel: ['metrics', 'msw'],              // up to two follow-ups offered after it
+  a: '<p>...</p>' }                     // the answer, as HTML
+```
+
+`STARTERS` lists the five question chips shown before anyone types.
+
+**How matching works:** the question is lowercased and stripped of punctuation, then scored
+against every entry's keywords — a multi-word phrase scores `3 × its word count`, a single
+word scores 3, a word from the entry's own title scores 1, and a question starting with "why"
+gives the "Why…" answers 3. Highest score wins; anything under 3 is treated as no match. The
+reader's text is written with `textContent`, never `innerHTML`.
+
+**When you add an answer,** give it keywords in the words a stranger would use, not yours —
+"what did you get wrong" rather than "retrospective". Then test the phrasings you expect: a
+generic entry can outscore a specific one if they share a keyword, which is why `agents` belongs
+to the "why 21 agents" answer rather than the compliance overview.
+
+**If it has no answer** it says so and offers the direct route, rather than guessing. That
+fallback is the most important behaviour in the panel — don't replace it with a generic
+"I'm not sure" that invites a second try.
 
 ### Global behaviour
 
@@ -148,6 +199,10 @@ sees both.
       and replace the monogram in the `.avatar` div with the commented-out `<img>` tag right above it.
 - [ ] **Contact details** use the résumé versions (`vaibhavraj738@gmail.com` / +91 85215 88880).
       Your old site had different ones — make résumé, LinkedIn and site agree.
+- [ ] **The ask panel's answers** — every one is written in your voice and drawn from what was
+      already on the page, but they are now *your* words to a stranger. Read all 25 and change
+      anything you would not say out loud in an interview. The ones on what you got wrong, what
+      you are looking for, and whether the screenshots are real matter most.
 - [ ] **The snapshot data** — the interactive layer added more of it: 13 further agents with
       their evidence, seven more document types, eight settlement cycles. All invented but
       plausible. Check nothing accidentally resembles a real customer record, and that the

@@ -957,6 +957,149 @@ tr.ev-row.is-open .ev{display:block}
 }
 .fc-bar.over > .whisk{background:rgba(192,55,29,.12);border-color:rgba(192,55,29,.4)}
 .fc-bar.hot  > .whisk{background:rgba(169,103,10,.12);border-color:rgba(169,103,10,.4)}
+
+/* =====================================================================
+   ASK PANEL
+   A question answered from a written answer bank. No network calls, no
+   API key, no backend, nothing to rate-limit — the whole thing ships in
+   this file. Built from the same tokens as everything above.
+   ===================================================================== */
+
+/* the launcher, and the back-to-top button it now shares a corner with */
+.ask-launch{
+  position:fixed;right:20px;bottom:20px;z-index:80;
+  display:inline-flex;align-items:center;gap:.5rem;
+  appearance:none;cursor:pointer;border:0;
+  background:var(--ink);color:#F5F1EC;
+  font-family:var(--f);font-size:.88rem;font-weight:700;letter-spacing:-.01em;
+  padding:.72rem 1.1rem;border-radius:100px;box-shadow:var(--shadow-lg);
+}
+@media (prefers-reduced-motion: no-preference){
+  .ask-launch{transition:background .16s var(--ease),transform .16s var(--ease),opacity .2s}
+}
+.ask-launch:hover{background:#000;transform:translateY(-1px)}
+.ask-launch svg{width:16px;height:16px;flex:none;display:block}
+.ask-launch[hidden]{display:none!important}
+.totop{bottom:78px}
+@media (max-width:560px){
+  .ask-launch{padding:.72rem .9rem;right:14px;bottom:14px}
+  .ask-launch .ask-launch-t{display:none}
+  .totop{bottom:72px;right:14px}
+}
+
+.ask{
+  position:fixed;right:20px;bottom:20px;z-index:90;
+  width:min(382px, calc(100vw - 40px));
+  max-height:min(588px, calc(100vh - 40px));
+  display:none;flex-direction:column;
+  background:var(--surface);border:1px solid var(--rule);
+  border-radius:var(--r-xl);box-shadow:var(--shadow-lg);overflow:hidden;
+}
+.ask.on{display:flex}
+@media (prefers-reduced-motion: no-preference){
+  .ask.on{animation:askIn .22s var(--ease)}
+}
+@keyframes askIn{from{opacity:0;transform:translateY(12px) scale(.99)}to{opacity:1;transform:none}}
+
+.ask-hd{
+  display:flex;align-items:flex-start;gap:.7rem;padding:.95rem 1rem .85rem;
+  border-bottom:1px solid var(--rule-2);background:#FCFAF7;
+}
+.ask-ava{
+  width:32px;height:32px;flex:none;border-radius:9px;background:var(--accent);color:#fff;
+  display:grid;place-items:center;font-weight:800;font-size:.76rem;letter-spacing:-.02em;
+}
+.ask-hd-t{font-size:.95rem;font-weight:800;letter-spacing:-.018em;line-height:1.2;color:var(--ink)}
+.ask-hd-s{font-size:.76rem;color:var(--muted);line-height:1.35;margin-top:.12rem}
+.ask-x{
+  margin-left:auto;flex:none;appearance:none;background:transparent;border:0;cursor:pointer;
+  width:26px;height:26px;border-radius:7px;display:grid;place-items:center;color:var(--muted);
+}
+.ask-x:hover{background:#F1EDE7;color:var(--ink)}
+.ask-x svg{width:13px;height:13px;display:block}
+
+.ask-log{
+  flex:1;min-height:0;overflow-y:auto;padding:1rem;
+  display:flex;flex-direction:column;gap:.85rem;
+}
+.ask-row{display:flex;gap:.6rem;align-items:flex-start;max-width:100%}
+.ask-row.me{justify-content:flex-end}
+.ask-dot{
+  width:22px;height:22px;flex:none;border-radius:6px;background:var(--accent);color:#fff;
+  display:grid;place-items:center;font-size:.58rem;font-weight:800;letter-spacing:-.01em;margin-top:.1rem;
+}
+.ask-b{
+  border-radius:var(--r-lg);padding:.68rem .85rem;font-size:.88rem;line-height:1.56;
+  max-width:84%;min-width:0;overflow-wrap:break-word;
+}
+.ask-row.vr .ask-b{background:var(--bg-warm);color:var(--ink-2);border-top-left-radius:5px}
+.ask-row.me .ask-b{background:var(--ink);color:#F5F1EC;border-top-right-radius:5px;font-weight:500}
+.ask-b p{margin:0 0 .6rem}
+.ask-b p:last-child{margin-bottom:0}
+.ask-b b{color:var(--ink);font-weight:700}
+.ask-b .mono{font-family:var(--f-mono);font-size:.82em}
+.ask-jump{
+  display:inline-flex;align-items:center;gap:.3rem;margin-top:.55rem;
+  font-family:var(--f-mono);font-size:.69rem;font-weight:500;letter-spacing:.04em;
+  color:var(--accent);border-bottom:1px solid currentColor;padding-bottom:1px;cursor:pointer;
+  background:none;border-left:0;border-right:0;border-top:0;appearance:none;font-family:var(--f-mono);
+}
+.ask-jump:hover{color:var(--accent-dark)}
+
+/* suggested questions, and the follow-ups offered after an answer */
+.ask-chips{display:flex;flex-wrap:wrap;gap:.35rem;padding:0 1rem .2rem}
+.ask-log .ask-chips{padding:0 0 0 2.2rem}
+.ask-chip{
+  appearance:none;cursor:pointer;border:1px solid var(--rule);background:#fff;
+  font-family:var(--f);font-size:.76rem;font-weight:600;color:var(--ink-2);
+  padding:.34rem .7rem;border-radius:100px;text-align:left;line-height:1.3;
+}
+@media (prefers-reduced-motion: no-preference){
+  .ask-chip{transition:border-color .15s,color .15s,background .15s}
+}
+.ask-chip:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-wash)}
+.ask-chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.ask-typing{display:flex;gap:3px;padding:.75rem .85rem}
+.ask-typing i{width:5px;height:5px;border-radius:50%;background:var(--muted);display:block;opacity:.3}
+@media (prefers-reduced-motion: no-preference){
+  .ask-typing i{animation:dotPulse 1s ease-in-out infinite}
+  .ask-typing i:nth-child(2){animation-delay:.15s}
+  .ask-typing i:nth-child(3){animation-delay:.3s}
+}
+
+.ask-form{display:flex;gap:.5rem;align-items:center;padding:.7rem 1rem;border-top:1px solid var(--rule-2)}
+.ask-input{
+  flex:1;min-width:0;appearance:none;background:#FCFAF7;
+  border:1px solid var(--rule);border-radius:100px;padding:.56rem .9rem;
+  font-family:var(--f);font-size:.88rem;color:var(--ink);
+}
+.ask-input::placeholder{color:#A79E97}
+.ask-input:focus{outline:0;border-color:var(--accent);background:#fff}
+.ask-send{
+  flex:none;appearance:none;cursor:pointer;border:0;width:34px;height:34px;border-radius:50%;
+  background:var(--accent);color:#fff;display:grid;place-items:center;
+}
+.ask-send:hover{background:var(--accent-dark)}
+.ask-send:disabled{opacity:.4;cursor:default}
+.ask-send svg{width:15px;height:15px;display:block}
+
+.ask-foot{
+  padding:.5rem 1rem .72rem;border-top:1px solid var(--rule-2);background:#FCFAF7;
+  font-size:.7rem;color:var(--muted);line-height:1.45;
+}
+.ask-foot a{color:var(--accent);border-bottom:1px solid currentColor}
+
+@media (max-width:560px){
+  .ask{
+    right:0;left:0;bottom:0;width:100%;
+    max-height:86vh;border-radius:var(--r-xl) var(--r-xl) 0 0;border-bottom:0;
+  }
+  .ask-b{max-width:88%}
+}
+@media (max-height:460px){ .ask-launch{display:none} }
+
+.ask-foot{margin:0}
 </style>
 </head>
 <body>
@@ -2323,6 +2466,41 @@ tr.ev-row.is-open .ev{display:block}
 </section>
 
 
+<!-- ================= ASK PANEL ================= -->
+<button class="ask-launch" id="askLaunch" type="button" aria-haspopup="dialog" aria-controls="ask">
+  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M14 9.2A2.6 2.6 0 0 1 11.4 11.8H7.6L4.2 14.2V11.8A2.6 2.6 0 0 1 1.6 9.2V4.4A2.6 2.6 0 0 1 4.2 1.8h7.2A2.6 2.6 0 0 1 14 4.4z"/>
+  </svg>
+  <span class="ask-launch-t">Ask about my work</span>
+</button>
+
+<div class="ask" id="ask" role="dialog" aria-label="Ask about my work">
+  <div class="ask-hd">
+    <span class="ask-ava" aria-hidden="true">VR</span>
+    <div>
+      <div class="ask-hd-t">Ask about my work</div>
+      <div class="ask-hd-s">Written answers, not generated</div>
+    </div>
+    <button class="ask-x" id="askClose" type="button" aria-label="Close this panel">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9"/></svg>
+    </button>
+  </div>
+
+  <div class="ask-log" id="askLog" role="log" aria-live="polite" aria-label="Conversation"></div>
+  <div class="ask-chips" id="askStarters"></div>
+
+  <form class="ask-form" id="askForm" autocomplete="off">
+    <input class="ask-input" id="askInput" type="text" autocomplete="off" spellcheck="false"
+           placeholder="Ask a question…" aria-label="Ask a question about my work">
+    <button class="ask-send" id="askSend" type="submit" aria-label="Send question">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8h10M8.8 4.3 12.5 8l-3.7 3.7"/></svg>
+    </button>
+  </form>
+
+  <p class="ask-foot">No model and no server — these are answers written in advance. For anything
+  else, <a href="mailto:vaibhavraj738@gmail.com">email me</a>.</p>
+</div>
+
 <!-- ================= QUICK JUMP (⌘K) ================= -->
 <div class="cmdk" id="cmdk" role="dialog" aria-modal="true" aria-label="Jump to a section">
   <div class="cmdk-box">
@@ -3340,6 +3518,12 @@ tr.ev-row.is-open .ev{display:block}
     add('Actions', 'in', 'LinkedIn', '/in/vaibhav-raj-iitb', function () {
       window.open('https://www.linkedin.com/in/vaibhav-raj-iitb/', '_blank', 'noopener');
     });
+    add('Actions', '?', 'Ask about my work', 'Written answers to the usual questions', function () {
+      var ev;
+      try { ev = new CustomEvent('ask:open'); }
+      catch (err) { ev = document.createEvent('CustomEvent'); ev.initCustomEvent('ask:open', true, true, null); }
+      document.dispatchEvent(ev);
+    });
 
     function draw(q) {
       q = (q || '').trim().toLowerCase();
@@ -3510,6 +3694,481 @@ tr.ev-row.is-open .ev{display:block}
     paint();
   })();
 
+})();
+</script>
+
+
+<script>
+/* =====================================================================
+   ASK PANEL
+   Questions are matched against answers written in advance. There is no
+   model here and no network call: nothing to leak, nothing to meter,
+   nothing to rate-limit. If no answer matches, it says so and hands the
+   reader the direct route rather than improvising.
+   ===================================================================== */
+(function () {
+  'use strict';
+
+  var panel = document.getElementById('ask');
+  if (!panel) return;
+
+  var launch = document.getElementById('askLaunch');
+  var closeB = document.getElementById('askClose');
+  var log    = document.getElementById('askLog');
+  var form   = document.getElementById('askForm');
+  var input  = document.getElementById('askInput');
+  var send   = document.getElementById('askSend');
+  var starts = document.getElementById('askStarters');
+
+  function reduced() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  /* ---------------- the answer bank ---------------- */
+  var A = [
+    { id: 'who', t: 'What do you do?',
+      k: ['what do you do', 'who are you', 'about you', 'your role', 'your job', 'introduce',
+          'tell me about yourself', 'current role', 'what is your role'],
+      go: ['#about', 'Read the full bio'],
+      rel: ['compliance', 'exp'],
+      a: '<p>I’m a Product Manager on the <b>Platform team at Kale Logistics</b> in Mumbai — the team that owns the shared AI and data services the other products build on.</p>' +
+         '<p>Most of my job is looking at a process that runs on PDFs, email and tribal knowledge, and working out which part of it software can actually own. Right now most of my time goes to an AI trade-compliance engine.</p>' },
+
+    { id: 'compliance', t: 'The compliance engine',
+      k: ['compliance engine', 'compliance', 'trade compliance', 'sanctions', 'customs check',
+          'screening', 'what are you building', 'current project', 'border', 'regulatory',
+          'customs broker', 'broker'],
+      go: ['#p1', 'See it running'],
+      rel: ['why21', 'verdict'],
+      a: '<p>A shipment has to satisfy about a dozen regulatory bodies before it crosses a border. Today that check is done by hand or skipped — so problems surface once the cargo is already stopped. This runs the whole check <b>before</b> anything reaches an authority.</p>' +
+         '<p><b>21 agents</b> across 5 disciplines, <b>85+</b> sanctions and regulator lists, a full verdict in about 20 seconds because they run in parallel.</p>' +
+         '<p>Worth being straight about the stage: the engine is built and demo-ready, and pilot scoping is in progress. It has not yet run at volume with paying customers, so the accuracy figures on the page are targets rather than measured results.</p>' },
+
+    { id: 'why21', t: 'Why 21 agents, not one model?',
+      k: ['why 21', 'why 21 agents', '21 agents', 'why not one model', 'one model',
+          'not one model', 'instead of one', 'decomposition', 'why so many agents',
+          'many agents', 'architecture', 'why agents', 'monolith', 'single prompt', 'agents'],
+      go: ['#p1', 'See the argument on the page'],
+      rel: ['verdict', 'ai'],
+      a: '<p>The instinct is one large prompt over the whole document set. I argued for decomposition on product grounds, and this is the call I’d defend hardest.</p>' +
+         '<p>A wrong HS code and a missed sanctions match are <b>different incidents with different owners</b>, so collapsing them into one output makes neither fixable. Sanctions lists change daily and tariff schedules annually, so a monolith forces the slowest component to set everyone’s refresh cadence. And you can only set an accuracy target for a check you can isolate.</p>' },
+
+    { id: 'verdict', t: 'Why a "review" state?',
+      k: ['verdict', 'review state', 'clear review match', 'three state', 'false positive',
+          'false negative', 'recall', 'precision', 'audit', 'evidence', 'defensibility'],
+      go: ['#p1', 'Open an agent’s evidence'],
+      rel: ['why21', 'metrics'],
+      a: '<p>In screening, a false negative is a regulatory incident with unbounded cost; a false positive costs an analyst two minutes. So you tune hard toward <b>recall</b> and spend the budget making review cheap — which needs a “review” state that a pass/fail system doesn’t have.</p>' +
+         '<p>Every verdict carries its evidence: which list, which version, which match, what rule applied. A customs broker has to defend that to an auditor eighteen months later. Here the audit trail isn’t bolted on at the end — it’s the product.</p>' },
+
+    { id: 'msw', t: 'Maritime Single Window',
+      k: ['single window', 'maritime', 'msw', 'vessel', 'port klang', 'ports', '20 ports',
+          'canonical model', 'agencies'],
+      go: ['#p2', 'See the derivation map'],
+      rel: ['coverage', 'wrong'],
+      a: '<p>A vessel call touches about a dozen agencies — customs, port authority, immigration, health, marine, the terminal — each with its own form and deadline. Agents used to re-key the same facts into every one.</p>' +
+         '<p>I owned the <b>0→1 build</b>: defined the problem space, designed a canonical vessel-call model that every agency format is derived from instead of building an integration per agency, and anchored the rollout on <b>Port Klang</b> — deliberately the hardest corridor — so the model was proven against the worst agency mix before scaling. It’s live at 20 ports.</p>' },
+
+    { id: 'coverage', t: 'Derivation coverage',
+      k: ['derivation coverage', 'coverage', 'what metric', 'which metric', 'roadmap metric',
+          'north star', 'schema change'],
+      go: ['#p2', 'See coverage per agency'],
+      rel: ['metrics', 'msw'],
+      a: '<p>The metric I actually ran the roadmap on wasn’t “ports live” — that’s a sales number. It was <b>derivation coverage</b>: what share of a new port’s mandatory fields the canonical model can produce without a schema change.</p>' +
+         '<p>That’s the only figure that makes port 21 cheaper than port 1.</p>' },
+
+    { id: 'wrong', t: 'What did you get wrong?',
+      k: ['what did you get wrong', 'got wrong', 'mistake', 'failure', 'failed', 'regret',
+          'what went wrong', 'weakness', 'learned'],
+      go: ['#p2', 'Read it in context'],
+      rel: ['msw', 'verdict'],
+      a: '<p>On the Single Window I <b>underweighted change management</b>. The system was correct well before the agents trusted it — and a correct output a user won’t sign is worth nothing.</p>' +
+         '<p>The fix was mundane: a side-by-side view of the hand-filled form against the generated one, so an agent could verify at a glance instead of redoing the work to check our answer. It should have shipped in the first release.</p>' +
+         '<p>I now treat <b>“how does this user verify the output without redoing it?”</b> as part of the definition of done.</p>' },
+
+    { id: 'docgen', t: 'AI document generation',
+      k: ['document generation', 'documents', 'docgen', 'edocs', 'rag', 'bill of lading',
+          'drafting', 'generate documents', 'document types'],
+      go: ['#p3', 'Try the threshold slider'],
+      rel: ['ninety3', 'ai'],
+      a: '<p>Port operations teams were hand-drafting the same twenty document types from the same scattered source files, thirty minutes at a time. This reads the sources and drafts the document — RAG over the source documents, plus generation against each authority’s mandated format.</p>' +
+         '<p>Around <b>200 documents a day</b>, 20+ types supported. I chose the first document types by volume × manual effort rather than by what was easiest to build.</p>' +
+         '<p>The part that mattered most was <b>per-field confidence and source attribution</b> — that’s what makes a draft reviewable instead of a black box.</p>' },
+
+    { id: 'ninety3', t: 'Is the 93% real?',
+      k: ['93', '93%', 'is that real', 'how did you measure', 'measure', 'baseline',
+          'prove it', 'sceptical', 'skeptical', 'verify the number'],
+      go: ['#p3', 'See the caveat on the page'],
+      rel: ['metrics', 'docgen'],
+      a: '<p>It’s off <b>drafting</b> time, not the whole process — a human still reviews the draft. Thirty minutes to under two.</p>' +
+         '<p>I baselined it per document type and weighted it by the <b>actual daily mix</b> rather than the slowest type. I quote it that way on purpose, because the first thing a sceptical reader should be able to do is check the number.</p>' },
+
+    { id: 'upi', t: 'UPI and payments',
+      k: ['upi', 'payments', 'mindgate', 'hdfc', 'npci', 'reconciliation', 'settlement',
+          'fintech', 'banking', '32 million'],
+      go: ['#p5', 'See the cycle data'],
+      rel: ['tail', 'exp'],
+      a: '<p>Before logistics I spent a year at <b>Mindgate Solutions</b> on the rails behind HDFC Bank’s UPI.</p>' +
+         '<p>I drove requirements and stakeholder alignment for the <b>UPI 6.0</b> rollout against NPCI guidelines, owned reconciliation across <b>8 NPCI settlement cycles</b> at about 32 million transactions a day, and cleared pipeline bottlenecks in SQL and Kafka that took a cycle from over four hours to under 45 minutes.</p>' },
+
+    { id: 'tail', t: 'Designing for the tail',
+      k: ['tail', 'average', 'distribution', 'edge case', 'edge cases', 'outliers',
+          'why the tail', 'long tail'],
+      go: ['#p5', 'See the distribution'],
+      rel: ['upi', 'verdict'],
+      a: '<p>At 32 million transactions a day you don’t manage the average, you manage the <b>tail</b>. Reconciliation never fails on the typical transaction — it fails on the fraction of a percent that arrive late, twice, or against a cycle that has already closed.</p>' +
+         '<p>That year taught me to design for the tail rather than the average, which is most of what I now do with AI outputs. The interesting work is always in the small share of cases where the model is wrong or unsure.</p>' },
+
+    { id: 'ai', t: 'AI and LLM experience',
+      k: ['ai experience', 'llm', 'llms', 'machine learning', 'gpt', 'claude', 'models',
+          'prompt engineering', 'ai products', 'genai', 'nlp', 'ai features'],
+      go: ['#work', 'See all five'],
+      rel: ['why21', 'docgen'],
+      a: '<p><b>Five AI features in production</b> at Kale: document generation, a support assistant, cargo forecasting, payments, and the trade-compliance engine.</p>' +
+         '<p>In practice that means RAG pipelines, LLM-backed extraction and generation, prompt design, and a lot of thinking about what happens when the model is wrong.</p>' +
+         '<p>My strongest view: the accuracy bar isn’t a property of the model. It falls out of <b>what a wrong answer costs</b> in that specific workflow. A model at 95% is excellent for drafting a document and unacceptable for screening a sanctioned party.</p>' },
+
+    { id: 'zeroone', t: '0→1 experience',
+      k: ['0 to 1', '0 1', 'zero to one', 'greenfield', 'from scratch', 'blank page',
+          'built from nothing', 'new product'],
+      go: ['#p2', 'See the project'],
+      rel: ['msw', 'coverage'],
+      a: '<p>The <b>Maritime Single Window</b>, from a blank page to twenty live ports.</p>' +
+         '<p>I defined the problem space, scoped the roadmap, designed the canonical model, ran the requirement sessions with agencies and shipping agents to establish each authority’s mandatory field set, and built the rollout motion so onboarding a new port is a configuration exercise rather than a rebuild.</p>' },
+
+    { id: 'metrics', t: 'How I think about metrics',
+      k: ['metrics', 'measurement', 'kpi', 'okr', 'denominator', 'numbers', 'data',
+          'how do you measure success', 'success metric'],
+      go: ['#w3', 'Read the principle'],
+      rel: ['ninety3', 'coverage'],
+      a: '<p><b>A number without a denominator is a story.</b></p>' +
+         '<p>“93% faster” means nothing until you say across which document types, at what volume, against whose baseline, and what it excludes. I’d rather present a smaller number I can defend in a room full of sceptics than a bigger one that collapses on the second question.</p>' },
+
+    { id: 'principles', t: 'What do you believe?',
+      k: ['principles', 'what do you believe', 'philosophy', 'how do you work', 'beliefs',
+          'opinions', 'product philosophy', 'your approach'],
+      go: ['#how', 'Read all four'],
+      rel: ['metrics', 'verdict'],
+      a: '<p>Four things:</p>' +
+         '<p><b>1.</b> Automate the step people skip, not the step people hate.<br>' +
+         '<b>2.</b> Decide what “wrong” costs before you decide what “good” looks like.<br>' +
+         '<b>3.</b> A number without a denominator is a story.<br>' +
+         '<b>4.</b> Regulated users don’t want autonomy — they want defensibility.</p>' },
+
+    { id: 'edu', t: 'Education',
+      k: ['education', 'college', 'university', 'degree', 'studied', 'iit', 'bombay',
+          'graduate', 'school', 'where did you study'],
+      go: ['#about', 'See the timeline'],
+      rel: ['exp', 'who'],
+      a: '<p><b>IIT Bombay</b>, 2019–23.</p>' +
+         '<p>I came into product sideways — a year at Mindgate Solutions on UPI payments infrastructure, then Kale Logistics from November 2024.</p>' },
+
+    { id: 'exp', t: 'How much experience?',
+      k: ['how much experience', 'years of experience', 'how long', 'experience',
+          'career', 'background', 'history', 'how many years'],
+      go: ['#about', 'See the timeline'],
+      rel: ['who', 'upi'],
+      a: '<p><b>Three-plus years in product.</b></p>' +
+         '<p>Product Analyst on the UPI product team at Mindgate Solutions, 2023–24. Product Manager on the Platform team at Kale Logistics, November 2024 to now.</p>' },
+
+    { id: 'tools', t: 'Toolkit',
+      k: ['tools', 'toolkit', 'stack', 'what tools', 'software', 'sql', 'python', 'figma',
+          'jira', 'technical skills', 'skills'],
+      go: ['#how', 'See the toolkit'],
+      rel: ['ai', 'principles'],
+      a: '<p><b>AI &amp; technical:</b> RAG pipelines, LLMs, prompt engineering, NLP product design, SQL, Python.</p>' +
+         '<p><b>Product:</b> 0→1, roadmapping, PRDs, user research, A/B testing, GTM, metrics &amp; OKRs, Agile.</p>' +
+         '<p><b>Analytics:</b> Mixpanel, Power BI, Qlik Sense, Google Analytics.</p>' +
+         '<p><b>Day to day:</b> Jira, Azure DevOps, Figma, Notion, Excel.</p>' },
+
+    { id: 'looking', t: 'What are you looking for?',
+      k: ['looking for', 'open to', 'hiring', 'job', 'opportunity', 'available', 'role',
+          'are you looking', 'new role', 'relocate', 'location', 'where are you based',
+          'notice period', 'join'],
+      go: ['#contact', 'Get in touch'],
+      rel: ['contact', 'who'],
+      a: '<p>Open to product roles at <b>AI-native startups, large tech, fintech and logistics companies</b>. Based in Mumbai.</p>' +
+         '<p>Happy to talk through anything on this page — particularly the parts I got wrong. For anything specific about timing or terms, best to ask me directly rather than this panel.</p>' },
+
+    { id: 'contact', t: 'How do I reach you?',
+      k: ['contact', 'reach you', 'email', 'get in touch', 'linkedin', 'phone', 'talk',
+          'connect', 'resume', 'cv', 'how do i contact'],
+      go: ['#contact', 'Open the contact block'],
+      rel: ['looking', 'who'],
+      a: '<p>Email is best: <b>vaibhavraj738@gmail.com</b></p>' +
+         '<p>I’m also on LinkedIn at <b>/in/vaibhav-raj-iitb</b>, and the résumé is downloadable from the top of this page.</p>' },
+
+    { id: 'shots', t: 'Are these real screenshots?',
+      k: ['real screenshots', 'screenshots', 'are these real', 'mockup', 'mockups', 'fake',
+          'recreation', 'is this the real product', 'real product', 'real data'],
+      rel: ['compliance', 'wrong'],
+      a: '<p>No — and the page says so under each one.</p>' +
+         '<p>The production systems sit behind customer and port-authority logins, so the interfaces are <b>recreations</b>, rebuilt from the real agent sets, verdict model, form types and report structures. The data inside them is invented.</p>' +
+         '<p>The product decisions they illustrate are not.</p>' },
+
+    { id: 'forecast', t: 'Cargo forecasting',
+      k: ['forecast', 'forecasting', 'warehouse', 'capacity', 'horizon', 'demand',
+          'resource planning'],
+      go: ['#p4', 'Try the horizon control'],
+      rel: ['metrics', 'ai'],
+      a: '<p>Warehouses don’t fail for lack of capacity — they fail because they learn about a spike the morning it arrives.</p>' +
+         '<p>So the product isn’t a better forecast, it’s a <b>longer lead time on a good-enough one</b>. Horizon beats precision, and that reordering changed what we built.</p>' },
+
+    { id: 'support', t: 'The support assistant',
+      k: ['support', 'tickets', 'support assistant', 'deflection', 'helpdesk',
+          'customer support', 'tier 1', 'ticket volume'],
+      go: ['#p4', 'See it listed'],
+      rel: ['ai', 'metrics'],
+      a: '<p>Tier-1 ticket volume went from around <b>250 a month to under 20</b>.</p>' +
+         '<p>But deflection was the headline, not the point. The useful output was the ranked list of what the interface had failed to make obvious, which went into the roadmap. The volume wasn’t a support problem — it was a product-clarity problem wearing a support costume.</p>' },
+
+    { id: 'kale', t: 'About Kale Logistics',
+      k: ['kale', 'kale logistics', 'your company', 'where do you work', 'employer',
+          'what does kale do', 'platform team'],
+      go: ['#about', 'See the employer card'],
+      rel: ['who', 'compliance'],
+      a: '<p><b>Kale Logistics Solutions</b> builds Port and Cargo Community Systems used by ports, airports and trade communities worldwide.</p>' +
+         '<p>I’m a Product Manager on the <b>Platform team</b>, which owns the shared AI and data services the rest of the products build on.</p>' },
+
+    { id: 'bot', t: 'Is this an AI bot?',
+      k: ['bot', 'chatbot', 'ai bot', 'are you a bot', 'is this ai', 'is this an ai',
+          'is this a bot', 'chatgpt', 'are you real', 'who am i talking to',
+          'is this automated', 'are you human', 'how does this work', 'generated',
+          'who wrote this', 'is this a model'],
+      rel: ['ai', 'verdict'],
+      a: '<p>No, and deliberately.</p>' +
+         '<p>Every answer here was <b>written by me in advance</b> and matched to your question by keyword. There’s no model generating text about my career.</p>' +
+         '<p>That’s an application of my own second principle: decide what “wrong” costs first. A plausible-sounding wrong answer about my own work, given to someone deciding whether to hire me, is an expensive failure — so I didn’t build the thing that can produce one. If I haven’t written an answer, this panel says so rather than improvising.</p>' }
+  ];
+
+  var STARTERS = ['who', 'why21', 'wrong', 'shots', 'looking'];
+  var byId = {};
+  A.forEach(function (e) { byId[e.id] = e; });
+
+  /* ---------------- matching ---------------- */
+  function norm(s) {
+    return (' ' + String(s).toLowerCase().replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim() + ' ');
+  }
+
+  function tokens(q) {
+    var set = {}, parts = q.trim().split(' ');
+    parts.forEach(function (w) {
+      if (!w) return;
+      set[w] = true;
+      if (w.length > 3 && w.charAt(w.length - 1) === 's') set[w.slice(0, -1)] = true;
+    });
+    return set;
+  }
+
+  function score(entry, q, tok) {
+    var sc = 0;
+    entry.k.forEach(function (kw) {
+      var words = kw.split(' ');
+      if (words.length > 1) {
+        // a phrase match is strong evidence, and longer phrases more so
+        if (q.indexOf(' ' + kw + ' ') > -1 || q.indexOf(kw) > -1) sc += words.length * 3;
+      } else if (tok[kw]) {
+        sc += 3;
+      }
+    });
+    // the written title counts too, lightly
+    norm(entry.t).trim().split(' ').forEach(function (w) {
+      if (w.length > 3 && tok[w]) sc += 1;
+    });
+    // "why ..." is asking for a reason; the answers that give one say so in their title
+    if (tok['why'] && entry.t.slice(0, 3).toLowerCase() === 'why') sc += 3;
+    return sc;
+  }
+
+  function match(raw) {
+    var q = norm(raw), tok = tokens(q), best = null, bestScore = 0;
+    A.forEach(function (e) {
+      var s = score(e, q, tok);
+      if (s > bestScore) { bestScore = s; best = e; }
+    });
+    return bestScore >= 3 ? best : null;
+  }
+
+  /* ---------------- rendering ---------------- */
+  function el(tag, cls, html) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (html != null) n.innerHTML = html;
+    return n;
+  }
+
+  function scrollDown() {
+    log.scrollTop = log.scrollHeight;
+  }
+
+  // An answer can be taller than the panel. Pinning the log to the bottom would
+  // show it already scrolled past its own first line, so bring the top of the
+  // new answer into view instead and let the reader scroll down through it.
+  function scrollToStartOf(row) {
+    var top = row.getBoundingClientRect().top - log.getBoundingClientRect().top + log.scrollTop;
+    log.scrollTop = Math.min(top - 8, log.scrollHeight - log.clientHeight);
+  }
+
+  var lastAsked = null;
+
+  function addMine(text) {
+    var row = el('div', 'ask-row me');
+    var b = el('div', 'ask-b');
+    b.textContent = text;                       // never innerHTML: this is reader input
+    row.appendChild(b);
+    log.appendChild(row);
+    scrollDown();
+    return row;
+  }
+
+  function addTheirs(html, go, rel) {
+    var row = el('div', 'ask-row vr');
+    row.appendChild(el('span', 'ask-dot', 'VR'));
+    var wrap = el('div', '', '');
+    wrap.style.minWidth = '0';
+    var b = el('div', 'ask-b', html);
+
+    if (go) {
+      var j = el('button', 'ask-jump', go[1] + ' →');
+      j.type = 'button';
+      j.addEventListener('click', function () { jump(go[0]); });
+      b.appendChild(j);
+    }
+    wrap.appendChild(b);
+    row.appendChild(wrap);
+    log.appendChild(row);
+
+    if (rel && rel.length) {
+      var chips = el('div', 'ask-chips');
+      rel.forEach(function (id) {
+        var e = byId[id];
+        if (!e) return;
+        chips.appendChild(chip(e));
+      });
+      if (chips.children.length) log.appendChild(chips);
+    }
+    scrollToStartOf(lastAsked || row);
+  }
+
+  function chip(entry) {
+    var c = el('button', 'ask-chip', entry.t);
+    c.type = 'button';
+    c.addEventListener('click', function () { ask(entry.t, entry); });
+    return c;
+  }
+
+  function jump(hash) {
+    close();
+    window.setTimeout(function () {
+      var a = document.createElement('a');
+      a.setAttribute('href', hash);
+      document.body.appendChild(a);
+      a.click();                                 // reuses the page's own deep-link handler
+      document.body.removeChild(a);
+    }, 60);
+  }
+
+  var thinking = null;
+
+  function showThinking() {
+    var row = el('div', 'ask-row vr');
+    row.appendChild(el('span', 'ask-dot', 'VR'));
+    var b = el('div', 'ask-b', '');
+    b.style.padding = '0';
+    b.appendChild(el('div', 'ask-typing', '<i></i><i></i><i></i>'));
+    row.appendChild(b);
+    log.appendChild(row);
+    scrollDown();
+    thinking = row;
+  }
+
+  function clearThinking() {
+    if (thinking && thinking.parentNode) thinking.parentNode.removeChild(thinking);
+    thinking = null;
+  }
+
+  function miss() {
+    var row = el('div', 'ask-row vr');
+    row.appendChild(el('span', 'ask-dot', 'VR'));
+    row.appendChild(el('div', 'ask-b',
+      '<p>I haven’t written an answer for that one, and I’d rather say so than guess.</p>' +
+      '<p>Ask me directly — <b>vaibhavraj738@gmail.com</b> — or try one of these:</p>'));
+    log.appendChild(row);
+
+    var chips = el('div', 'ask-chips');
+    ['who', 'compliance', 'wrong', 'contact'].forEach(function (id) {
+      if (byId[id]) chips.appendChild(chip(byId[id]));
+    });
+    log.appendChild(chips);
+    scrollToStartOf(lastAsked || row);
+  }
+
+  function ask(text, forced) {
+    lastAsked = addMine(text);
+    if (starts) starts.hidden = true;
+
+    var hit = forced || match(text);
+    var wait = reduced() ? 0 : 320;
+
+    if (wait) showThinking();
+    window.setTimeout(function () {
+      clearThinking();
+      if (hit) addTheirs(hit.a, hit.go, hit.rel);
+      else miss();
+    }, wait);
+  }
+
+  /* ---------------- open / close ---------------- */
+  var lastFocus = null;
+
+  function open() {
+    lastFocus = document.activeElement;
+    panel.classList.add('on');
+    if (launch) launch.hidden = true;
+    input.focus();
+    scrollDown();
+  }
+
+  function close() {
+    panel.classList.remove('on');
+    if (launch) launch.hidden = false;
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  if (launch) launch.addEventListener('click', open);
+  if (closeB) closeB.addEventListener('click', close);
+  document.addEventListener('ask:open', open);
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && panel.classList.contains('on')) { e.preventDefault(); close(); }
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var v = input.value.trim();
+    if (!v) return;
+    input.value = '';
+    if (send) send.disabled = true;
+    ask(v);
+  });
+
+  input.addEventListener('input', function () {
+    if (send) send.disabled = !input.value.trim();
+  });
+
+  /* the opening message and the starter questions */
+  addTheirs(
+    '<p>Ask me anything about the work on this page — what I did, why I made a call, ' +
+    'or what I got wrong.</p>' +
+    '<p>These answers are written, not generated, so they’re exactly what I’d tell you ' +
+    'in a room.</p>', null, null);
+
+  if (starts) {
+    STARTERS.forEach(function (id) {
+      if (byId[id]) starts.appendChild(chip(byId[id]));
+    });
+  }
+  if (send) send.disabled = true;
 })();
 </script>
 
