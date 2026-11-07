@@ -1,7 +1,12 @@
 # Vaibhav Raj — Product Portfolio
 
-Single-file static site. `index.html` is the whole thing — inline CSS, no JavaScript, no build step.
-Fonts load from Google Fonts. Drop it on GitHub Pages and it works.
+Single-file static site. `index.html` is the whole thing — inline CSS, inline JavaScript, no build step,
+no dependencies. Fonts load from Google Fonts. Drop it on GitHub Pages and it works.
+
+The product snapshots are not pictures. Each one runs: you can replay the compliance engine,
+open the evidence behind any single check, drag a confidence threshold, shorten a forecast
+horizon until the warning disappears. The interaction is the argument — see
+[the interactive layer](#the-interactive-layer).
 
 Design takes its cues from zapier.com: warm off-white ground, orange accent, geometric sans,
 large rounded product shots, generous spacing. Light theme only, by choice.
@@ -21,10 +26,67 @@ README.md             this file
 | About | **Who I am · Where I work · Background** — bio, employer card, timeline |
 | Work | 5 entries. Three have full interface snapshots |
 | How I work | Three tabs — **Principles** (four operating beliefs), **UX thinking** (a six-step walkthrough of one decision), **Toolkit** |
-| Contact | Dark block with email, phone, LinkedIn, résumé |
+| Contact | Dark block with email, phone, LinkedIn, résumé. Email and phone have copy-to-clipboard buttons |
+| Everywhere | Scroll progress bar and scroll-spy in the nav, a ⌘K / Ctrl-K quick-jump palette, count-up stats, back-to-top |
 
 Each project follows the same shape: **What I did** → **What it's achieved so far** → **product
 snapshot** → (for the two big ones) **the call I'd defend**.
+
+---
+
+## The interactive layer
+
+Five product snapshots, each one playable. Every control is built from the tokens already in
+`:root` — no new colours, no new fonts — so the page looks the same standing still.
+
+| Snapshot | What moves | What it is arguing |
+|---|---|---|
+| **01 Trade Compliance Engine** | **Replay the run** streams all 21 agents in, with a live clock and progress meter. Filter by verdict (All 21 / Clear 19 / Review 2). Click any agent to open the evidence it retained — authority, list version, matched entity, score, and the rule applied | Decomposition and defensibility. The evidence drawer *is* principle 04: a broker can show an auditor which list, which version, which match |
+| **02 Maritime Single Window** | Click an agency to light up which canonical fields its form derives (green) and which it has to capture on its own (amber), with the derivation coverage computed per agency. The **Canonical model: Off** toggle shows the counterfactual: 47 field entries become 282 | Why the model came before the integrations. Coverage is the number that makes port 21 cheaper than port 1 |
+| **03 AI Document Generation** | Eight document types, each with its own field set and confidence scores. Click a field to see which source documents it came from, highlighted in the sources row. Drag the **review threshold** and watch fields flip to human review | Principle 02, made draggable. One number decides how much work the model hands back, and that number comes from what "wrong" costs |
+| **04 Cargo forecasting** | Switch the horizon between 3, 7 and 14 days. The confidence band tightens to ±4%, the bars beyond the horizon ghost out — and the 23 Oct breach disappears from view entirely | Horizon beats precision. The short horizon has the better number and is useless |
+| **05 UPI reconciliation** | Step through all eight NPCI cycles (C6–C8 have not opened yet and say so). Switch the latency histogram between **Average** and **The tail** | The tail is the product. On the average scale the 0.013% that decides the cycle is invisible |
+
+**Honesty note.** These are interface *recreations*, and making them move makes them feel more real
+than they are. Each caption now says "interactive recreation" and says what is simulated — the 18.4s
+compliance clock is explicitly played back faster than real time. The data is still invented. Keep
+that labelling.
+
+### Global behaviour
+
+- **⌘K / Ctrl-K** (or `/`) opens a quick-jump palette: every section, project, principle and
+  walkthrough step, type-to-filter, arrow keys, Enter. It routes through the page's own deep-link
+  handler, so jumping to `#ux-4` still opens the right tab *and* the right step.
+- **Scroll progress** fills the hairline under the nav; the current section underlines itself.
+- **Stat tiles count up** once when they scroll into view. Only the leading number animates — the
+  `~`, `#`, `+` and the `<small>` suffix are left exactly as written.
+- **Copy buttons** on the email and phone, with a toast. Falls back to a hidden textarea where the
+  Clipboard API is refused.
+
+### How it degrades
+
+- `prefers-reduced-motion: reduce` — no reveals, no count-up, and the compliance replay resolves
+  to its finished state in one step rather than streaming.
+- **No JavaScript** — the `.js` class is set by a one-line inline script in `<head>`, and every
+  reveal rule is gated on it, so the page renders fully visible and fully readable. The snapshots
+  show their default state, which is the same static content the page had before.
+- **A backgrounded tab** — `requestAnimationFrame` stops when the page is hidden, so the replay
+  carries a wall-clock watchdog that settles every agent and tidies up regardless.
+- Each module is its own IIFE that returns early if its nodes are missing, so deleting a snapshot
+  from the HTML cannot break the rest of the page.
+
+### Where to edit it
+
+Everything new lives in two places, both inside `index.html`:
+
+- the **`INTERACTIVE LAYER`** block at the end of the `<style>` element — controls, drawers,
+  palette, toast, back-to-top;
+- the **`INTERACTIVE LAYER`** `<script>` at the end of `<body>`, numbered 1–10 by concern.
+
+Data that drives a snapshot sits next to it: the 21 agents and their evidence are rows in the
+`#agentRows` table body, the agency field maps are `data-d` / `data-o` attributes on each
+`.ag-card`, the forecast modes are the `MODES` object, the settlement cycles are the `C` array,
+and the eight document types are a JSON island in `<script id="docData">`.
 
 ---
 
@@ -67,12 +129,11 @@ your confirmation — an interviewer will ask follow-ups on every one:
 Replace anything that isn't how it actually went. Your real reasoning will be more specific than
 mine, and specific is the whole point.
 
-### 4. The résumé PDF still says something different
+### 4. The résumé PDF and the site now agree
 
-The site now says **Birla Institute** (three places: the bio, the timeline, the footer). The
-`Vaibhav_Raj_PM.pdf` linked from the hero and the contact block still says *Indian Institute of
-Technology, Bombay — Biomedical Engineering*. Anyone who clicks "Download résumé" sees both.
-Update the PDF, or the site will contradict itself on its own page.
+Resolved. The site says **IIT Bombay** (the bio, the timeline, the footer) and so does
+`Vaibhav_Raj_PM.pdf`. If you edit one, edit the other — anyone who clicks "Download résumé"
+sees both.
 
 ### 5. Quick checks
 
@@ -87,6 +148,13 @@ Update the PDF, or the site will contradict itself on its own page.
       and replace the monogram in the `.avatar` div with the commented-out `<img>` tag right above it.
 - [ ] **Contact details** use the résumé versions (`vaibhavraj738@gmail.com` / +91 85215 88880).
       Your old site had different ones — make résumé, LinkedIn and site agree.
+- [ ] **The snapshot data** — the interactive layer added more of it: 13 further agents with
+      their evidence, seven more document types, eight settlement cycles. All invented but
+      plausible. Check nothing accidentally resembles a real customer record, and that the
+      agent names and document types match what you would actually claim in an interview.
+- [ ] **21 agents** — the snapshot now lists all 21 by name, split 8 party screening / 3
+      classification / 5 cargo & controls / 4 filing-cost-duty / 1 sustainability. Your deck said
+      19. Make the deck, the résumé and this page agree.
 - [ ] **Kale description** — I described the Platform team as owning "shared AI and data services
       the rest of the products build on." Correct it if that's not the remit.
 

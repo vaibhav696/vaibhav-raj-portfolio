@@ -574,6 +574,389 @@ footer{
   }
 }
 @keyframes heroRise{to{opacity:1;transform:none}}
+
+/* =====================================================================
+   INTERACTIVE LAYER
+   Everything below adds behaviour to what was already here. It reuses the
+   existing tokens — no new colours, no new fonts, no new radii — so an
+   interactive control looks like it was always part of the page.
+   ===================================================================== */
+
+/* ---------- scroll progress + scroll spy ---------- */
+.nav-prog{
+  position:absolute;left:0;right:0;bottom:-1px;height:2px;
+  background:var(--accent);transform:scaleX(0);transform-origin:0 50%;
+  will-change:transform;
+}
+@media (prefers-reduced-motion: no-preference){
+  .nav-prog{transition:transform .08s linear}
+}
+.nav-links a[aria-current="true"]{color:var(--accent)}
+.nav-item > a{position:relative}
+@media (min-width:761px){
+  .nav-item > a::after{
+    content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;border-radius:2px;
+    background:var(--accent);transform:scaleX(0);transform-origin:50% 50%;opacity:0;
+  }
+  @media (prefers-reduced-motion: no-preference){
+    .nav-item > a::after{transition:transform .22s var(--ease),opacity .22s var(--ease)}
+  }
+  .nav-item > a[aria-current="true"]::after{transform:scaleX(1);opacity:1}
+}
+
+/* ---------- shared control vocabulary for the snapshots ---------- */
+.sc{
+  display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;
+  padding:.7rem .85rem;border-bottom:1px solid var(--rule);
+  background:#FCFAF7;
+}
+.sc-l{
+  font-family:var(--f-mono);font-size:.63rem;font-weight:500;letter-spacing:.11em;
+  text-transform:uppercase;color:#9A928C;margin-right:.1rem;
+}
+.sc-btn{
+  appearance:none;display:inline-flex;align-items:center;gap:.42rem;
+  font-family:var(--f);font-size:.78rem;font-weight:700;letter-spacing:-.005em;
+  padding:.38rem .8rem;border-radius:100px;border:1.5px solid var(--accent);
+  background:var(--accent);color:#fff;cursor:pointer;white-space:nowrap;
+  transition:background .15s,border-color .15s,color .15s,opacity .15s;
+}
+.sc-btn:hover:not(:disabled){background:var(--accent-dark);border-color:var(--accent-dark)}
+.sc-btn:disabled{opacity:.5;cursor:default}
+.sc-btn.ghost{background:transparent;color:var(--accent)}
+.sc-btn.ghost:hover:not(:disabled){background:var(--accent-wash);border-color:var(--accent)}
+.sc-btn .spin{
+  width:11px;height:11px;border-radius:50%;flex:none;
+  border:2px solid currentColor;border-top-color:transparent;display:none;
+}
+.sc-btn.busy .spin{display:block;animation:scspin .7s linear infinite}
+@keyframes scspin{to{transform:rotate(360deg)}}
+
+/* segmented control + filter chips */
+.sc-seg{display:inline-flex;background:#F1EDE7;border-radius:100px;padding:2px;gap:2px}
+.sc-seg button{
+  appearance:none;border:0;background:transparent;cursor:pointer;
+  font-family:var(--f);font-size:.74rem;font-weight:600;color:#6E655F;
+  padding:.3rem .72rem;border-radius:100px;white-space:nowrap;
+  transition:background .15s,color .15s,box-shadow .15s;
+}
+.sc-seg button:hover{color:var(--ink)}
+.sc-seg button[aria-pressed="true"],.sc-seg button[aria-selected="true"]{
+  background:#fff;color:var(--ink);font-weight:700;box-shadow:var(--shadow-sm);
+}
+.sc-seg button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+
+.sc-chip{
+  appearance:none;cursor:pointer;font-family:var(--f);font-size:.7rem;font-weight:700;
+  letter-spacing:.03em;padding:.26rem .62rem;border-radius:100px;
+  border:1px solid var(--rule);background:#fff;color:#6E655F;white-space:nowrap;
+  display:inline-flex;align-items:center;gap:.35rem;
+  transition:background .15s,color .15s,border-color .15s;
+}
+.sc-chip:hover{border-color:var(--ink);color:var(--ink)}
+.sc-chip b{font-family:var(--f-mono);font-size:.66rem;font-weight:600;opacity:.72}
+.sc-chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.sc-chip[aria-pressed="true"] b{opacity:.78}
+.sc-chip.k-clear[aria-pressed="true"]{background:var(--clear);border-color:var(--clear)}
+.sc-chip.k-review[aria-pressed="true"]{background:var(--review);border-color:var(--review)}
+.sc-chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* range slider, styled to the page rather than the OS */
+.sc-range{
+  appearance:none;-webkit-appearance:none;background:transparent;
+  width:132px;height:18px;cursor:pointer;margin:0;
+}
+.sc-range::-webkit-slider-runnable-track{height:4px;border-radius:2px;background:#E2DBD2}
+.sc-range::-moz-range-track{height:4px;border-radius:2px;background:#E2DBD2}
+.sc-range::-webkit-slider-thumb{
+  -webkit-appearance:none;width:15px;height:15px;border-radius:50%;background:var(--accent);
+  border:2px solid #fff;box-shadow:var(--shadow-sm);margin-top:-5.5px;
+}
+.sc-range::-moz-range-thumb{
+  width:15px;height:15px;border-radius:50%;background:var(--accent);
+  border:2px solid #fff;box-shadow:var(--shadow-sm);
+}
+.sc-range:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:100px}
+.sc-val{font-family:var(--f-mono);font-size:.72rem;font-weight:600;color:var(--ink);min-width:3.4rem}
+
+/* the "this one moves" badge, so a reader knows to touch it */
+.live-badge{
+  display:inline-flex;align-items:center;gap:.4rem;margin-left:auto;flex:none;
+  font-family:var(--f-mono);font-size:.62rem;font-weight:500;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--accent);
+}
+.live-badge i{
+  width:6px;height:6px;border-radius:50%;background:var(--accent);flex:none;display:block;
+}
+@media (prefers-reduced-motion: no-preference){
+  .live-badge i{animation:lbPulse 2.4s var(--ease) infinite}
+}
+@keyframes lbPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.72)}}
+
+/* [hidden] has to win over the display values set below it */
+[hidden]{display:none!important}
+
+/* ---------- 01 · compliance run ---------- */
+.run-meter{
+  display:flex;align-items:center;gap:.7rem;margin-top:.9rem;
+  padding:.62rem .9rem;border-radius:var(--r);
+  background:var(--bg-warm);border:1px solid var(--rule);
+}
+.run-meter .rm-t{font-size:.8rem;font-weight:600;color:var(--ink-2);white-space:nowrap}
+.run-meter .rm-t b{font-family:var(--f-mono);color:var(--ink);font-weight:600}
+.rm-track{flex:1;height:5px;border-radius:3px;background:#E6DFD6;overflow:hidden;min-width:60px}
+.rm-fill{height:100%;width:0;border-radius:3px;background:var(--accent)}
+@media (prefers-reduced-motion: no-preference){ .rm-fill{transition:width .32s var(--ease)} }
+.rm-clock{font-family:var(--f-mono);font-size:.74rem;color:var(--muted);white-space:nowrap}
+
+.segbar i{transition:background .2s ease,opacity .2s ease}
+.segbar i.idle{background:#DCD5CC;opacity:.6}
+
+/* agent rows: queued → running → settled */
+.tbl tr.ag-row{cursor:pointer}
+.tbl tr.ag-row > td{transition:background .18s ease}
+.tbl tr.ag-row:hover > td{background:#FCFAF7}
+.tbl tr.ag-row.is-open > td{background:var(--accent-wash)}
+.tbl tr.ag-row.queued > td{opacity:.34}
+.tbl tr.ag-row.running > td{opacity:1;background:var(--accent-wash)}
+@media (prefers-reduced-motion: no-preference){
+  .tbl tr.ag-row.settled > td{animation:agSettle .5s var(--ease)}
+}
+@keyframes agSettle{from{background:var(--accent-wash)}to{background:transparent}}
+.tbl td.ag{position:relative;padding-left:1.1rem}
+.ag-caret{
+  position:absolute;left:0;top:50%;margin-top:-3px;width:0;height:0;
+  border-top:3.5px solid transparent;border-bottom:3.5px solid transparent;
+  border-left:4.5px solid #BDB4AC;transition:transform .18s ease;
+}
+.ag-row.is-open .ag-caret{transform:rotate(90deg);border-left-color:var(--accent)}
+.ag-row.queued .ag-caret{opacity:0}
+.dots{display:inline-flex;gap:3px;vertical-align:middle}
+.dots i{width:4px;height:4px;border-radius:50%;background:var(--accent);display:block;opacity:.3}
+@media (prefers-reduced-motion: no-preference){
+  .dots i{animation:dotPulse 1s ease-in-out infinite}
+  .dots i:nth-child(2){animation-delay:.15s}
+  .dots i:nth-child(3){animation-delay:.3s}
+}
+@keyframes dotPulse{0%,100%{opacity:.25}50%{opacity:1}}
+
+/* the evidence drawer — this is the defensibility argument, made literal */
+tr.ev-row > td{padding:0!important;border-bottom:1px solid var(--rule-2)!important;background:#FCFAF7}
+.ev{display:none;padding:.85rem 1rem .95rem 1.1rem}
+tr.ev-row.is-open .ev{display:block}
+.ev-hd{
+  font-family:var(--f-mono);font-size:.6rem;letter-spacing:.11em;text-transform:uppercase;
+  color:#9A928C;margin-bottom:.55rem;
+}
+.ev-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(142px,1fr));gap:.5rem .9rem}
+.ev-k{font-family:var(--f-mono);font-size:.6rem;letter-spacing:.07em;text-transform:uppercase;color:#9A928C}
+.ev-v{font-size:.76rem;font-weight:600;color:var(--ink);margin-top:.1rem;line-height:1.4}
+.ev-v.mono{font-family:var(--f-mono);font-weight:500;font-size:.73rem}
+.ev-note{
+  margin-top:.7rem;padding-top:.6rem;border-top:1px solid var(--rule-2);
+  font-size:.76rem;color:var(--ink-2);line-height:1.55;
+}
+.ev-note b{color:var(--ink)}
+
+/* ---------- 02 · derivation map ---------- */
+.ag-card{cursor:pointer;transition:border-color .16s ease,box-shadow .16s ease,transform .16s ease}
+.ag-card:hover{border-color:#C9BFB4}
+.ag-card[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-wash)}
+.ag-card:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.map{
+  margin-top:.9rem;border:1px solid var(--rule);border-radius:var(--r);
+  background:#FCFAF7;padding:.85rem .95rem;
+}
+.map-hd{display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap;margin-bottom:.7rem}
+.map-hd b{font-size:.82rem;font-weight:700;color:var(--ink)}
+.map-hd span{font-family:var(--f-mono);font-size:.68rem;color:var(--muted)}
+.map-fields{display:flex;flex-wrap:wrap;gap:.3rem}
+.ff{
+  font-family:var(--f-mono);font-size:.64rem;padding:.2rem .5rem;border-radius:var(--r-sm);
+  background:#F1EDE7;color:#7A726D;border:1px solid transparent;white-space:nowrap;
+}
+@media (prefers-reduced-motion: no-preference){ .ff{transition:background .18s ease,color .18s ease,border-color .18s ease} }
+.ff.derived{background:var(--clear-bg);color:#0B6A44;border-color:#CDE6D9}
+.ff.own{background:var(--review-bg);color:#7A4B05;border-color:#F0DCB4}
+.map-key{display:flex;gap:1rem;flex-wrap:wrap;margin-top:.7rem;font-size:.68rem;color:var(--muted)}
+.map-key span{display:inline-flex;align-items:center;gap:.3rem}
+.map-key i{width:8px;height:8px;border-radius:2px;display:block;flex:none}
+.map-key i.d{background:var(--clear-bg);border:1px solid #CDE6D9}
+.map-key i.o{background:var(--review-bg);border:1px solid #F0DCB4}
+.map-key i.n{background:#F1EDE7;border:1px solid var(--rule)}
+
+/* the counterfactual: what re-keying by hand costs */
+.rekey{
+  display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;margin-top:.9rem;
+  padding:.65rem .9rem;border-radius:var(--r);border:1px solid var(--rule);background:#fff;
+}
+.rekey-n{font-family:var(--f-mono);font-size:1.02rem;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+.rekey-l{font-size:.76rem;color:var(--muted);line-height:1.4}
+.rekey.hand{background:var(--match-bg);border-color:#F3C9BF}
+.rekey.hand .rekey-n{color:var(--match)}
+
+/* ---------- 03 · doc generation ---------- */
+.split-l span{cursor:pointer;transition:background .15s ease,color .15s ease}
+.split-l span:hover{background:#F1EDE7;color:var(--ink)}
+.split-l span:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.fld{cursor:pointer;transition:background .15s ease}
+.fld:hover{background:#FCFAF7}
+.fld.is-open{background:var(--accent-wash)}
+.fld.flagged .fld-v{color:var(--review)}
+.fld-src{
+  grid-column:1/-1;display:none;padding:.5rem .1rem .3rem;
+  font-size:.72rem;color:var(--ink-2);line-height:1.5;
+}
+.fld.is-open .fld-src{display:block}
+.fld-src b{font-family:var(--f-mono);font-size:.66rem;color:var(--accent);font-weight:600}
+.src span.hot{background:var(--accent-wash);color:var(--accent);font-weight:600}
+.thr-note{font-size:.72rem;color:var(--muted);margin-left:.1rem}
+.thr-note b{color:var(--ink);font-family:var(--f-mono);font-weight:600}
+
+/* ---------- 04 · forecast horizon ---------- */
+.fc-bar{position:relative}
+@media (prefers-reduced-motion: no-preference){
+  .fc-bar{transition:height .45s var(--ease),background .25s ease,border-color .25s ease}
+  .fc-band{transition:opacity .25s ease}
+}
+.fc-band{
+  position:absolute;left:0;right:0;background:rgba(43,92,184,.09);
+  border-top:1px dashed rgba(43,92,184,.4);border-bottom:1px dashed rgba(43,92,184,.4);
+  pointer-events:none;
+}
+.fc-plot{position:relative}
+.fc-bar.faded{opacity:.22}
+.fc-x span.faded{opacity:.3}
+.kpi b{transition:color .2s ease}
+.kpi b.hot{color:var(--accent)}
+
+/* ---------- 05 · settlement cycles ---------- */
+.cyc div{cursor:pointer;transition:background .16s ease,border-color .16s ease,transform .16s ease}
+.cyc div:hover{border-color:#C9BFB4}
+.cyc div[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-wash)}
+.cyc div:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tail i{transition:height .4s var(--ease),background .25s ease}
+
+/* ---------- animated counters ---------- */
+.tile-n,.kpi b{font-variant-numeric:tabular-nums}
+
+/* ---------- command palette ---------- */
+.cmdk-open{overflow:hidden}
+.cmdk{
+  position:fixed;inset:0;z-index:200;display:none;
+  align-items:flex-start;justify-content:center;padding:12vh 20px 20px;
+  background:rgba(28,26,23,.42);backdrop-filter:blur(3px);
+}
+.cmdk.on{display:flex}
+.cmdk-box{
+  width:100%;max-width:560px;background:var(--surface);border:1px solid var(--rule);
+  border-radius:var(--r-lg);box-shadow:var(--shadow-lg);overflow:hidden;
+  display:flex;flex-direction:column;max-height:70vh;
+}
+@media (prefers-reduced-motion: no-preference){
+  .cmdk.on .cmdk-box{animation:cmdkIn .22s var(--ease)}
+}
+@keyframes cmdkIn{from{opacity:0;transform:translateY(-10px) scale(.985)}to{opacity:1;transform:none}}
+.cmdk-top{display:flex;align-items:center;gap:.6rem;padding:.2rem .95rem;border-bottom:1px solid var(--rule-2)}
+.cmdk-ico{width:14px;height:14px;flex:none;border:1.8px solid var(--muted);border-radius:50%;position:relative}
+.cmdk-ico::after{content:"";position:absolute;right:-4px;bottom:-3px;width:6px;height:1.8px;background:var(--muted);transform:rotate(45deg)}
+.cmdk-input{
+  flex:1;appearance:none;border:0;outline:0;background:transparent;
+  font-family:var(--f);font-size:1rem;font-weight:500;color:var(--ink);padding:.95rem 0;
+}
+.cmdk-input::placeholder{color:#A79E97}
+.cmdk-esc{
+  font-family:var(--f-mono);font-size:.64rem;color:var(--muted);border:1px solid var(--rule);
+  border-radius:var(--r-sm);padding:.16rem .4rem;flex:none;
+}
+.cmdk-list{overflow-y:auto;padding:.4rem;min-height:0}
+.cmdk-gh{
+  font-family:var(--f-mono);font-size:.6rem;font-weight:500;letter-spacing:.12em;
+  text-transform:uppercase;color:#9A928C;padding:.6rem .7rem .35rem;
+}
+.cmdk-item{
+  display:flex;align-items:center;gap:.7rem;width:100%;text-align:left;
+  appearance:none;border:0;background:transparent;cursor:pointer;
+  padding:.56rem .7rem;border-radius:var(--r);font-family:var(--f);
+}
+.cmdk-item[aria-selected="true"]{background:var(--accent-wash)}
+.cmdk-n{
+  font-family:var(--f-mono);font-size:.68rem;font-weight:600;color:var(--accent);
+  width:1.6rem;flex:none;
+}
+.cmdk-t{display:block;font-size:.9rem;font-weight:700;letter-spacing:-.014em;color:var(--ink);line-height:1.3}
+.cmdk-s{display:block;font-size:.76rem;color:var(--muted);line-height:1.35;margin-top:.08rem}
+.cmdk-empty{padding:1.4rem .8rem;text-align:center;color:var(--muted);font-size:.88rem}
+.cmdk-foot{
+  display:flex;gap:1rem;flex-wrap:wrap;padding:.55rem .95rem;border-top:1px solid var(--rule-2);
+  background:#FCFAF7;font-family:var(--f-mono);font-size:.63rem;color:var(--muted);
+}
+.cmdk-foot kbd{
+  font-family:var(--f-mono);font-size:.63rem;background:#fff;border:1px solid var(--rule);
+  border-radius:4px;padding:.04rem .3rem;color:var(--ink-2);
+}
+
+/* the hint that the palette exists at all */
+.kbd-hint{
+  display:none;align-items:center;gap:.4rem;appearance:none;cursor:pointer;
+  background:transparent;border:1px solid var(--rule);border-radius:100px;
+  padding:.3rem .62rem;font-family:var(--f-mono);font-size:.68rem;color:var(--muted);
+  transition:border-color .15s,color .15s;
+}
+.kbd-hint:hover{border-color:var(--ink);color:var(--ink)}
+@media (min-width:980px){ .kbd-hint{display:inline-flex} }
+
+/* ---------- copy-to-clipboard + toast ---------- */
+.crow button.cp{
+  appearance:none;cursor:pointer;background:transparent;border:0;padding:0 0 0 .1rem;
+  font-family:var(--f-mono);font-size:.7rem;color:#8E857E;
+  transition:color .15s ease;
+}
+.crow button.cp:hover{color:#fff}
+.crow button.cp:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px}
+.toast{
+  position:fixed;left:50%;bottom:26px;transform:translate(-50%,14px);
+  z-index:220;background:var(--bg-ink);color:#F5F1EC;border-radius:100px;
+  padding:.58rem 1.15rem;font-size:.86rem;font-weight:600;box-shadow:var(--shadow-lg);
+  opacity:0;pointer-events:none;
+}
+@media (prefers-reduced-motion: no-preference){
+  .toast{transition:opacity .22s var(--ease),transform .22s var(--ease)}
+}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- back to top ---------- */
+.totop{
+  position:fixed;right:20px;bottom:20px;z-index:70;
+  width:42px;height:42px;border-radius:50%;display:grid;place-items:center;
+  background:var(--surface);border:1px solid var(--rule);box-shadow:var(--shadow-md);
+  cursor:pointer;color:var(--ink);opacity:0;pointer-events:none;transform:translateY(8px);
+}
+@media (prefers-reduced-motion: no-preference){
+  .totop{transition:opacity .25s var(--ease),transform .25s var(--ease),border-color .15s}
+}
+.totop.on{opacity:1;pointer-events:auto;transform:none}
+.totop:hover{border-color:var(--ink)}
+.totop svg{width:15px;height:15px;display:block}
+@media (max-width:560px){ .totop{right:14px;bottom:14px} }
+
+/* keep the floating button clear of the sticky footer area on short screens */
+@media (max-height:520px){ .totop{display:none} }
+
+/* uncertainty band, drawn per bar so it scales with the value */
+.fc-bar > .whisk{
+  position:absolute;left:-1px;right:-1px;top:0;height:0;display:block;
+  background:rgba(43,92,184,.13);
+  border-top:1px dashed rgba(43,92,184,.45);
+  border-bottom:1px dashed rgba(43,92,184,.38);
+  pointer-events:none;
+}
+@media (prefers-reduced-motion: no-preference){
+  .fc-bar > .whisk{transition:top .35s var(--ease),height .35s var(--ease),opacity .25s ease}
+}
+.fc-bar.over > .whisk{background:rgba(192,55,29,.12);border-color:rgba(192,55,29,.4)}
+.fc-bar.hot  > .whisk{background:rgba(169,103,10,.12);border-color:rgba(169,103,10,.4)}
 </style>
 </head>
 <body>
@@ -612,8 +995,12 @@ footer{
 
       <div class="nav-item"><a href="#contact">Contact</a></div>
     </div>
+    <button class="kbd-hint" id="cmdkOpen" type="button" aria-label="Open the quick jump palette">
+      <span>Jump to</span><kbd>⌘K</kbd>
+    </button>
     <a class="btn btn-primary" href="mailto:vaibhavraj738@gmail.com">Get in touch</a>
   </div>
+  <div class="nav-prog" id="navProg" aria-hidden="true"></div>
 </nav>
 
 <header class="hero wrap" id="top">
@@ -780,6 +1167,14 @@ footer{
             <span class="dot"></span><span class="dot"></span><span class="dot"></span>
             <div class="shot-url">compliance.kale.io / runs / CR-4821</div>
           </div>
+          <div class="sc" id="sc1">
+            <button class="sc-btn" id="runBtn" type="button"><span class="spin" aria-hidden="true"></span><span class="lbl">Replay the run</span></button>
+            <span class="sc-l">Filter</span>
+            <button class="sc-chip" type="button" data-f="all" aria-pressed="true">All <b>21</b></button>
+            <button class="sc-chip k-clear" type="button" data-f="clear" aria-pressed="false">Clear <b>19</b></button>
+            <button class="sc-chip k-review" type="button" data-f="review" aria-pressed="false">Review <b>2</b></button>
+            <span class="live-badge"><i></i>Click any agent for its evidence</span>
+          </div>
           <div class="shot-scroll">
             <div class="app">
               <aside class="app-side">
@@ -800,16 +1195,21 @@ footer{
                     <div class="app-title">Shanghai PVG → Rotterdam RTM</div>
                     <div class="app-sub">6 source documents · Invoice, Packing List, AWB, COO, Insurance Cert, Shipper Declaration</div>
                   </div>
-                  <div class="app-meta"><b>18.4s</b><br>21 agents in parallel</div>
+                  <div class="app-meta"><b id="runTime">18.4s</b><br>21 agents in parallel</div>
                 </div>
 
-                <div class="banner">
+                <div class="run-meter" id="runMeter" hidden>
+                  <span class="rm-t">Running <b id="rmN">0</b> / 21 agents in parallel</span>
+                  <span class="rm-track"><span class="rm-fill" id="rmFill"></span></span>
+                  <span class="rm-clock" id="rmClock">0.0s</span>
+                </div>
+
+                <div class="banner" id="runBanner">
                   <div class="banner-ico">!</div>
                   <div class="banner-txt">2 of 21 checks need review
                     <span>— resolve before filing</span></div>
-                  <div class="segbar">
-                    <i></i><i class="r"></i><i></i><i></i><i class="r"></i><i></i><i></i><i></i><i></i><i></i>
-                    <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                  <div class="segbar" id="segbar">
+                    <i></i><i class="r"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="r"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
                   </div>
                 </div>
 
@@ -817,56 +1217,269 @@ footer{
                   <thead>
                     <tr><th>Agent</th><th>Discipline</th><th>Result</th><th>Verdict</th></tr>
                   </thead>
-                  <tbody>
-                    <tr>
-                      <td class="ag">SDN List Screening</td><td class="dis">Party screening</td>
-                      <td>4 parties checked · no match</td>
-                      <td><span class="v v-clear"><i></i>Clear</span></td>
+                  <tbody id="agentRows">
+                    <tr class="ag-row" data-k="party" data-v="clear" data-ms="1840" tabindex="0" aria-expanded="false" aria-controls="ev-0">
+                      <td class="ag"><span class="ag-caret" aria-hidden="true"></span>SDN List Screening</td><td class="dis">Party screening</td>
+                      <td class="res">4 parties checked &middot; no match</td>
+                      <td class="vd"><span class="v v-clear"><i></i>Clear</span></td>
                     </tr>
-                    <tr>
-                      <td class="ag">Consolidated Sanctions</td><td class="dis">Party screening</td>
-                      <td>“Pacific Rim Trading Co.” · <span class="mono">87%</span> to EU Financial Sanctions File</td>
-                      <td><span class="v v-review"><i></i>Review</span></td>
+                    <tr class="ev-row" id="ev-0" data-k="party" data-v="clear" hidden>
+                      <td colspan="4"><div class="ev">
+                        <div class="ev-hd">Evidence retained for this check</div>
+                        <div class="ev-grid"><div><div class="ev-k">Authority</div><div class="ev-v">OFAC, US Treasury</div></div><div><div class="ev-k">List version</div><div class="ev-v">SDN 2026-03-12 (daily)</div></div><div><div class="ev-k">Entities screened</div><div class="ev-v">4 &mdash; shipper, consignee, notify, carrier</div></div><div><div class="ev-k">Top score</div><div class="ev-v">31% &mdash; below 85% threshold</div></div></div>
+                        <div class="ev-note">Every screened name, the list version it was screened against and the score are retained with the run. That is what a broker shows an auditor eighteen months later.</div>
+                      </div></td>
                     </tr>
-                    <tr>
-                      <td class="ag">High-Risk Ownership</td><td class="dis">Party screening</td>
-                      <td>UBO chain clean · OFAC 50% rule applied</td>
-                      <td><span class="v v-clear"><i></i>Clear</span></td>
+                    <tr class="ag-row" data-k="party" data-v="review" data-ms="2210" tabindex="0" aria-expanded="false" aria-controls="ev-1">
+                      <td class="ag"><span class="ag-caret" aria-hidden="true"></span>Consolidated Sanctions</td><td class="dis">Party screening</td>
+                      <td class="res">&ldquo;Pacific Rim Trading Co.&rdquo; &middot; <span class="mono">87%</span> to EU Financial Sanctions File</td>
+                      <td class="vd"><span class="v v-review"><i></i>Review</span></td>
                     </tr>
-                    <tr>
-                      <td class="ag">WCO HS Code</td><td class="dis">Classification</td>
-                      <td class="mono">8471.30.01 · GRI 1</td>
-                      <td><span class="v v-clear"><i></i>Clear</span></td>
+                    <tr class="ev-row" id="ev-1" data-k="party" data-v="review" hidden>
+                      <td colspan="4"><div class="ev">
+                        <div class="ev-hd">Evidence retained for this check</div>
+                        <div class="ev-grid"><div><div class="ev-k">Authority</div><div class="ev-v">EU Consolidated Financial Sanctions</div></div><div><div class="ev-k">List version</div><div class="ev-v">CFSP 2026/0441 &middot; 09 Mar</div></div><div><div class="ev-k">Matched entity</div><div class="ev-v">PACIFIC RIM TRADING CO LTD</div></div><div><div class="ev-k">Score</div><div class="ev-v">87% &middot; threshold 85%</div></div></div>
+                        <div class="ev-note">Above threshold, below certainty &mdash; exactly the band a pass/fail system has nowhere to put. It routes to a human with the matched record attached, not a bare flag.</div>
+                      </div></td>
                     </tr>
-                    <tr>
-                      <td class="ag">Dual-Use Item</td><td class="dis">Cargo &amp; controls</td>
-                      <td>Possible <span class="mono">ECCN 5A992.c</span> — encryption threshold unclear</td>
-                      <td><span class="v v-review"><i></i>Review</span></td>
+                    <tr class="ag-row" data-k="party" data-v="clear" data-ms="3120" tabindex="0" aria-expanded="false" aria-controls="ev-2">
+                      <td class="ag"><span class="ag-caret" aria-hidden="true"></span>High-Risk Ownership</td><td class="dis">Party screening</td>
+                      <td class="res">UBO chain clean &middot; OFAC 50% rule applied</td>
+                      <td class="vd"><span class="v v-clear"><i></i>Clear</span></td>
                     </tr>
-                    <tr>
-                      <td class="ag">IATA Restricted Goods</td><td class="dis">Cargo &amp; controls</td>
-                      <td>No DGR items declared</td>
-                      <td><span class="v v-clear"><i></i>Clear</span></td>
+                    <tr class="ev-row" id="ev-2" data-k="party" data-v="clear" hidden>
+                      <td colspan="4"><div class="ev">
+                        <div class="ev-hd">Evidence retained for this check</div>
+                        <div class="ev-grid"><div><div class="ev-k">Rule</div><div class="ev-v">OFAC 50 Percent Rule</div></div><div><div class="ev-k">Chain depth</div><div class="ev-v">3 levels resolved</div></div><div><div class="ev-k">Aggregate holding</div><div class="ev-v">34.2% &mdash; under 50%</div></div><div><div class="ev-k">Source</div><div class="ev-v">Corporate registry + D&amp;B</div></div></div>
+                        <div class="ev-note">Ownership is aggregated across the chain rather than checked level by level, because a sanctioned party at 26% twice is still a sanctioned owner.</div>
+                      </div></td>
                     </tr>
-                    <tr>
-                      <td class="ag">Landed Cost</td><td class="dis">Filing, cost &amp; duty</td>
-                      <td class="mono">USD 4,212.80 · BCD + IGST + SWS</td>
-                      <td><span class="v v-clear"><i></i>Clear</span></td>
+                    <tr class="ag-row" data-k="party" data-v="clear" data-ms="1620" tabindex="0" aria-expanded="false" aria-controls="ev-3">
+                      <td class="ag"><span class="ag-caret" aria-hidden="true"></span>Denied Party (BIS DPL)</td><td class="dis">Party screening</td>
+                      <td class="res">4 parties &middot; no match on DPL or Entity List</td>
+                      <td class="vd"><span class="v v-clear"><i></i>Clear</span></td>
                     </tr>
-                    <tr>
-                      <td class="ag">Carbon Emissions</td><td class="dis">Sustainability</td>
-                      <td class="mono">1.84 t CO₂e · GLEC Scope 3</td>
-                      <td><span class="v v-clear"><i></i>Clear</span></td>
+                    <tr class="ev-row" id="ev-3" data-k="party" data-v="clear" hidden>
+                      <td colspan="4"><div class="ev">
+                        <div class="ev-hd">Evidence retained for this check</div>
+                        <div class="ev-grid"><div><div class="ev-k">Authority</div><div class="ev-v">US BIS</div></div><div><div class="ev-k">Lists</div><div class="ev-v">Denied Persons, Entity, Unverified</div></div><div><div class="ev-k">List version</div><div class="ev-v">2026-03-11</div></div><div><div class="ev-k">Top score</div><div class="ev-v">18%</div></div></div>
+                        
+                      </div></td>
                     </tr>
-                    <tr class="more"><td colspan="4">+ 13 further checks — all clear · full evidence retained per check</td></tr>
+                    <tr class="ag-row" data-k="party" data-v="clear" data-ms="2740" tabindex="0" aria-expanded="false" aria-controls="ev-4">
+                      <td class="ag"><span class="ag-caret" aria-hidden="true"></span>Politically Exposed Persons</td><td class="dis">Party screening</td>
+                      <td class="res">No PEP association found on 6 officers</td>
+                      <td class="vd"><span class="v v-clear"><i></i>Clear</span></td>
+                    </tr>
+                    <tr class="ev-row" id="ev-4" data-k="party" data-v="clear" hidden>
+                      <td colspan="4"><div class="ev">
+                        <div class="ev-hd">Evidence retained for this check</div>
+                        <div class="ev-grid"><div><div class="ev-k">Scope</div><div class="ev-v">Directors and signatories</div></div><div><div class="ev-k">Source</div><div class="ev-v">Commercial PEP register</div></div><div><div class="ev-k">Officers checked</div><div class="ev-v">6</div></div><div><div class="ev-k">Top score</div><div class="ev-v">22%</div></div></div>
+                        
+                      </div></td>
+                    </tr>
+                    <tr class="ag-row" data-k="party" data-v="clear" data-ms="1980" tabindex="0" aria-expanded="false" aria-controls="ev-5">
+                      <td class="ag"><span class="ag-caret" aria-hidden="true"></span>Vessel &amp; Carrier Screening</td><td class="dis">Party screening</td>
+                      <td class="res">Carrier and feeder vessel clear &middot; no flag concerns</td>
+                      <td class="vd"><span class="v v-clear"><i></i>Clear</span></td>
+                    </tr>
+                    <tr class="ev-row" id="ev-5" data-k="party" data-v="clear" hidden>
+                      <td colspan="4"><div class="ev">
+                        <div class="ev-hd">Evidence retained for this check</div>
+                        <div class="ev-grid"><div><div class="ev-k">Checked</div><div class="ev-v">Operating carrier, feeder, flag state</div></div><div><div class="ev-k">Lists</div><div class="ev-v">OFAC vessel list, EU, UK OFSI</div></div><div><div class="ev-k">Flag</div><div class="ev-v">Singapore &mdash; no restriction</div></div><div><div class="ev-k">Top score</div><div class="ev-v">12%</div></div></div>
+                        
+                      </div></td>
+                    </tr>
+                    <tr class="ag-row" data-k="party" data-v="clear" data-ms="940" tabindex="0" aria-expanded="false" aria-controls="ev-6">
+                      <td class="ag"><span class="ag-caret" aria-hidden="true"></span>Country &amp; Territory Sanctions</td><td class="dis">Party screening</td>
+                      <td class="res">CN &rarr; NL &middot; no embargo or territorial restriction</td>
+                      <td class="vd"><span class="v v-clear"><i></i>Clear</span></td>
+                    </tr>
+                    <tr class="ev-row" id="ev-6" data-k="party" data-v="clear" hidden>
+                      <td colspan="4"><div class="ev">
+                        <div class="ev-hd">Evidence retained for this check</div>
+                        <div class="ev-grid"><div><div class="ev-k">Origin</div><div class="ev-v">CN &mdash; China</div></div><div><div class="ev-k">Destination</div><div class="ev-v">NL &mdash; Netherlands</div></div><div><div class="ev-k">Transit</div><div class="ev-v">None declared</div></div><div><div class="ev-k">Programmes checked</div><div class="ev-v">11</div></div></div>
+                        
+                      </div></td>
+                    </tr>
+                    <tr class="ag-row" data-k="party" data-v="clear" data-ms="4310" tabindex="0" aria-expanded="false" aria-controls="ev-7">
+                      <td class="ag"><span class="ag-caret" aria-hidden="true"></span>Adverse Media</td><td class="dis">Party screening</td>
+                      <td class="res">No negative coverage above relevance threshold</td>
+                      <td class="vd"><span class="v v-clear"><i></i>Clear</span></td>
+                    </tr>
+                    <tr class="ev-row" id="ev-7" data-k="party" data-v="clear" hidden>
+                      <td colspan="4"><div class="ev">
+                        <div class="ev-hd">Evidence retained for this check</div>
+                        <div class="ev-grid"><div><div class="ev-k">Window</div><div class="ev-v">36 months</div></div><div><div class="ev-k">Sources</div><div class="ev-v">Licensed news corpus</div></div><div><div class="ev-k">Hits</div><div class="ev-v">2 &mdash; both below relevance</div></div><div><div class="ev-k">Threshold</div><div class="ev-v">0.72 relevance</div></div></div>
+                        
+                      </div></td>
+                    </tr>
+                    <tr class="ag-row" data-k="class" data-v="clear" data-ms="2080" tabindex="0" aria-expanded="false" aria-controls="ev-8">
+                      <td class="ag"><span class="ag-caret" aria-hidden="true"></span>WCO HS Code</td><td class="dis">Classification</td>
+                      <td class="res"><span class="mono">8471.30.01</span> &middot; GRI 1</td>
+                      <td class="vd"><span class="v v-clear"><i></i>Clear</span></td>
+                    </tr>
+                    <tr class="ev-row" id="ev-8" data-k="class" data-v="clear" hidden>
+                      <td colspan="4"><div class="ev">
+                        <div class="ev-hd">Evidence retained for this check</div>
+                        <div class="ev-grid"><div><div class="ev-k">Code</div><div class="ev-v">8471.30.01</div></div><div><div class="ev-k">Rule applied</div><div class="ev-v">GRI 1 &mdash; terms of the heading</div></div><div><div class="ev-k">Confidence</div><div class="ev-v">96%</div></div><div><div class="ev-k">Basis</div><div class="ev-v">Invoice description + datasheet</div></div></div>
+                        <div class="ev-note">The rule that produced the code is stored alongside it. &ldquo;GRI 1&rdquo; is defensible in a classification dispute; &ldquo;the model said so&rdquo; is not.</div>
+                      </div></td>
+                    </tr>
+                    <tr class="ag-row" data-k="class" data-v="clear" data-ms="1450" tabindex="0" aria-expanded="false" aria-controls="ev-9">
+                      <td class="ag"><span class="ag-caret" aria-hidden="true"></span>Country Tariff Line</td><td class="dis">Classification</td>
+                      <td class="res">NL national line <span class="mono">8471.30.01.00</span> confirmed</td>
+                      <td class="vd"><span class="v v-clear"><i></i>Clear</span></td>
+                    </tr>
+                    <tr class="ev-row" id="ev-9" data-k="class" data-v="clear" hidden>
+                      <td colspan="4"><div class="ev">
+                        <div class="ev-hd">Evidence retained for this check</div>
+                        <div class="ev-grid"><div><div class="ev-k">Jurisdiction</div><div class="ev-v">EU TARIC &middot; Netherlands</div></div><div><div class="ev-k">National line</div><div class="ev-v">8471.30.01.00</div></div><div><div class="ev-k">Schedule version</div><div class="ev-v">2026 annual</div></div><div><div class="ev-k">Duty basis</div><div class="ev-v">Ad valorem</div></div></div>
+                        
+                      </div></td>
+                    </tr>
+                    <tr class="ag-row" data-k="class" data-v="clear" data-ms="1770" tabindex="0" aria-expanded="false" aria-controls="ev-10">
+                      <td class="ag"><span class="ag-caret" aria-hidden="true"></span>Rules of Origin</td><td class="dis">Classification</td>
+                      <td class="res">COO consistent with declared origin &middot; CN</td>
+                      <td class="vd"><span class="v v-clear"><i></i>Clear</span></td>
+                    </tr>
+                    <tr class="ev-row" id="ev-10" data-k="class" data-v="clear" hidden>
+                      <td colspan="4"><div class="ev">
+                        <div class="ev-hd">Evidence retained for this check</div>
+                        <div class="ev-grid"><div><div class="ev-k">Declared origin</div><div class="ev-v">CN</div></div><div><div class="ev-k">Certificate</div><div class="ev-v">COO 2026-CN-44812</div></div><div><div class="ev-k">Preference claimed</div><div class="ev-v">None</div></div><div><div class="ev-k">Consistency</div><div class="ev-v">Invoice, COO, packing list agree</div></div></div>
+                        
+                      </div></td>
+                    </tr>
+                    <tr class="ag-row" data-k="cargo" data-v="review" data-ms="3860" tabindex="0" aria-expanded="false" aria-controls="ev-11">
+                      <td class="ag"><span class="ag-caret" aria-hidden="true"></span>Dual-Use Item</td><td class="dis">Cargo &amp; controls</td>
+                      <td class="res">Possible <span class="mono">ECCN 5A992.c</span> &mdash; encryption threshold unclear</td>
+                      <td class="vd"><span class="v v-review"><i></i>Review</span></td>
+                    </tr>
+                    <tr class="ev-row" id="ev-11" data-k="cargo" data-v="review" hidden>
+                      <td colspan="4"><div class="ev">
+                        <div class="ev-hd">Evidence retained for this check</div>
+                        <div class="ev-grid"><div><div class="ev-k">Regime</div><div class="ev-v">Wassenaar &middot; EU 2021/821</div></div><div><div class="ev-k">Candidate ECCN</div><div class="ev-v">5A992.c</div></div><div><div class="ev-k">Ambiguity</div><div class="ev-v">Key length not stated on datasheet</div></div><div><div class="ev-k">Needs</div><div class="ev-v">Shipper technical declaration</div></div></div>
+                        <div class="ev-note">The agent cannot resolve this from the documents supplied, and says so rather than guessing. The missing artefact is named, so the broker knows what to go and get.</div>
+                      </div></td>
+                    </tr>
+                    <tr class="ag-row" data-k="cargo" data-v="clear" data-ms="860" tabindex="0" aria-expanded="false" aria-controls="ev-12">
+                      <td class="ag"><span class="ag-caret" aria-hidden="true"></span>IATA Restricted Goods</td><td class="dis">Cargo &amp; controls</td>
+                      <td class="res">No DGR items declared</td>
+                      <td class="vd"><span class="v v-clear"><i></i>Clear</span></td>
+                    </tr>
+                    <tr class="ev-row" id="ev-12" data-k="cargo" data-v="clear" hidden>
+                      <td colspan="4"><div class="ev">
+                        <div class="ev-hd">Evidence retained for this check</div>
+                        <div class="ev-grid"><div><div class="ev-k">Standard</div><div class="ev-v">IATA DGR 67th edition</div></div><div><div class="ev-k">Declared classes</div><div class="ev-v">None</div></div><div><div class="ev-k">Lithium content</div><div class="ev-v">None declared</div></div><div><div class="ev-k">Packing instruction</div><div class="ev-v">n/a</div></div></div>
+                        
+                      </div></td>
+                    </tr>
+                    <tr class="ag-row" data-k="cargo" data-v="clear" data-ms="780" tabindex="0" aria-expanded="false" aria-controls="ev-13">
+                      <td class="ag"><span class="ag-caret" aria-hidden="true"></span>IMDG Dangerous Goods</td><td class="dis">Cargo &amp; controls</td>
+                      <td class="res">No IMDG class declared &middot; general cargo</td>
+                      <td class="vd"><span class="v v-clear"><i></i>Clear</span></td>
+                    </tr>
+                    <tr class="ev-row" id="ev-13" data-k="cargo" data-v="clear" hidden>
+                      <td colspan="4"><div class="ev">
+                        <div class="ev-hd">Evidence retained for this check</div>
+                        <div class="ev-grid"><div><div class="ev-k">Standard</div><div class="ev-v">IMDG Amdt 42-24</div></div><div><div class="ev-k">Class</div><div class="ev-v">None</div></div><div><div class="ev-k">UN number</div><div class="ev-v">None</div></div><div><div class="ev-k">Segregation</div><div class="ev-v">n/a</div></div></div>
+                        
+                      </div></td>
+                    </tr>
+                    <tr class="ag-row" data-k="cargo" data-v="clear" data-ms="640" tabindex="0" aria-expanded="false" aria-controls="ev-14">
+                      <td class="ag"><span class="ag-caret" aria-hidden="true"></span>CITES &amp; Wildlife</td><td class="dis">Cargo &amp; controls</td>
+                      <td class="res">No controlled species or derived material</td>
+                      <td class="vd"><span class="v v-clear"><i></i>Clear</span></td>
+                    </tr>
+                    <tr class="ev-row" id="ev-14" data-k="cargo" data-v="clear" hidden>
+                      <td colspan="4"><div class="ev">
+                        <div class="ev-hd">Evidence retained for this check</div>
+                        <div class="ev-grid"><div><div class="ev-k">Appendices</div><div class="ev-v">I, II, III checked</div></div><div><div class="ev-k">Material scan</div><div class="ev-v">Packaging and contents</div></div><div><div class="ev-k">Permit required</div><div class="ev-v">No</div></div><div><div class="ev-k">Source</div><div class="ev-v">CITES checklist 2026</div></div></div>
+                        
+                      </div></td>
+                    </tr>
+                    <tr class="ag-row" data-k="cargo" data-v="clear" data-ms="1290" tabindex="0" aria-expanded="false" aria-controls="ev-15">
+                      <td class="ag"><span class="ag-caret" aria-hidden="true"></span>Licence &amp; Permit Check</td><td class="dis">Cargo &amp; controls</td>
+                      <td class="res">No import licence required for this line at NL</td>
+                      <td class="vd"><span class="v v-clear"><i></i>Clear</span></td>
+                    </tr>
+                    <tr class="ev-row" id="ev-15" data-k="cargo" data-v="clear" hidden>
+                      <td colspan="4"><div class="ev">
+                        <div class="ev-hd">Evidence retained for this check</div>
+                        <div class="ev-grid"><div><div class="ev-k">Jurisdiction</div><div class="ev-v">Netherlands</div></div><div><div class="ev-k">Measures checked</div><div class="ev-v">Import licence, quota, surveillance</div></div><div><div class="ev-k">Result</div><div class="ev-v">No measure applies</div></div><div><div class="ev-k">Schedule</div><div class="ev-v">TARIC 2026</div></div></div>
+                        
+                      </div></td>
+                    </tr>
+                    <tr class="ag-row" data-k="filing" data-v="clear" data-ms="2360" tabindex="0" aria-expanded="false" aria-controls="ev-16">
+                      <td class="ag"><span class="ag-caret" aria-hidden="true"></span>Landed Cost</td><td class="dis">Filing, cost &amp; duty</td>
+                      <td class="res"><span class="mono">USD 4,212.80</span> &middot; BCD + IGST + SWS</td>
+                      <td class="vd"><span class="v v-clear"><i></i>Clear</span></td>
+                    </tr>
+                    <tr class="ev-row" id="ev-16" data-k="filing" data-v="clear" hidden>
+                      <td colspan="4"><div class="ev">
+                        <div class="ev-hd">Evidence retained for this check</div>
+                        <div class="ev-grid"><div><div class="ev-k">Customs value</div><div class="ev-v">USD 38,940.00 CIF</div></div><div><div class="ev-k">Duty</div><div class="ev-v">USD 1,168.20</div></div><div><div class="ev-k">VAT / IGST</div><div class="ev-v">USD 2,946.60</div></div><div><div class="ev-k">Basis</div><div class="ev-v">TARIC 2026 &middot; NL rates</div></div></div>
+                        
+                      </div></td>
+                    </tr>
+                    <tr class="ag-row" data-k="filing" data-v="clear" data-ms="1510" tabindex="0" aria-expanded="false" aria-controls="ev-17">
+                      <td class="ag"><span class="ag-caret" aria-hidden="true"></span>Duty &amp; Tax Calculation</td><td class="dis">Filing, cost &amp; duty</td>
+                      <td class="res">Rates resolved against 2026 schedule &middot; no preference</td>
+                      <td class="vd"><span class="v v-clear"><i></i>Clear</span></td>
+                    </tr>
+                    <tr class="ev-row" id="ev-17" data-k="filing" data-v="clear" hidden>
+                      <td colspan="4"><div class="ev">
+                        <div class="ev-hd">Evidence retained for this check</div>
+                        <div class="ev-grid"><div><div class="ev-k">Duty rate</div><div class="ev-v">3.0% ad valorem</div></div><div><div class="ev-k">VAT rate</div><div class="ev-v">21% &mdash; NL standard</div></div><div><div class="ev-k">Preference</div><div class="ev-v">Not claimed</div></div><div><div class="ev-k">Schedule version</div><div class="ev-v">2026 annual</div></div></div>
+                        
+                      </div></td>
+                    </tr>
+                    <tr class="ag-row" data-k="filing" data-v="clear" data-ms="1120" tabindex="0" aria-expanded="false" aria-controls="ev-18">
+                      <td class="ag"><span class="ag-caret" aria-hidden="true"></span>Document Completeness</td><td class="dis">Filing, cost &amp; duty</td>
+                      <td class="res">6 of 6 required documents present and legible</td>
+                      <td class="vd"><span class="v v-clear"><i></i>Clear</span></td>
+                    </tr>
+                    <tr class="ev-row" id="ev-18" data-k="filing" data-v="clear" hidden>
+                      <td colspan="4"><div class="ev">
+                        <div class="ev-hd">Evidence retained for this check</div>
+                        <div class="ev-grid"><div><div class="ev-k">Required set</div><div class="ev-v">Invoice, packing list, AWB, COO, insurance, declaration</div></div><div><div class="ev-k">Present</div><div class="ev-v">6 of 6</div></div><div><div class="ev-k">OCR quality</div><div class="ev-v">All above 0.94</div></div><div><div class="ev-k">Missing</div><div class="ev-v">None</div></div></div>
+                        
+                      </div></td>
+                    </tr>
+                    <tr class="ag-row" data-k="filing" data-v="clear" data-ms="690" tabindex="0" aria-expanded="false" aria-controls="ev-19">
+                      <td class="ag"><span class="ag-caret" aria-hidden="true"></span>Filing Window</td><td class="dis">Filing, cost &amp; duty</td>
+                      <td class="res">ENS due 24h before loading &middot; 61h of margin</td>
+                      <td class="vd"><span class="v v-clear"><i></i>Clear</span></td>
+                    </tr>
+                    <tr class="ev-row" id="ev-19" data-k="filing" data-v="clear" hidden>
+                      <td colspan="4"><div class="ev">
+                        <div class="ev-hd">Evidence retained for this check</div>
+                        <div class="ev-grid"><div><div class="ev-k">Filing</div><div class="ev-v">Entry Summary Declaration</div></div><div><div class="ev-k">Deadline</div><div class="ev-v">24h pre-loading</div></div><div><div class="ev-k">Margin</div><div class="ev-v">61h</div></div><div><div class="ev-k">Risk</div><div class="ev-v">Low</div></div></div>
+                        
+                      </div></td>
+                    </tr>
+                    <tr class="ag-row" data-k="sustain" data-v="clear" data-ms="2910" tabindex="0" aria-expanded="false" aria-controls="ev-20">
+                      <td class="ag"><span class="ag-caret" aria-hidden="true"></span>Carbon Emissions</td><td class="dis">Sustainability</td>
+                      <td class="res"><span class="mono">1.84 t CO&#8322;e</span> &middot; GLEC Scope 3</td>
+                      <td class="vd"><span class="v v-clear"><i></i>Clear</span></td>
+                    </tr>
+                    <tr class="ev-row" id="ev-20" data-k="sustain" data-v="clear" hidden>
+                      <td colspan="4"><div class="ev">
+                        <div class="ev-hd">Evidence retained for this check</div>
+                        <div class="ev-grid"><div><div class="ev-k">Framework</div><div class="ev-v">GLEC v3 &middot; Scope 3 cat. 4</div></div><div><div class="ev-k">Mode</div><div class="ev-v">Air &middot; CNPVG&rarr;NLRTM</div></div><div><div class="ev-k">Intensity</div><div class="ev-v">0.54 kg CO&#8322;e / t-km</div></div><div><div class="ev-k">Basis</div><div class="ev-v">Chargeable weight 3.4t</div></div></div>
+                        
+                      </div></td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
         </div>
-        <p class="shot-cap"><i>i</i><span>Interface recreation. The production system sits behind customer
-        login, so this is rebuilt from the real agent set, verdict model and report structure.</span></p>
+        <p class="shot-cap"><i>i</i><span>Interactive recreation — the production system sits behind customer
+        login, so this is rebuilt from the real agent set, verdict model and report structure. Replay the run,
+        filter by verdict, or open any agent to see the evidence it retains. The 18.4s clock is played back
+        faster than real time.</span></p>
       </div>
 
       <div class="callout reveal">
@@ -935,6 +1548,14 @@ footer{
             <span class="dot"></span><span class="dot"></span><span class="dot"></span>
             <div class="shot-url">msw.mypkg.gov.my / vessel-calls / VC-2291</div>
           </div>
+          <div class="sc" id="sc2">
+            <span class="sc-l">Canonical model</span>
+            <span class="sc-seg" role="group" aria-label="Canonical model on or off">
+              <button type="button" id="canonOn"  aria-pressed="true">On</button>
+              <button type="button" id="canonOff" aria-pressed="false">Off &mdash; re-key by hand</button>
+            </span>
+            <span class="live-badge"><i></i>Click an agency to see what it derives</span>
+          </div>
           <div class="shot-scroll">
             <div class="app">
               <aside class="app-side">
@@ -958,49 +1579,76 @@ footer{
                   <div class="app-meta">ETA <b>14 Mar 06:00</b><br>ATB <b>14 Mar 07:20</b></div>
                 </div>
 
-                <div class="derive">
-                  <span style="font-weight:700;color:#254E9B">One submission → 6 agency formats derived</span>
-                  <span>· 47 fields captured once · 94% derivation coverage · 0 schema changes</span>
+                <div class="derive" id="derive">
+                  <span style="font-weight:700;color:#254E9B" id="deriveA">One submission → 6 agency formats derived</span>
+                  <span id="deriveB">· 47 fields captured once · 94% derivation coverage · 0 schema changes</span>
                 </div>
 
-                <div class="ag-grid">
-                  <div class="ag-card">
+                <div class="ag-grid" id="agGrid">
+                  <div class="ag-card" role="button" tabindex="0" aria-pressed="false"
+                       data-i="0" data-name="Royal Malaysian Customs" data-form="K1 / K2 declaration" data-d="vessel,imo,voyage,agent,eta,lastport,nextport,cargo,teu,hazmat" data-o="Declarant code,Customs station" data-cov="83">
                     <div class="ag-name">Royal Malaysian Customs</div>
                     <div class="ag-form">K1 / K2 declaration</div>
                     <div class="ag-foot"><span class="v v-clear"><i></i>Accepted</span><span class="ag-time">05:12</span></div>
                   </div>
-                  <div class="ag-card">
+                  <div class="ag-card" role="button" tabindex="0" aria-pressed="false"
+                       data-i="1" data-name="Port Authority (LPK)" data-form="PA-VC1 vessel call" data-d="vessel,imo,callsign,flag,voyage,agent,eta,etd,atb,berth,terminal,gt,nt,drafta,draftd" data-o="Pilotage request" data-cov="94">
                     <div class="ag-name">Port Authority (LPK)</div>
                     <div class="ag-form">PA-VC1 vessel call</div>
                     <div class="ag-foot"><span class="v v-clear"><i></i>Accepted</span><span class="ag-time">05:12</span></div>
                   </div>
-                  <div class="ag-card">
+                  <div class="ag-card" role="button" tabindex="0" aria-pressed="false"
+                       data-i="2" data-name="Immigration Department" data-form="IMM-38 crew list" data-d="vessel,imo,voyage,eta,crew,pax,lastport,nextport" data-o="Crew passport details,Shore pass request" data-cov="80">
                     <div class="ag-name">Immigration Department</div>
                     <div class="ag-form">IMM-38 crew list</div>
                     <div class="ag-foot"><span class="v v-pend"><i></i>Pending</span><span class="ag-time">crew list v2</span></div>
                   </div>
-                  <div class="ag-card">
+                  <div class="ag-card" role="button" tabindex="0" aria-pressed="false"
+                       data-i="3" data-name="Port Health / Quarantine" data-form="Maritime Declaration of Health" data-d="vessel,imo,flag,eta,lastport,crew,pax,sanit" data-o="Illness declaration,Vector control record" data-cov="80">
                     <div class="ag-name">Port Health / Quarantine</div>
                     <div class="ag-form">Maritime Declaration of Health</div>
                     <div class="ag-foot"><span class="v v-clear"><i></i>Accepted</span><span class="ag-time">05:13</span></div>
                   </div>
-                  <div class="ag-card">
+                  <div class="ag-card" role="button" tabindex="0" aria-pressed="false"
+                       data-i="4" data-name="Marine Department" data-form="MD-VS4 arrival report" data-d="vessel,imo,callsign,flag,eta,atb,berth,gt,nt,drafta,bunker,waste,pandi" data-o="" data-cov="100">
                     <div class="ag-name">Marine Department</div>
                     <div class="ag-form">MD-VS4 arrival report</div>
                     <div class="ag-foot"><span class="v v-clear"><i></i>Accepted</span><span class="ag-time">05:12</span></div>
                   </div>
-                  <div class="ag-card">
+                  <div class="ag-card" role="button" tabindex="0" aria-pressed="false"
+                       data-i="5" data-name="Terminal Operator" data-form="EDI BAPLIE / COPRAR" data-d="vessel,imo,voyage,eta,atb,berth,terminal,cargo,teu,hazmat" data-o="Stowage plan,Container positions" data-cov="83">
                     <div class="ag-name">Terminal Operator</div>
                     <div class="ag-form">EDI BAPLIE / COPRAR</div>
                     <div class="ag-foot"><span class="v v-clear"><i></i>Accepted</span><span class="ag-time">05:14</span></div>
                   </div>
                 </div>
+
+                <div class="map" id="derivMap">
+                  <div class="map-hd">
+                    <b id="mapTitle">The canonical vessel call &mdash; entered once</b>
+                    <span id="mapSub">26 of 47 fields shown &middot; click an agency above to see what its form takes</span>
+                  </div>
+                  <div class="map-fields" id="mapFields"><span class="ff" data-f="vessel">Vessel name</span><span class="ff" data-f="imo">IMO number</span><span class="ff" data-f="callsign">Call sign</span><span class="ff" data-f="flag">Flag state</span><span class="ff" data-f="voyage">Voyage no.</span><span class="ff" data-f="agent">Shipping agent</span><span class="ff" data-f="eta">ETA</span><span class="ff" data-f="etd">ETD</span><span class="ff" data-f="atb">ATB</span><span class="ff" data-f="berth">Berth</span><span class="ff" data-f="terminal">Terminal</span><span class="ff" data-f="lastport">Last port</span><span class="ff" data-f="nextport">Next port</span><span class="ff" data-f="crew">Crew count</span><span class="ff" data-f="pax">Passenger count</span><span class="ff" data-f="cargo">Cargo type</span><span class="ff" data-f="teu">Total TEU</span><span class="ff" data-f="hazmat">Hazardous flag</span><span class="ff" data-f="gt">Gross tonnage</span><span class="ff" data-f="nt">Net tonnage</span><span class="ff" data-f="drafta">Draft arrival</span><span class="ff" data-f="draftd">Draft departure</span><span class="ff" data-f="bunker">Bunker ROB</span><span class="ff" data-f="waste">Waste declaration</span><span class="ff" data-f="sanit">Ship sanitation cert</span><span class="ff" data-f="pandi">P&amp;I cover</span></div>
+                  <div class="map-key">
+                    <span><i class="d"></i> Derived from the canonical model</span>
+                    <span><i class="o"></i> Form-specific, captured separately</span>
+                    <span><i class="n"></i> Not used by this form</span>
+                  </div>
+                </div>
+
+                <div class="rekey" id="rekey">
+                  <span class="rekey-n" id="rekeyN">47</span>
+                  <span class="rekey-l" id="rekeyL">field entries to satisfy all six agencies.<br>
+                    One canonical submission, six formats derived.</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <p class="shot-cap"><i>i</i><span>Interface recreation, rebuilt from the real agency set and form types
-        for a Port Klang vessel call. Live instances sit behind port authority login.</span></p>
+        <p class="shot-cap"><i>i</i><span>Interactive recreation, rebuilt from the real agency set and form
+        types for a Port Klang vessel call. Click an agency to see which fields its form derives from the
+        canonical model and which it has to capture on its own &mdash; that ratio is the derivation coverage
+        the roadmap actually ran on. Live instances sit behind port authority login.</span></p>
       </div>
 
       <div class="callout reveal">
@@ -1065,7 +1713,15 @@ footer{
         <div class="shot">
           <div class="shot-bar">
             <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-            <div class="shot-url">platform.kale.io / edocs / generate / BL-88213</div>
+            <div class="shot-url" id="docUrl">platform.kale.io / edocs / generate / BL-88213</div>
+          </div>
+          <div class="sc" id="sc3">
+            <span class="sc-l">Review threshold</span>
+            <input class="sc-range" id="thrRange" type="range" min="80" max="99" step="1" value="95"
+                   aria-label="Confidence threshold below which a field is sent for human review">
+            <span class="sc-val" id="thrVal">95%</span>
+            <span class="thr-note">&rarr; <b id="thrN">3</b> of <span id="thrTot">9</span> fields go to a human</span>
+            <span class="live-badge"><i></i>Click a field for its source</span>
           </div>
           <div class="shot-scroll">
             <div class="app">
@@ -1083,42 +1739,23 @@ footer{
               <div class="app-main">
                 <div class="app-head">
                   <div>
-                    <div class="app-kick">BL-88213 · Generated in 1m 48s</div>
-                    <div class="app-title">Bill of Lading</div>
-                    <div class="app-sub">6 source documents · 42 fields extracted · 3 flagged for review</div>
+                    <div class="app-kick" id="docKick">BL-88213 · Generated in 1m 48s</div>
+                    <div class="app-title" id="docTitle">Bill of Lading</div>
+                    <div class="app-sub" id="docSub">6 source documents · 9 fields extracted · 3 flagged for review</div>
                   </div>
                   <div class="app-meta"><b>Draft ready</b><br>awaiting operator sign-off</div>
                 </div>
 
                 <div class="split">
-                  <div class="split-l">
+                  <div class="split-l" id="docRail">
                     <b>Document type</b>
-                    <span class="on">Bill of Lading</span>
-                    <span>Air Waybill</span>
-                    <span>Commercial Invoice</span>
-                    <span>Packing List</span>
-                    <span>Certificate of Origin</span>
-                    <span>Delivery Order</span>
-                    <span>Cargo Manifest</span>
-                    <span>Shipping Bill</span>
+                    <span role="button" tabindex="0" data-doc="0" class="on">Bill of Lading</span><span role="button" tabindex="0" data-doc="1">Air Waybill</span><span role="button" tabindex="0" data-doc="2">Commercial Invoice</span><span role="button" tabindex="0" data-doc="3">Packing List</span><span role="button" tabindex="0" data-doc="4">Certificate of Origin</span><span role="button" tabindex="0" data-doc="5">Delivery Order</span><span role="button" tabindex="0" data-doc="6">Cargo Manifest</span><span role="button" tabindex="0" data-doc="7">Shipping Bill</span>
                   </div>
                   <div class="split-r">
-                    <div class="fld"><div class="fld-k">Shipper</div><div class="fld-v">Lianyungang Textiles Export Co.</div><div class="conf">99%</div></div>
-                    <div class="fld"><div class="fld-k">Consignee</div><div class="fld-v">Nordwest Handels GmbH, Hamburg</div><div class="conf">98%</div></div>
-                    <div class="fld"><div class="fld-k">Notify party</div><div class="fld-v">Same as consignee</div><div class="conf">94%</div></div>
-                    <div class="fld"><div class="fld-k">Port of loading</div><div class="fld-v">CNLYG — Lianyungang</div><div class="conf">99%</div></div>
-                    <div class="fld"><div class="fld-k">Port of discharge</div><div class="fld-v">DEHAM — Hamburg</div><div class="conf">99%</div></div>
-                    <div class="fld"><div class="fld-k">Container nos.</div><div class="fld-v">MSKU4471208 · MSKU4471193</div><div class="conf">97%</div></div>
-                    <div class="fld"><div class="fld-k">Gross weight</div><div class="fld-v">18,420.50 KGS</div><div class="conf">99%</div></div>
-                    <div class="fld"><div class="fld-k">Marks &amp; numbers</div><div class="fld-v">As per attached packing list</div><div class="conf low">88% — review</div></div>
-                    <div class="fld"><div class="fld-k">Freight terms</div><div class="fld-v">Freight prepaid</div><div class="conf low">91% — review</div></div>
-                    <div class="src">
+                    <div id="fldList"><div class="fld"><div class="fld-k">Shipper</div><div class="fld-v">Lianyungang Textiles Export Co.</div><div class="conf">99%</div></div><div class="fld"><div class="fld-k">Consignee</div><div class="fld-v">Nordwest Handels GmbH, Hamburg</div><div class="conf">98%</div></div><div class="fld flagged"><div class="fld-k">Notify party</div><div class="fld-v">Same as consignee</div><div class="conf low">94% — review</div></div><div class="fld"><div class="fld-k">Port of loading</div><div class="fld-v">CNLYG — Lianyungang</div><div class="conf">99%</div></div><div class="fld"><div class="fld-k">Port of discharge</div><div class="fld-v">DEHAM — Hamburg</div><div class="conf">99%</div></div><div class="fld"><div class="fld-k">Container nos.</div><div class="fld-v">MSKU4471208 · MSKU4471193</div><div class="conf">97%</div></div><div class="fld"><div class="fld-k">Gross weight</div><div class="fld-v">18,420.50 KGS</div><div class="conf">99%</div></div><div class="fld flagged"><div class="fld-k">Marks &amp; numbers</div><div class="fld-v">As per attached packing list</div><div class="conf low">88% — review</div></div><div class="fld flagged"><div class="fld-k">Freight terms</div><div class="fld-v">Freight prepaid</div><div class="conf low">91% — review</div></div></div>
+                    <div class="src" id="srcRow">
                       <b>Sources</b>
-                      <span>Commercial_Invoice.pdf</span>
-                      <span>Packing_List.xlsx</span>
-                      <span>Booking_Confirmation.pdf</span>
-                      <span>Shipper_Letter.pdf</span>
-                      <span>+2</span>
+                      <span data-src="Commercial_Invoice.pdf">Commercial_Invoice.pdf</span><span data-src="Packing_List.xlsx">Packing_List.xlsx</span><span data-src="Booking_Confirmation.pdf">Booking_Confirmation.pdf</span><span data-src="Shipper_Letter.pdf">Shipper_Letter.pdf</span><span data-src="Insurance_Cert.pdf">Insurance_Cert.pdf</span><span data-src="Export_Declaration.pdf">Export_Declaration.pdf</span>
                     </div>
                   </div>
                 </div>
@@ -1126,9 +1763,11 @@ footer{
             </div>
           </div>
         </div>
-        <p class="shot-cap"><i>i</i><span>Interface recreation using representative shipment data. Per-field
+        <p class="shot-cap"><i>i</i><span>Interactive recreation using representative shipment data. Per-field
         confidence and source attribution are the parts that mattered most — they're what make a draft
-        reviewable instead of a black box.</span></p>
+        reviewable instead of a black box. Switch document type, open a field to see where its value came from,
+        or drag the review threshold: that one number is the whole argument about what &ldquo;wrong&rdquo;
+        costs.</span></p>
       </div>
     </article>
 
@@ -1173,6 +1812,15 @@ footer{
             <span class="dot"></span><span class="dot"></span><span class="dot"></span>
             <div class="shot-url">ops.kale.io / forecast / BOM-3 / week-42</div>
           </div>
+          <div class="sc" id="sc4">
+            <span class="sc-l">Forecast horizon</span>
+            <span class="sc-seg" id="fcSeg" role="group" aria-label="Forecast horizon">
+              <button type="button" data-h="3"  aria-pressed="false">3 days</button>
+              <button type="button" data-h="7"  aria-pressed="false">7 days</button>
+              <button type="button" data-h="14" aria-pressed="true">14 days</button>
+            </span>
+            <span class="live-badge"><i></i>Shorten it and watch the warning disappear</span>
+          </div>
           <div class="shot-scroll">
             <div class="app">
               <aside class="app-side">
@@ -1191,42 +1839,42 @@ footer{
                   <div>
                     <div class="app-kick">Warehouse BOM-3 · Week 42</div>
                     <div class="app-title">Inbound volume against handling capacity</div>
-                    <div class="app-sub">Forecast horizon 14 days · confidence band ±12% · rebuilt hourly</div>
+                    <div class="app-sub" id="fcSub">Forecast horizon 14 days · confidence band ±12% · rebuilt hourly</div>
                   </div>
-                  <div class="app-meta"><b>9 days</b><br>notice on the breach</div>
+                  <div class="app-meta"><b id="fcMeta">9 days</b><br>notice on the breach</div>
                 </div>
 
-                <div class="banner">
-                  <div class="banner-ico">!</div>
-                  <div class="banner-txt">Capacity breach forecast for Thu 23 Oct
+                <div class="banner" id="fcBanner">
+                  <div class="banner-ico" id="fcIco">!</div>
+                  <div class="banner-txt" id="fcMsg">Capacity breach forecast for Thu 23 Oct
                   <span>— nine days out. Enough time to add a shift and pull in agency staff. Finding out on
                   the Tuesday is a different product.</span></div>
                 </div>
 
                 <div class="fc">
-                  <div class="fc-plot">
+                  <div class="fc-plot" id="fcPlot">
                     <div class="fc-cap" style="bottom:73.7%"><span>handling capacity</span></div>
-              <div class="fc-bar" style="height:40.0%"></div>
-              <div class="fc-bar" style="height:44.2%"></div>
-              <div class="fc-bar" style="height:42.1%"></div>
-              <div class="fc-bar" style="height:47.4%"></div>
-              <div class="fc-bar" style="height:54.7%"></div>
-              <div class="fc-bar" style="height:50.5%"></div>
-              <div class="fc-bar" style="height:46.3%"></div>
-              <div class="fc-bar hot" style="height:61.1%"></div>
-              <div class="fc-bar hot" style="height:65.3%"></div>
-              <div class="fc-bar over" style="height:92.6%"></div>
-              <div class="fc-bar over" style="height:77.9%"></div>
-              <div class="fc-bar" style="height:57.9%"></div>
-              <div class="fc-bar" style="height:52.6%"></div>
-              <div class="fc-bar" style="height:48.4%"></div>
+              <div class="fc-bar" style="height:40.0%"><i class="whisk" aria-hidden="true"></i></div>
+              <div class="fc-bar" style="height:44.2%"><i class="whisk" aria-hidden="true"></i></div>
+              <div class="fc-bar" style="height:42.1%"><i class="whisk" aria-hidden="true"></i></div>
+              <div class="fc-bar" style="height:47.4%"><i class="whisk" aria-hidden="true"></i></div>
+              <div class="fc-bar" style="height:54.7%"><i class="whisk" aria-hidden="true"></i></div>
+              <div class="fc-bar" style="height:50.5%"><i class="whisk" aria-hidden="true"></i></div>
+              <div class="fc-bar" style="height:46.3%"><i class="whisk" aria-hidden="true"></i></div>
+              <div class="fc-bar hot" style="height:61.1%"><i class="whisk" aria-hidden="true"></i></div>
+              <div class="fc-bar hot" style="height:65.3%"><i class="whisk" aria-hidden="true"></i></div>
+              <div class="fc-bar over" style="height:92.6%"><i class="whisk" aria-hidden="true"></i></div>
+              <div class="fc-bar over" style="height:77.9%"><i class="whisk" aria-hidden="true"></i></div>
+              <div class="fc-bar" style="height:57.9%"><i class="whisk" aria-hidden="true"></i></div>
+              <div class="fc-bar" style="height:52.6%"><i class="whisk" aria-hidden="true"></i></div>
+              <div class="fc-bar" style="height:48.4%"><i class="whisk" aria-hidden="true"></i></div>
                   </div>
-                  <div class="fc-x"><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span><span>22</span><span class="mark">23</span><span class="mark">24</span><span>25</span><span>26</span><span>27</span></div>
+                  <div class="fc-x" id="fcX"><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span><span>22</span><span class="mark">23</span><span class="mark">24</span><span>25</span><span>26</span><span>27</span></div>
                 </div>
 
                 <div class="kpi">
-                  <div><b>±12%</b><span>Band at 14 days</span></div>
-                  <div><b>9 days</b><span>Median lead time on alerts</span></div>
+                  <div><b id="fcBand2">±12%</b><span id="fcBandL">Band at 14 days</span></div>
+                  <div><b id="fcNotice">9 days</b><span>Notice on the breach</span></div>
                   <div><b>6</b><span>Warehouses live</span></div>
                   <div><b>Hourly</b><span>Rebuild cadence</span></div>
                 </div>
@@ -1234,9 +1882,10 @@ footer{
             </div>
           </div>
         </div>
-        <p class="shot-cap"><i>i</i><span>Interface recreation with representative volumes. The point it
-        illustrates is the product decision, not the forecast: a wider horizon on a rougher number beats a
-        tight number that lands too late to act on.</span></p>
+        <p class="shot-cap"><i>i</i><span>Interactive recreation with representative volumes. Drop the horizon
+        to 3 days: the confidence band tightens to ±4% and the breach vanishes from view entirely. That is
+        the whole product decision — a wider horizon on a rougher number beats a tight number that lands too
+        late to act on.</span></p>
       </div>
 
     </article>
@@ -1286,7 +1935,15 @@ footer{
         <div class="shot">
           <div class="shot-bar">
             <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-            <div class="shot-url">settlement.internal / recon / upi / cycle-05</div>
+            <div class="shot-url" id="cyUrl">settlement.internal / recon / upi / cycle-05</div>
+          </div>
+          <div class="sc" id="sc5">
+            <span class="sc-l">Settlement cycle</span>
+            <span class="sc-seg" id="cySeg" role="group" aria-label="Settlement cycle">
+              <button type="button" data-c="0" aria-pressed="false">Average</button>
+              <button type="button" data-c="1" aria-pressed="true">The tail</button>
+            </span>
+            <span class="live-badge"><i></i>Pick any cycle below — C1 to C8</span>
           </div>
           <div class="shot-scroll">
             <div class="app">
@@ -1304,74 +1961,54 @@ footer{
               <div class="app-main">
                 <div class="app-head">
                   <div>
-                    <div class="app-kick">Cycle 05 · 14:00–17:00 IST</div>
+                    <div class="app-kick" id="cyKick">Cycle 05 · 14:00–17:00 IST</div>
                     <div class="app-title">UPI reconciliation — switch against NPCI file</div>
-                    <div class="app-sub">4.1M transactions in cycle · three-way match: switch ledger, NPCI
+                    <div class="app-sub" id="cySub">4.1M transactions in cycle · three-way match: switch ledger, NPCI
                     settlement file, core banking</div>
                   </div>
-                  <div class="app-meta"><b>41m 18s</b><br>was 4h 12m</div>
+                  <div class="app-meta"><b id="cyMeta">41m 18s</b><br>was 4h 12m</div>
                 </div>
 
-                <div class="cyc">
-                  <div class="done"><b>C1</b><span>08:00</span></div>
-                  <div class="done"><b>C2</b><span>10:00</span></div>
-                  <div class="done"><b>C3</b><span>11:30</span></div>
-                  <div class="done"><b>C4</b><span>13:00</span></div>
-                  <div class="now"><b>C5</b><span>14:00</span></div>
-                  <div><b>C6</b><span>17:00</span></div>
-                  <div><b>C7</b><span>19:30</span></div>
-                  <div><b>C8</b><span>22:00</span></div>
+<div class="cyc" id="cycStrip">
+                  <div class="done" role="button" tabindex="0" data-c="0" aria-pressed="false"><b>C1</b><span>08:00</span></div>
+                  <div class="done" role="button" tabindex="0" data-c="1" aria-pressed="false"><b>C2</b><span>10:00</span></div>
+                  <div class="done" role="button" tabindex="0" data-c="2" aria-pressed="false"><b>C3</b><span>11:30</span></div>
+                  <div class="done" role="button" tabindex="0" data-c="3" aria-pressed="false"><b>C4</b><span>13:00</span></div>
+                  <div class="now" role="button" tabindex="0" data-c="4" aria-pressed="true"><b>C5</b><span>14:00</span></div>
+                  <div class="" role="button" tabindex="0" data-c="5" aria-pressed="false"><b>C6</b><span>17:00</span></div>
+                  <div class="" role="button" tabindex="0" data-c="6" aria-pressed="false"><b>C7</b><span>19:30</span></div>
+                  <div class="" role="button" tabindex="0" data-c="7" aria-pressed="false"><b>C8</b><span>22:00</span></div>
                 </div>
 
                 <div class="kpi">
-                  <div><b>4,108,442</b><span>In cycle</span></div>
-                  <div><b>99.987%</b><span>Matched first pass</span></div>
-                  <div><b>534</b><span>Exceptions to work</span></div>
-                  <div><b>41m 18s</b><span>Cycle close</span></div>
+                  <div><b id="cyVol">4,108,442</b><span>In cycle</span></div>
+                  <div><b id="cyMatch">99.987%</b><span>Matched first pass</span></div>
+                  <div><b id="cyExc">534</b><span>Exceptions to work</span></div>
+                  <div><b id="cyClose">41m 18s</b><span>Cycle close</span></div>
                 </div>
 
                 <div style="margin-top:1.1rem">
                   <p class="blk-label" style="margin:0 0 .1rem">Match latency — the tail is the product</p>
-                  <div class="tail">
-                  <i class="" style="height:8%"></i>
-                  <i class="" style="height:26%"></i>
-                  <i class="" style="height:58%"></i>
-                  <i class="" style="height:92%"></i>
-                  <i class="" style="height:100%"></i>
-                  <i class="" style="height:86%"></i>
-                  <i class="" style="height:61%"></i>
-                  <i class="" style="height:42%"></i>
-                  <i class="" style="height:29%"></i>
-                  <i class="" style="height:20%"></i>
-                  <i class="" style="height:14%"></i>
-                  <i class="" style="height:10%"></i>
-                  <i class="" style="height:7%"></i>
-                  <i class="warn" style="height:5%"></i>
-                  <i class="warn" style="height:4%"></i>
-                  <i class="warn" style="height:3%"></i>
-                  <i class="warn" style="height:3%"></i>
-                  <i class="bad" style="height:2%"></i>
-                  <i class="bad" style="height:2%"></i>
-                  <i class="bad" style="height:4%"></i>
-                  </div>
-                  <div class="tail-note"><span>&lt; 1s</span><span>the 0.013% that decides the cycle →</span></div>
+                  <div class="tail" id="cyTail"><i style="height:26.9%"></i><i style="height:49.6%"></i><i style="height:75.3%"></i><i style="height:95.8%"></i><i style="height:100.0%"></i><i style="height:92.5%"></i><i style="height:77.3%"></i><i style="height:63.7%"></i><i style="height:52.5%"></i><i style="height:43.3%"></i><i style="height:36.0%"></i><i style="height:30.2%"></i><i style="height:25.1%"></i><i class="warn" style="height:21.1%"></i><i class="warn" style="height:18.8%"></i><i class="warn" style="height:16.1%"></i><i class="warn" style="height:16.1%"></i><i class="bad" style="height:13.1%"></i><i class="bad" style="height:13.1%"></i><i class="bad" style="height:18.8%"></i></div>
+                  <div class="tail-note"><span>&lt; 1s</span><span id="cyTailNote">the 0.013% that decides the cycle →</span></div>
                 </div>
 
                 <table class="tbl">
                   <tr><th>Exception</th><th>Count</th><th>Cause</th><th>Disposition</th></tr>
-                  <tr><td class="ag">Late arrival</td><td class="mono">311</td><td class="dis">Arrived after cycle close</td><td><span class="v v-clear"><i></i>Auto-rolled</span></td></tr>
-                  <tr><td class="ag">Duplicate RRN</td><td class="mono">148</td><td class="dis">Retry on timeout</td><td><span class="v v-clear"><i></i>Deduped</span></td></tr>
-                  <tr><td class="ag">Amount mismatch</td><td class="mono">61</td><td class="dis">Partial reversal</td><td><span class="v v-review"><i></i>Manual</span></td></tr>
-                  <tr><td class="ag">Missing at NPCI</td><td class="mono">14</td><td class="dis">Not in settlement file</td><td><span class="v v-match"><i></i>Escalated</span></td></tr>
-                  <tr class="more"><td colspan="4">534 exceptions from 4.1M — worked before the next cycle opens</td></tr>
+                  <tr><td class="ag">Late arrival</td><td class="mono" id="exLate">311</td><td class="dis">Arrived after cycle close</td><td><span class="v v-clear"><i></i>Auto-rolled</span></td></tr>
+                  <tr><td class="ag">Duplicate RRN</td><td class="mono" id="exDup">148</td><td class="dis">Retry on timeout</td><td><span class="v v-clear"><i></i>Deduped</span></td></tr>
+                  <tr><td class="ag">Amount mismatch</td><td class="mono" id="exAmt">61</td><td class="dis">Partial reversal</td><td><span class="v v-review"><i></i>Manual</span></td></tr>
+                  <tr><td class="ag">Missing at NPCI</td><td class="mono" id="exMiss">14</td><td class="dis">Not in settlement file</td><td><span class="v v-match"><i></i>Escalated</span></td></tr>
+                  <tr class="more"><td colspan="4" id="exFoot">534 exceptions from 4.1M — worked before the next cycle opens</td></tr>
                 </table>
               </div>
             </div>
           </div>
         </div>
-        <p class="shot-cap"><i>i</i><span>Interface recreation with representative figures — production
-        settlement systems sit behind bank infrastructure. The distribution is the argument: reconciliation
-        never fails on the typical transaction.</span></p>
+        <p class="shot-cap"><i>i</i><span>Interactive recreation with representative figures — production
+        settlement systems sit behind bank infrastructure. Step through the eight cycles, or switch the
+        histogram between the average and the tail. The distribution is the argument: reconciliation never
+        fails on the typical transaction.</span></p>
       </div>
 
     </article>
@@ -1664,8 +2301,10 @@ footer{
       <p>Open to product roles at AI-native startups, large tech, fintech and logistics companies.
       Based in Mumbai. Happy to talk through anything on this page — particularly the parts I got wrong.</p>
       <div class="contact-rows">
-        <span class="crow"><b>Email</b> <a href="mailto:vaibhavraj738@gmail.com">vaibhavraj738@gmail.com</a></span>
-        <span class="crow"><b>Phone</b> +91 85215 88880</span>
+        <span class="crow"><b>Email</b> <a href="mailto:vaibhavraj738@gmail.com">vaibhavraj738@gmail.com</a>
+          <button class="cp" type="button" data-copy="vaibhavraj738@gmail.com" aria-label="Copy email address">copy</button></span>
+        <span class="crow"><b>Phone</b> +91 85215 88880
+          <button class="cp" type="button" data-copy="+918521588880" aria-label="Copy phone number">copy</button></span>
         <span class="crow"><b>LinkedIn</b> <a href="https://www.linkedin.com/in/vaibhav-raj-iitb/" target="_blank" rel="noopener">/in/vaibhav-raj-iitb</a></span>
       </div>
       <a class="btn btn-primary btn-lg" href="Vaibhav_Raj_PM.pdf" target="_blank" rel="noopener">Download résumé</a>
@@ -1683,6 +2322,36 @@ footer{
   </div>
 </section>
 
+
+<!-- ================= QUICK JUMP (⌘K) ================= -->
+<div class="cmdk" id="cmdk" role="dialog" aria-modal="true" aria-label="Jump to a section">
+  <div class="cmdk-box">
+    <div class="cmdk-top">
+      <span class="cmdk-ico" aria-hidden="true"></span>
+      <input class="cmdk-input" id="cmdkInput" type="text" autocomplete="off" spellcheck="false"
+             placeholder="Jump to a project, a principle, a step…"
+             aria-controls="cmdkList" aria-expanded="true" role="combobox" aria-autocomplete="list">
+      <span class="cmdk-esc">esc</span>
+    </div>
+    <div class="cmdk-list" id="cmdkList" role="listbox" aria-label="Results"></div>
+    <div class="cmdk-foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> move</span>
+      <span><kbd>↵</kbd> open</span>
+      <span><kbd>esc</kbd> close</span>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<button class="totop" id="toTop" type="button" aria-label="Back to top">
+  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"
+       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M8 13V3M3.5 7.5 8 3l4.5 4.5"/>
+  </svg>
+</button>
+
+<script id="docData" type="application/json">[{"name": "Bill of Lading", "ref": "BL-88213", "time": "1m 48s", "f": [{"k": "Shipper", "v": "Lianyungang Textiles Export Co.", "c": 99, "s": ["Commercial_Invoice.pdf", "Shipper_Letter.pdf"]}, {"k": "Consignee", "v": "Nordwest Handels GmbH, Hamburg", "c": 98, "s": ["Booking_Confirmation.pdf", "Commercial_Invoice.pdf"]}, {"k": "Notify party", "v": "Same as consignee", "c": 94, "s": ["Shipper_Letter.pdf"]}, {"k": "Port of loading", "v": "CNLYG — Lianyungang", "c": 99, "s": ["Booking_Confirmation.pdf"]}, {"k": "Port of discharge", "v": "DEHAM — Hamburg", "c": 99, "s": ["Booking_Confirmation.pdf"]}, {"k": "Container nos.", "v": "MSKU4471208 · MSKU4471193", "c": 97, "s": ["Packing_List.xlsx", "Booking_Confirmation.pdf"]}, {"k": "Gross weight", "v": "18,420.50 KGS", "c": 99, "s": ["Packing_List.xlsx"]}, {"k": "Marks &amp; numbers", "v": "As per attached packing list", "c": 88, "s": ["Packing_List.xlsx"]}, {"k": "Freight terms", "v": "Freight prepaid", "c": 91, "s": ["Booking_Confirmation.pdf", "Shipper_Letter.pdf"]}]}, {"name": "Air Waybill", "ref": "AWB-17644820", "time": "1m 12s", "f": [{"k": "Shipper", "v": "Lianyungang Textiles Export Co.", "c": 99, "s": ["Commercial_Invoice.pdf", "Shipper_Letter.pdf"]}, {"k": "Consignee", "v": "Nordwest Handels GmbH", "c": 98, "s": ["Commercial_Invoice.pdf"]}, {"k": "Airport of departure", "v": "PVG — Shanghai Pudong", "c": 99, "s": ["Booking_Confirmation.pdf"]}, {"k": "Airport of destination", "v": "HAM — Hamburg", "c": 99, "s": ["Booking_Confirmation.pdf"]}, {"k": "Pieces", "v": "42 cartons", "c": 96, "s": ["Packing_List.xlsx"]}, {"k": "Chargeable weight", "v": "3,412.0 KGS", "c": 93, "s": ["Packing_List.xlsx", "Booking_Confirmation.pdf"]}, {"k": "Nature of goods", "v": "Cotton knitted garments", "c": 90, "s": ["Commercial_Invoice.pdf"]}, {"k": "Handling information", "v": "No DGR — general cargo", "c": 87, "s": ["Shipper_Letter.pdf"]}, {"k": "Declared value", "v": "NVD — no value declared", "c": 84, "s": ["Insurance_Cert.pdf", "Shipper_Letter.pdf"]}]}, {"name": "Commercial Invoice", "ref": "INV-2026-0318", "time": "0m 54s", "f": [{"k": "Seller", "v": "Lianyungang Textiles Export Co.", "c": 99, "s": ["Commercial_Invoice.pdf"]}, {"k": "Buyer", "v": "Nordwest Handels GmbH", "c": 99, "s": ["Commercial_Invoice.pdf", "Booking_Confirmation.pdf"]}, {"k": "Invoice no. &amp; date", "v": "INV-2026-0318 · 18 Mar", "c": 98, "s": ["Commercial_Invoice.pdf"]}, {"k": "Incoterm", "v": "CIF Hamburg", "c": 95, "s": ["Commercial_Invoice.pdf", "Booking_Confirmation.pdf"]}, {"k": "Currency", "v": "USD", "c": 99, "s": ["Commercial_Invoice.pdf"]}, {"k": "Unit price", "v": "4.82 / pc", "c": 92, "s": ["Commercial_Invoice.pdf"]}, {"k": "Total value", "v": "38,940.00 USD", "c": 99, "s": ["Commercial_Invoice.pdf"]}, {"k": "HS code", "v": "6110.20", "c": 89, "s": ["Export_Declaration.pdf", "Commercial_Invoice.pdf"]}, {"k": "Country of origin", "v": "CN — China", "c": 96, "s": ["Export_Declaration.pdf"]}]}, {"name": "Packing List", "ref": "PL-2026-0318", "time": "0m 47s", "f": [{"k": "Shipper", "v": "Lianyungang Textiles Export Co.", "c": 99, "s": ["Commercial_Invoice.pdf", "Packing_List.xlsx"]}, {"k": "Total packages", "v": "42 cartons", "c": 98, "s": ["Packing_List.xlsx"]}, {"k": "Net weight", "v": "17,064.00 KGS", "c": 97, "s": ["Packing_List.xlsx"]}, {"k": "Gross weight", "v": "18,420.50 KGS", "c": 99, "s": ["Packing_List.xlsx"]}, {"k": "Measurement", "v": "64.80 CBM", "c": 94, "s": ["Packing_List.xlsx"]}, {"k": "Marks &amp; numbers", "v": "NWH / HAM / 1-42", "c": 86, "s": ["Packing_List.xlsx", "Shipper_Letter.pdf"]}, {"k": "Carton dimensions", "v": "60 × 40 × 45 cm", "c": 90, "s": ["Packing_List.xlsx"]}, {"k": "Items per carton", "v": "120 pcs", "c": 93, "s": ["Packing_List.xlsx", "Commercial_Invoice.pdf"]}]}, {"name": "Certificate of Origin", "ref": "COO-2026-CN-44812", "time": "1m 05s", "f": [{"k": "Exporter", "v": "Lianyungang Textiles Export Co.", "c": 99, "s": ["Commercial_Invoice.pdf", "Export_Declaration.pdf"]}, {"k": "Consignee", "v": "Nordwest Handels GmbH", "c": 98, "s": ["Commercial_Invoice.pdf"]}, {"k": "Country of origin", "v": "CN — China", "c": 97, "s": ["Export_Declaration.pdf"]}, {"k": "Transport details", "v": "PVG &rarr; HAM · 18 Mar", "c": 93, "s": ["Booking_Confirmation.pdf"]}, {"k": "HS code", "v": "6110.20", "c": 89, "s": ["Export_Declaration.pdf"]}, {"k": "Invoice no. &amp; date", "v": "INV-2026-0318 · 18 Mar", "c": 98, "s": ["Commercial_Invoice.pdf"]}, {"k": "Origin criterion", "v": "Wholly obtained", "c": 83, "s": ["Export_Declaration.pdf", "Shipper_Letter.pdf"]}, {"k": "Issuing chamber", "v": "CCPIT Lianyungang", "c": 91, "s": ["Export_Declaration.pdf"]}]}, {"name": "Delivery Order", "ref": "DO-88213", "time": "0m 41s", "f": [{"k": "Consignee", "v": "Nordwest Handels GmbH", "c": 98, "s": ["Booking_Confirmation.pdf", "Commercial_Invoice.pdf"]}, {"k": "Container nos.", "v": "MSKU4471208 · MSKU4471193", "c": 97, "s": ["Packing_List.xlsx", "Booking_Confirmation.pdf"]}, {"k": "Release to", "v": "Nordwest Logistik GmbH", "c": 88, "s": ["Shipper_Letter.pdf"]}, {"k": "Place of delivery", "v": "Hamburg Altenwerder CT", "c": 95, "s": ["Booking_Confirmation.pdf"]}, {"k": "Free time expiry", "v": "25 Mar 2026", "c": 90, "s": ["Booking_Confirmation.pdf"]}, {"k": "B/L reference", "v": "BL-88213", "c": 99, "s": ["Booking_Confirmation.pdf"]}, {"k": "Charges settled", "v": "Yes — freight prepaid", "c": 86, "s": ["Booking_Confirmation.pdf", "Insurance_Cert.pdf"]}]}, {"name": "Cargo Manifest", "ref": "MAN-118E", "time": "1m 22s", "f": [{"k": "Vessel / voyage", "v": "MV NORD ELBE · 118E", "c": 97, "s": ["Booking_Confirmation.pdf"]}, {"k": "Port of loading", "v": "CNLYG — Lianyungang", "c": 99, "s": ["Booking_Confirmation.pdf"]}, {"k": "Port of discharge", "v": "DEHAM — Hamburg", "c": 99, "s": ["Booking_Confirmation.pdf"]}, {"k": "Bills of lading", "v": "1", "c": 99, "s": ["Booking_Confirmation.pdf"]}, {"k": "Total packages", "v": "42 cartons", "c": 98, "s": ["Packing_List.xlsx"]}, {"k": "Total gross weight", "v": "18,420.50 KGS", "c": 99, "s": ["Packing_List.xlsx"]}, {"k": "Hazardous", "v": "None declared", "c": 94, "s": ["Shipper_Letter.pdf"]}, {"k": "Freight status", "v": "Prepaid", "c": 91, "s": ["Booking_Confirmation.pdf"]}]}, {"name": "Shipping Bill", "ref": "SB-2026-44187", "time": "1m 31s", "f": [{"k": "Exporter code", "v": "IEC 0488123456", "c": 95, "s": ["Export_Declaration.pdf"]}, {"k": "Buyer", "v": "Nordwest Handels GmbH", "c": 98, "s": ["Commercial_Invoice.pdf"]}, {"k": "Port of loading", "v": "CNLYG — Lianyungang", "c": 99, "s": ["Booking_Confirmation.pdf", "Export_Declaration.pdf"]}, {"k": "FOB value", "v": "36,180.00 USD", "c": 92, "s": ["Commercial_Invoice.pdf", "Export_Declaration.pdf"]}, {"k": "HS code", "v": "6110.20", "c": 89, "s": ["Export_Declaration.pdf"]}, {"k": "Scheme code", "v": "No scheme claimed", "c": 85, "s": ["Export_Declaration.pdf"]}, {"k": "Bank AD code", "v": "0510001", "c": 87, "s": ["Export_Declaration.pdf"]}, {"k": "Shipping bill no.", "v": "SB-2026-44187", "c": 96, "s": ["Export_Declaration.pdf"]}]}]</script>
 
 <script>
 (function () {
@@ -1942,5 +2611,907 @@ footer{
   });
 })();
 </script>
+
+<script>
+/* =====================================================================
+   INTERACTIVE LAYER
+   One IIFE per concern. Everything degrades: if a node is missing the
+   module returns and the page keeps working as the static version did.
+   ===================================================================== */
+(function () {
+  'use strict';
+
+  var reduced = function () {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  };
+  var $  = function (sel, root) { return (root || document).querySelector(sel); };
+  var $$ = function (sel, root) {
+    return Array.prototype.slice.call((root || document).querySelectorAll(sel));
+  };
+
+  /* make a div/span behave like a button for the keyboard too */
+  function pressable(el, fn) {
+    el.addEventListener('click', fn);
+    el.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); fn(e); }
+    });
+  }
+
+  /* ---------------------------------------------------------------
+     1 · scroll progress + scroll spy
+     --------------------------------------------------------------- */
+  (function () {
+    var bar = document.getElementById('navProg');
+    var links = $$('.nav-links .nav-item > a[href^="#"]');
+    var targets = links.map(function (a) {
+      var id = a.getAttribute('href');
+      return (id && id.length > 1) ? document.querySelector(id) : null;
+    });
+    var ticking = false;
+
+    function paint() {
+      ticking = false;
+      var doc = document.documentElement;
+      var max = (doc.scrollHeight - window.innerHeight) || 1;
+      var y = window.pageYOffset;
+
+      if (bar) bar.style.transform = 'scaleX(' + Math.min(1, Math.max(0, y / max)) + ')';
+
+      // the section whose top is nearest above the reading line wins
+      var line = y + window.innerHeight * 0.32, best = -1;
+      for (var i = 0; i < targets.length; i++) {
+        var t = targets[i];
+        if (t && t.getBoundingClientRect().top + y <= line) best = i;
+      }
+      // past the last screenful, the final section is the one being read
+      if (y + window.innerHeight >= doc.scrollHeight - 4) best = targets.length - 1;
+
+      links.forEach(function (a, k) {
+        if (k === best) a.setAttribute('aria-current', 'true');
+        else a.removeAttribute('aria-current');
+      });
+    }
+
+    function onScroll() {
+      if (!ticking) { ticking = true; window.requestAnimationFrame(paint); }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    paint();
+  })();
+
+  /* ---------------------------------------------------------------
+     2 · numbers count up when they arrive
+     Only the leading number in the node is animated; any prefix (~, #)
+     and the <small> suffix are left exactly as written.
+     --------------------------------------------------------------- */
+  (function () {
+    if (!('IntersectionObserver' in window)) return;
+
+    var nodes = $$('.tile-n, .kpi b').filter(function (el) {
+      return !el.id;                      // ids mean the value is driven by a control
+    });
+
+    function parts(el) {
+      var first = el.firstChild;
+      if (!first || first.nodeType !== 3) return null;
+      var m = /^(\D*)(\d+(?:\.\d+)?)(.*)$/.exec(first.nodeValue);
+      if (!m) return null;
+      return { node: first, pre: m[1], to: parseFloat(m[2]), post: m[3],
+               dp: (m[2].split('.')[1] || '').length };
+    }
+
+    function run(el) {
+      var p = parts(el);
+      if (!p || p.to < 3 || reduced()) return;
+      var t0 = null, dur = 850;
+      function step(ts) {
+        if (t0 === null) t0 = ts;
+        var k = Math.min(1, (ts - t0) / dur);
+        var e = 1 - Math.pow(1 - k, 3);                     // ease out cubic
+        p.node.nodeValue = p.pre + (p.to * e).toFixed(p.dp) + p.post;
+        if (k < 1) window.requestAnimationFrame(step);
+        else p.node.nodeValue = p.pre + p.to.toFixed(p.dp) + p.post;
+      }
+      p.node.nodeValue = p.pre + (0).toFixed(p.dp) + p.post;
+      window.requestAnimationFrame(step);
+    }
+
+    var obs = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        obs.unobserve(e.target);
+        run(e.target);
+      });
+    }, { threshold: 0.6 });
+    nodes.forEach(function (el) { obs.observe(el); });
+  })();
+
+  /* ---------------------------------------------------------------
+     3 · project 01 — replay the compliance run, filter it, open the
+         evidence behind any single check
+     --------------------------------------------------------------- */
+  (function () {
+    var tbody = document.getElementById('agentRows');
+    if (!tbody) return;
+
+    var rows    = $$('tr.ag-row', tbody);
+    var runBtn  = document.getElementById('runBtn');
+    var meter   = document.getElementById('runMeter');
+    var banner  = document.getElementById('runBanner');
+    var fill    = document.getElementById('rmFill');
+    var rmN     = document.getElementById('rmN');
+    var clock   = document.getElementById('rmClock');
+    var runTime = document.getElementById('runTime');
+    var segbar  = document.getElementById('segbar');
+    var chips   = $$('#sc1 .sc-chip');
+    var filter  = 'all';
+    var running = false;
+
+    // the status strip is rebuilt from the rows, so the bars can never
+    // drift out of step with the verdicts in the table
+    var segs = [];
+    if (segbar) {
+      segbar.innerHTML = '';
+      rows.forEach(function (r) {
+        var i = document.createElement('i');
+        if (r.getAttribute('data-v') === 'review') i.className = 'r';
+        segbar.appendChild(i);
+        segs.push(i);
+      });
+    }
+
+    function evOf(row) { return document.getElementById(row.getAttribute('aria-controls')); }
+
+    function setOpen(row, open) {
+      var ev = evOf(row);
+      row.classList.toggle('is-open', open);
+      row.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (!ev) return;
+      ev.classList.toggle('is-open', open);
+      if (open) ev.removeAttribute('hidden');
+      else ev.setAttribute('hidden', '');
+    }
+
+    rows.forEach(function (row) {
+      pressable(row, function () {
+        if (running) return;
+        var open = row.getAttribute('aria-expanded') !== 'true';
+        rows.forEach(function (r) { if (r !== row) setOpen(r, false); });
+        setOpen(row, open);
+      });
+    });
+
+    function applyFilter() {
+      var shown = 0;
+      rows.forEach(function (row) {
+        var hit = (filter === 'all') || (row.getAttribute('data-v') === filter);
+        row.hidden = !hit;
+        if (!hit) setOpen(row, false);
+        else { shown++; var ev = evOf(row); if (ev && !row.classList.contains('is-open')) ev.hidden = true; }
+      });
+      return shown;
+    }
+
+    chips.forEach(function (c) {
+      c.addEventListener('click', function () {
+        if (running) return;
+        filter = c.getAttribute('data-f');
+        chips.forEach(function (o) {
+          o.setAttribute('aria-pressed', o === c ? 'true' : 'false');
+        });
+        applyFilter();
+      });
+    });
+
+    // --- the replay -------------------------------------------------
+    var SIM  = 18400;                                  // what the run really took
+    var WALL = 3600;                                   // how long we spend showing it
+
+    var snapshot = rows.map(function (r) {
+      return { row: r, res: $('.res', r).innerHTML, vd: $('.vd', r).innerHTML,
+               ms: parseInt(r.getAttribute('data-ms'), 10) || 1000 };
+    });
+    // the stored per-agent durations are relative; stretch them so the slowest
+    // check lands just before the 18.4s the whole run actually took
+    var slowest = snapshot.reduce(function (a, o) { return Math.max(a, o.ms); }, 1);
+    var scale = (SIM * 0.94) / slowest;
+    snapshot.forEach(function (o) { o.ms = Math.round(o.ms * scale); });
+    var order = snapshot.slice().sort(function (a, b) { return a.ms - b.ms; });
+
+    var watchdog = null;
+
+    function finish() {
+      if (!running) return;
+      running = false;
+      window.clearTimeout(watchdog);
+      snapshot.forEach(function (o) {
+        $('.res', o.row).innerHTML = o.res;
+        $('.vd',  o.row).innerHTML = o.vd;
+        o.row.classList.remove('queued', 'running', 'settled');
+      });
+      segs.forEach(function (i) { i.classList.remove('idle'); });
+      if (meter)  meter.hidden = true;
+      if (banner) banner.hidden = false;
+      if (runTime) runTime.textContent = '18.4s';
+      if (runBtn) {
+        runBtn.classList.remove('busy');
+        runBtn.disabled = false;
+        $('.lbl', runBtn).textContent = 'Replay the run';
+      }
+      applyFilter();
+    }
+
+    function start() {
+      if (running) return;
+      running = true;
+
+      rows.forEach(function (r) { setOpen(r, false); r.hidden = false; });
+      chips.forEach(function (o) {
+        o.setAttribute('aria-pressed', o.getAttribute('data-f') === 'all' ? 'true' : 'false');
+      });
+      filter = 'all';
+
+      if (runBtn) {
+        runBtn.classList.add('busy');
+        runBtn.disabled = true;
+        $('.lbl', runBtn).textContent = 'Running…';
+      }
+      if (banner) banner.hidden = true;
+      if (meter)  meter.hidden = false;
+      if (fill)   fill.style.width = '0%';
+      if (rmN)    rmN.textContent = '0';
+      if (clock)  clock.textContent = '0.0s';
+
+      snapshot.forEach(function (o, k) {
+        o.row.classList.add('queued');
+        o.row.classList.remove('settled');
+        $('.res', o.row).innerHTML = '<span class="dots"><i></i><i></i><i></i></span>';
+        $('.vd',  o.row).innerHTML = '<span class="v v-pend"><i></i>Queued</span>';
+        if (segs[k]) segs[k].classList.add('idle');
+      });
+
+      if (reduced()) { finish(); return; }
+
+      // requestAnimationFrame stops in a backgrounded tab. If the page is hidden
+      // for the whole replay the run would otherwise sit there half-finished, so
+      // a wall-clock watchdog settles everything and tidies up regardless.
+      watchdog = window.setTimeout(function () {
+        settleUpTo(SIM);
+        finish();
+      }, WALL + 2500);
+
+      var done = 0, i = 0, t0 = null;
+
+      function settleUpTo(simMs) {
+        while (i < order.length && order[i].ms <= simMs) {
+          var o = order[i];
+          var k = snapshot.indexOf(o);
+          $('.res', o.row).innerHTML = o.res;
+          $('.vd',  o.row).innerHTML = o.vd;
+          o.row.classList.remove('queued');
+          o.row.classList.add('settled');
+          if (segs[k]) segs[k].classList.remove('idle');
+          done++; i++;
+        }
+      }
+
+      function frame(ts) {
+        if (t0 === null) t0 = ts;
+        var k = Math.min(1, (ts - t0) / WALL);
+        var simMs = k * SIM;
+
+        settleUpTo(simMs);
+        if (fill)  fill.style.width = (k * 100).toFixed(1) + '%';
+        if (rmN)   rmN.textContent = String(done);
+        if (clock) clock.textContent = (simMs / 1000).toFixed(1) + 's';
+        if (runTime) runTime.textContent = (simMs / 1000).toFixed(1) + 's';
+
+        if (k < 1) window.requestAnimationFrame(frame);
+        else window.setTimeout(finish, 260);
+      }
+      window.requestAnimationFrame(frame);
+    }
+
+    if (runBtn) runBtn.addEventListener('click', start);
+  })();
+
+  /* ---------------------------------------------------------------
+     4 · project 02 — what each agency's form actually derives
+     --------------------------------------------------------------- */
+  (function () {
+    var grid = document.getElementById('agGrid');
+    var wrap = document.getElementById('mapFields');
+    if (!grid || !wrap) return;
+
+    var cards  = $$('.ag-card', grid);
+    var title  = document.getElementById('mapTitle');
+    var sub    = document.getElementById('mapSub');
+    var rekey  = document.getElementById('rekey');
+    var rekeyN = document.getElementById('rekeyN');
+    var rekeyL = document.getElementById('rekeyL');
+    var dA     = document.getElementById('deriveA');
+    var dB     = document.getElementById('deriveB');
+    var onBtn  = document.getElementById('canonOn');
+    var offBtn = document.getElementById('canonOff');
+
+    var base   = wrap.innerHTML;                        // the canonical set, untouched
+    var chips  = $$('.ff', wrap);
+    var active = null;
+    var canon  = true;
+
+    function reset() {
+      wrap.innerHTML = base;
+      chips = $$('.ff', wrap);
+      if (title) title.innerHTML = 'The canonical vessel call &mdash; entered once';
+      if (sub)   sub.innerHTML   = '26 of 47 fields shown &middot; click an agency above to see what its form takes';
+    }
+
+    function show(card) {
+      var d = (card.getAttribute('data-d') || '').split(',');
+      var o = (card.getAttribute('data-o') || '').split(',').filter(Boolean);
+
+      reset();
+      chips.forEach(function (c) {
+        if (d.indexOf(c.getAttribute('data-f')) > -1) c.classList.add('derived');
+      });
+      o.forEach(function (name) {
+        var e = document.createElement('span');
+        e.className = 'ff own';
+        e.textContent = name;
+        wrap.appendChild(e);
+      });
+
+      if (title) title.textContent = card.getAttribute('data-name') + ' — ' + card.getAttribute('data-form');
+      if (sub) {
+        sub.innerHTML = d.length + ' fields derived &middot; ' + (o.length || 'no') +
+          ' form-specific field' + (o.length === 1 ? '' : 's') + ' &middot; <b>' +
+          card.getAttribute('data-cov') + '% derivation coverage</b>';
+      }
+    }
+
+    cards.forEach(function (card) {
+      pressable(card, function () {
+        var on = active !== card;
+        cards.forEach(function (c) { c.setAttribute('aria-pressed', 'false'); });
+        if (on) { card.setAttribute('aria-pressed', 'true'); active = card; show(card); }
+        else { active = null; reset(); }
+      });
+    });
+
+    function setCanon(next) {
+      canon = next;
+      if (onBtn)  onBtn.setAttribute('aria-pressed', canon ? 'true' : 'false');
+      if (offBtn) offBtn.setAttribute('aria-pressed', canon ? 'false' : 'true');
+      if (rekey)  rekey.classList.toggle('hand', !canon);
+      if (rekeyN) rekeyN.textContent = canon ? '47' : '282';
+      if (rekeyL) {
+        rekeyL.innerHTML = canon
+          ? 'field entries to satisfy all six agencies.<br>One canonical submission, six formats derived.'
+          : 'field entries to satisfy the same six agencies.<br>The same facts re-keyed six times, with six chances to disagree.';
+      }
+      if (dA) dA.textContent = canon ? 'One submission → 6 agency formats derived'
+                                     : 'No canonical model → 6 forms filled by hand';
+      if (dB) dB.innerHTML = canon
+        ? '&middot; 47 fields captured once &middot; 94% derivation coverage &middot; 0 schema changes'
+        : '&middot; 282 field entries &middot; 0% derivation coverage &middot; every new port a rebuild';
+      if (document.getElementById('derive')) {
+        document.getElementById('derive').style.background = canon ? '' : 'var(--match-bg)';
+        document.getElementById('derive').style.color = canon ? '' : '#8E3420';
+      }
+    }
+
+    if (onBtn)  onBtn.addEventListener('click',  function () { setCanon(true); });
+    if (offBtn) offBtn.addEventListener('click', function () { setCanon(false); });
+  })();
+
+  /* ---------------------------------------------------------------
+     5 · project 03 — document type, per-field source, review threshold
+     --------------------------------------------------------------- */
+  (function () {
+    var list = document.getElementById('fldList');
+    var raw  = document.getElementById('docData');
+    if (!list || !raw) return;
+
+    var DOCS;
+    try { DOCS = JSON.parse(raw.textContent); } catch (e) { return; }
+
+    var rail  = document.getElementById('docRail');
+    var range = document.getElementById('thrRange');
+    var thrV  = document.getElementById('thrVal');
+    var thrN  = document.getElementById('thrN');
+    var thrT  = document.getElementById('thrTot');
+    var srcRow= document.getElementById('srcRow');
+    var kick  = document.getElementById('docKick');
+    var dTitle= document.getElementById('docTitle');
+    var dSub  = document.getElementById('docSub');
+    var dUrl  = document.getElementById('docUrl');
+    var at = 0;
+
+    function thr() { return range ? parseInt(range.value, 10) : 95; }
+
+    function render() {
+      var doc = DOCS[at], t = thr(), flagged = 0, html = '';
+
+      doc.f.forEach(function (f, i) {
+        var low = f.c < t;
+        if (low) flagged++;
+        html += '<div class="fld' + (low ? ' flagged' : '') + '" data-i="' + i + '"' +
+                ' role="button" tabindex="0" aria-expanded="false">' +
+                  '<div class="fld-k">' + f.k + '</div>' +
+                  '<div class="fld-v">' + f.v + '</div>' +
+                  '<div class="conf' + (low ? ' low' : '') + '">' + f.c + '%' +
+                    (low ? ' — review' : '') + '</div>' +
+                  '<div class="fld-src">Taken from <b>' + f.s.join('</b> and <b>') + '</b>' +
+                    (low ? ' — below the ' + t + '% threshold, so a human signs this one off.'
+                         : ' — above the ' + t + '% threshold, so it carries into the draft as written.') +
+                  '</div>' +
+                '</div>';
+      });
+      list.innerHTML = html;
+
+      $$('.fld', list).forEach(function (row) {
+        pressable(row, function () {
+          var open = row.getAttribute('aria-expanded') !== 'true';
+          $$('.fld', list).forEach(function (r) {
+            r.classList.remove('is-open'); r.setAttribute('aria-expanded', 'false');
+          });
+          row.classList.toggle('is-open', open);
+          row.setAttribute('aria-expanded', open ? 'true' : 'false');
+
+          var srcs = open ? doc.f[parseInt(row.getAttribute('data-i'), 10)].s : [];
+          $$('span[data-src]', srcRow).forEach(function (c) {
+            c.classList.toggle('hot', srcs.indexOf(c.getAttribute('data-src')) > -1);
+          });
+        });
+      });
+
+      if (thrV) thrV.textContent = t + '%';
+      if (thrN) thrN.textContent = String(flagged);
+      if (thrT) thrT.textContent = String(doc.f.length);
+      if (kick) kick.textContent = doc.ref + ' · Generated in ' + doc.time;
+      if (dTitle) dTitle.textContent = doc.name;
+      if (dSub) dSub.textContent = '6 source documents · ' + doc.f.length +
+        ' fields extracted · ' + flagged + ' flagged for review';
+      if (dUrl) dUrl.textContent = 'platform.kale.io / edocs / generate / ' + doc.ref;
+      if (srcRow) $$('span[data-src]', srcRow).forEach(function (c) { c.classList.remove('hot'); });
+    }
+
+    if (rail) {
+      $$('span[data-doc]', rail).forEach(function (sp) {
+        pressable(sp, function () {
+          at = parseInt(sp.getAttribute('data-doc'), 10);
+          $$('span[data-doc]', rail).forEach(function (o) { o.classList.remove('on'); });
+          sp.classList.add('on');
+          render();
+        });
+      });
+    }
+    if (range) range.addEventListener('input', render);
+    render();
+  })();
+
+  /* ---------------------------------------------------------------
+     6 · project 04 — the horizon is the product
+     --------------------------------------------------------------- */
+  (function () {
+    var seg  = document.getElementById('fcSeg');
+    var plot = document.getElementById('fcPlot');
+    if (!seg || !plot) return;
+
+    var bars = $$('.fc-bar', plot);
+    var xs   = $$('#fcX span');
+    var msg  = document.getElementById('fcMsg');
+    var ico  = document.getElementById('fcIco');
+    var band = document.getElementById('fcBand2');
+    var bandL= document.getElementById('fcBandL');
+    var note = document.getElementById('fcNotice');
+    var meta = document.getElementById('fcMeta');
+    var sub  = document.getElementById('fcSub');
+    var ban  = document.getElementById('fcBanner');
+
+    var MODES = {
+      3:  { band: 4,  notice: 'none',
+            msg: '<b style="font-weight:700">Nothing in view.</b> ' +
+                 '<span>The 23 Oct breach is nine days out — past the edge of this horizon. ' +
+                 'The number is tight to ±4%, and it arrives too late to do anything with.</span>' },
+      7:  { band: 8,  notice: 'none',
+            msg: '<b style="font-weight:700">Still nothing.</b> ' +
+                 '<span>Capacity looks comfortable through 20 Oct. The spike two days later is ' +
+                 'invisible at this horizon — you would find out on the Tuesday.</span>' },
+      14: { band: 12, notice: '9 days',
+            msg: 'Capacity breach forecast for Thu 23 Oct ' +
+                 '<span>— nine days out. Enough time to add a shift and pull in agency staff. ' +
+                 'Finding out on the Tuesday is a different product.</span>' }
+    };
+
+    function set(h) {
+      var m = MODES[h];
+
+      bars.forEach(function (b, i) {
+        var within = i < h;
+        b.classList.toggle('faded', !within);
+        var w = $('.whisk', b);
+        if (w) {
+          w.style.opacity = within ? '1' : '0';
+          w.style.top = (-m.band) + '%';
+          w.style.height = (m.band * 2) + '%';
+        }
+      });
+      xs.forEach(function (x, i) { x.classList.toggle('faded', i >= h); });
+
+      if (band)  band.textContent = '±' + m.band + '%';
+      if (bandL) bandL.textContent = 'Band at ' + h + ' days';
+      if (note)  { note.textContent = m.notice; note.classList.toggle('hot', m.notice === 'none'); }
+      if (meta)  meta.textContent = m.notice;
+      if (sub)   sub.textContent = 'Forecast horizon ' + h + ' days · confidence band ±' +
+                                   m.band + '% · rebuilt hourly';
+      if (msg)   msg.innerHTML = m.msg;
+      if (ico)   ico.textContent = (h === 14) ? '!' : '·';
+      if (ban)   ban.style.opacity = (h === 14) ? '' : '.72';
+
+      $$('button', seg).forEach(function (b) {
+        b.setAttribute('aria-pressed', b.getAttribute('data-h') === String(h) ? 'true' : 'false');
+      });
+    }
+
+    $$('button', seg).forEach(function (b) {
+      b.addEventListener('click', function () { set(parseInt(b.getAttribute('data-h'), 10)); });
+    });
+    set(14);
+  })();
+
+  /* ---------------------------------------------------------------
+     7 · project 05 — eight settlement cycles, average against the tail
+     --------------------------------------------------------------- */
+  (function () {
+    var strip = document.getElementById('cycStrip');
+    var tail  = document.getElementById('cyTail');
+    if (!strip || !tail) return;
+
+    // volume, first-pass match, exception split [late, dup, amount, missing], close
+    var C = [
+      { n: 'C1', w: '08:00–10:00', v: 2841220, m: '99.991%', e: [142,  82, 26,  6], t: '28m 04s' },
+      { n: 'C2', w: '10:00–11:30', v: 3402118, m: '99.989%', e: [208, 112, 42,  9], t: '33m 41s' },
+      { n: 'C3', w: '11:30–13:00', v: 3918664, m: '99.986%', e: [318, 158, 56, 17], t: '38m 12s' },
+      { n: 'C4', w: '13:00–14:00', v: 4264901, m: '99.985%', e: [372, 186, 63, 19], t: '40m 55s' },
+      { n: 'C5', w: '14:00–17:00', v: 4108442, m: '99.987%', e: [311, 148, 61, 14], t: '41m 18s' },
+      { n: 'C6', w: '17:00–19:30', v: 0, m: null, e: null, t: null },
+      { n: 'C7', w: '19:30–22:00', v: 0, m: null, e: null, t: null },
+      { n: 'C8', w: '22:00–08:00', v: 0, m: null, e: null, t: null }
+    ];
+    // the shape of a match-latency distribution: a fat head and a long thin tail
+    var SHAPE = [8,26,58,92,100,86,61,42,29,20,14,10,7,5,4,3,3,2,2,4];
+
+    var cells = $$('div[data-c]', strip);
+    var seg   = document.getElementById('cySeg');
+    var view  = 1;                                       // 0 average, 1 tail
+    var at    = 4;
+
+    var el = {
+      vol: document.getElementById('cyVol'), match: document.getElementById('cyMatch'),
+      exc: document.getElementById('cyExc'), close: document.getElementById('cyClose'),
+      kick: document.getElementById('cyKick'), sub: document.getElementById('cySub'),
+      meta: document.getElementById('cyMeta'), url: document.getElementById('cyUrl'),
+      late: document.getElementById('exLate'), dup: document.getElementById('exDup'),
+      amt: document.getElementById('exAmt'), miss: document.getElementById('exMiss'),
+      foot: document.getElementById('exFoot'), note: document.getElementById('cyTailNote')
+    };
+
+    function group(n) { return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+
+    // the tail view rescales the same distribution so the thin end is legible.
+    // nothing is invented — it is the identical data on a compressed scale,
+    // which is the only way the 0.013% is visible beside the 99.987%.
+    function heights() {
+      if (view === 1) {
+        var p = SHAPE.map(function (v) { return Math.pow(v, 0.52); });
+        var mx = Math.max.apply(null, p);
+        return p.map(function (v) { return (v / mx) * 100; });
+      }
+      return SHAPE.slice();
+    }
+
+    function bars(c) {
+      var hs = heights();
+      tail.innerHTML = hs.map(function (h, i) {
+        var cls = (i >= 17) ? ' class="bad"' : (i >= 13 ? ' class="warn"' : '');
+        var v = c.e ? h : h * 0.12;                      // a cycle that has not run yet
+        return '<i' + cls + ' style="height:' + v.toFixed(1) + '%"></i>';
+      }).join('');
+    }
+
+    function paint() {
+      var c = C[at], live = !!c.e;
+      var total = live ? c.e[0] + c.e[1] + c.e[2] + c.e[3] : 0;
+
+      cells.forEach(function (d, i) {
+        d.setAttribute('aria-pressed', i === at ? 'true' : 'false');
+      });
+
+      if (el.vol)   el.vol.textContent   = live ? group(c.v) : '—';
+      if (el.match) el.match.textContent = live ? c.m : '—';
+      if (el.exc)   el.exc.textContent   = live ? String(total) : '—';
+      if (el.close) el.close.textContent = live ? c.t : 'scheduled';
+      if (el.kick)  el.kick.textContent  = 'Cycle 0' + (at + 1) + ' · ' + c.w + ' IST';
+      if (el.meta)  el.meta.textContent  = live ? c.t : '—';
+      if (el.url)   el.url.textContent   = 'settlement.internal / recon / upi / cycle-0' + (at + 1);
+      if (el.sub) {
+        el.sub.textContent = live
+          ? (c.v / 1e6).toFixed(1) + 'M transactions in cycle · three-way match: switch ledger, ' +
+            'NPCI settlement file, core banking'
+          : 'Cycle has not opened yet · projection only — nothing to reconcile until the ' +
+            'NPCI file lands';
+      }
+      if (el.late) el.late.textContent = live ? String(c.e[0]) : '—';
+      if (el.dup)  el.dup.textContent  = live ? String(c.e[1]) : '—';
+      if (el.amt)  el.amt.textContent  = live ? String(c.e[2]) : '—';
+      if (el.miss) el.miss.textContent = live ? String(c.e[3]) : '—';
+      if (el.foot) {
+        el.foot.textContent = live
+          ? total + ' exceptions from ' + (c.v / 1e6).toFixed(1) +
+            'M — worked before the next cycle opens'
+          : 'Nothing to work yet — this cycle closes at ' + c.w.split('–')[1];
+      }
+      if (el.note) {
+        el.note.textContent = view === 1
+          ? 'the 0.013% that decides the cycle →'
+          : 'on this scale the tail is invisible — which is the problem →';
+      }
+      bars(c);
+    }
+
+    cells.forEach(function (d, i) {
+      pressable(d, function () { at = i; paint(); });
+    });
+    if (seg) {
+      $$('button', seg).forEach(function (b) {
+        b.addEventListener('click', function () {
+          view = parseInt(b.getAttribute('data-c'), 10);
+          $$('button', seg).forEach(function (o) {
+            o.setAttribute('aria-pressed', o === b ? 'true' : 'false');
+          });
+          paint();
+        });
+      });
+    }
+    paint();
+  })();
+
+  /* ---------------------------------------------------------------
+     8 · ⌘K — jump anywhere on a long page
+     --------------------------------------------------------------- */
+  (function () {
+    var box = document.getElementById('cmdk');
+    if (!box) return;
+
+    var input = document.getElementById('cmdkInput');
+    var list  = document.getElementById('cmdkList');
+    var opener= document.getElementById('cmdkOpen');
+    var items = [], view = [], at = 0, lastFocus = null;
+
+    function add(group, n, title, sub, go) {
+      items.push({ g: group, n: n, t: title, s: sub, go: go });
+    }
+
+    function jump(hash) {
+      return function () {
+        var a = document.createElement('a');
+        a.setAttribute('href', hash);
+        document.body.appendChild(a);
+        a.click();                                   // reuses the page's own deep-link handler
+        document.body.removeChild(a);
+      };
+    }
+
+    add('Sections', '↑', 'Top', 'Back to the hero', jump('#top'));
+    add('Sections', '·', 'About', 'Who I am, where I work, background', jump('#about'));
+    add('Sections', '·', 'How I work', 'Principles, UX thinking, toolkit', jump('#how'));
+    add('Sections', '·', 'Contact', 'Email, phone, LinkedIn', jump('#contact'));
+
+    $$('#work .proj').forEach(function (art) {
+      var h = $('h3', art), num = $('.num', art), lede = $('.lede', art);
+      if (!h) return;
+      add('Work', num ? num.textContent.trim() : '·', h.textContent.trim(),
+          lede ? lede.textContent.replace(/\s+/g, ' ').trim().slice(0, 72) + '…' : '',
+          jump('#' + art.id));
+    });
+
+    $$('#panel-prin .prin').forEach(function (d) {
+      var h = $('h4', d), n = $('.prin-n', d);
+      if (!h || !d.id) return;
+      add('Principles', n ? n.textContent.trim() : '·',
+          h.textContent.replace(/\s+/g, ' ').trim(), 'How I work', jump('#' + d.id));
+    });
+
+    $$('.ux-rail .ux-step').forEach(function (b) {
+      var n = $('.ux-sn', b), t = $('.ux-st', b);
+      add('UX walkthrough', n ? n.textContent.trim() : '·',
+          t ? t.textContent.trim() : 'Step', 'One decision, reasoned end to end',
+          jump('#' + b.getAttribute('aria-controls')));
+    });
+
+    add('Actions', '↓', 'Download résumé', 'Vaibhav_Raj_PM.pdf', function () {
+      window.open('Vaibhav_Raj_PM.pdf', '_blank', 'noopener');
+    });
+    add('Actions', '@', 'Email Vaibhav', 'vaibhavraj738@gmail.com', function () {
+      window.location.href = 'mailto:vaibhavraj738@gmail.com';
+    });
+    add('Actions', 'in', 'LinkedIn', '/in/vaibhav-raj-iitb', function () {
+      window.open('https://www.linkedin.com/in/vaibhav-raj-iitb/', '_blank', 'noopener');
+    });
+
+    function draw(q) {
+      q = (q || '').trim().toLowerCase();
+      view = q ? items.filter(function (it) {
+        return (it.t + ' ' + it.s + ' ' + it.g).toLowerCase().indexOf(q) > -1;
+      }) : items.slice();
+
+      if (!view.length) {
+        list.innerHTML = '<div class="cmdk-empty">Nothing matches “' +
+          q.replace(/[<>&]/g, '') + '”</div>';
+        input.removeAttribute('aria-activedescendant');
+        return;
+      }
+      at = 0;
+      var html = '', group = null;
+      view.forEach(function (it, i) {
+        if (it.g !== group) { group = it.g; html += '<div class="cmdk-gh">' + group + '</div>'; }
+        html += '<button class="cmdk-item" type="button" role="option" data-i="' + i + '"' +
+                ' id="cmdk-opt-' + i + '"' +
+                ' aria-selected="' + (i === 0 ? 'true' : 'false') + '">' +
+                  '<span class="cmdk-n">' + it.n + '</span>' +
+                  '<span><span class="cmdk-t">' + it.t + '</span>' +
+                  (it.s ? '<span class="cmdk-s">' + it.s + '</span>' : '') + '</span>' +
+                '</button>';
+      });
+      list.innerHTML = html;
+      input.setAttribute('aria-activedescendant', 'cmdk-opt-0');
+      $$('.cmdk-item', list).forEach(function (b) {
+        b.addEventListener('click', function () { pick(parseInt(b.getAttribute('data-i'), 10)); });
+        b.addEventListener('mousemove', function () { mark(parseInt(b.getAttribute('data-i'), 10)); });
+      });
+    }
+
+    function mark(i) {
+      at = i;
+      $$('.cmdk-item', list).forEach(function (b) {
+        var on = parseInt(b.getAttribute('data-i'), 10) === at;
+        b.setAttribute('aria-selected', on ? 'true' : 'false');
+        if (on && b.scrollIntoView) b.scrollIntoView({ block: 'nearest' });
+      });
+      input.setAttribute('aria-activedescendant', 'cmdk-opt-' + at);
+    }
+
+    function pick(i) {
+      var it = view[i];
+      close();
+      if (it) window.setTimeout(it.go, 10);
+    }
+
+    function open() {
+      lastFocus = document.activeElement;
+      box.classList.add('on');
+      document.documentElement.classList.add('cmdk-open');
+      input.value = '';
+      draw('');
+      input.focus();
+    }
+
+    function close() {
+      box.classList.remove('on');
+      document.documentElement.classList.remove('cmdk-open');
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+
+    if (opener) opener.addEventListener('click', open);
+
+    document.addEventListener('keydown', function (e) {
+      var k = e.key.toLowerCase();
+      if ((e.metaKey || e.ctrlKey) && k === 'k') {
+        e.preventDefault();
+        box.classList.contains('on') ? close() : open();
+        return;
+      }
+      if (!box.classList.contains('on')) {
+        // "/" opens it too, unless the user is typing into something
+        var t = e.target, tag = t && t.tagName;
+        if (k === '/' && tag !== 'INPUT' && tag !== 'TEXTAREA' && !(t && t.isContentEditable)) {
+          e.preventDefault(); open();
+        }
+        return;
+      }
+      if (k === 'escape') { e.preventDefault(); close(); }
+      else if (k === 'arrowdown') { e.preventDefault(); if (view.length) mark((at + 1) % view.length); }
+      else if (k === 'arrowup')   { e.preventDefault(); if (view.length) mark((at - 1 + view.length) % view.length); }
+      else if (k === 'enter')     { e.preventDefault(); pick(at); }
+    });
+
+    input.addEventListener('input', function () { draw(input.value); });
+    box.addEventListener('mousedown', function (e) { if (e.target === box) close(); });
+  })();
+
+  /* ---------------------------------------------------------------
+     9 · copy to clipboard, with a word about it
+     --------------------------------------------------------------- */
+  (function () {
+    var toast = document.getElementById('toast');
+    var timer;
+
+    function say(msg) {
+      if (!toast) return;
+      toast.textContent = msg;
+      toast.classList.add('on');
+      window.clearTimeout(timer);
+      timer = window.setTimeout(function () { toast.classList.remove('on'); }, 1900);
+    }
+
+    // older engines, pages not served over https, and embedded views that
+    // refuse the Clipboard API all land here
+    function legacyCopy(text) {
+      return new Promise(function (resolve, reject) {
+        try {
+          var ta = document.createElement('textarea');
+          ta.value = text;
+          ta.setAttribute('readonly', '');
+          ta.style.cssText = 'position:fixed;top:-100px;opacity:0';
+          document.body.appendChild(ta);
+          ta.select();
+          ta.setSelectionRange(0, text.length);
+          var ok = document.execCommand('copy');
+          document.body.removeChild(ta);
+          ok ? resolve() : reject(new Error('refused'));
+        } catch (e) { reject(e); }
+      });
+    }
+
+    function copy(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        return navigator.clipboard.writeText(text).catch(function () {
+          return legacyCopy(text);
+        });
+      }
+      return legacyCopy(text);
+    }
+
+    $$('button.cp').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var v = b.getAttribute('data-copy');
+        copy(v).then(function () {
+          say('Copied — ' + v);
+          b.textContent = 'copied';
+          window.setTimeout(function () { b.textContent = 'copy'; }, 1900);
+        }, function () {
+          say('Press ⌘C to copy');
+        });
+      });
+    });
+  })();
+
+  /* ---------------------------------------------------------------
+     10 · back to top
+     --------------------------------------------------------------- */
+  (function () {
+    var b = document.getElementById('toTop');
+    if (!b) return;
+    var ticking = false;
+
+    function paint() {
+      ticking = false;
+      b.classList.toggle('on', window.pageYOffset > window.innerHeight * 0.9);
+    }
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; window.requestAnimationFrame(paint); }
+    }, { passive: true });
+
+    b.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: reduced() ? 'auto' : 'smooth' });
+    });
+    paint();
+  })();
+
+})();
+</script>
+
 </body>
 </html>
